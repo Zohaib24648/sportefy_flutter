@@ -1,9 +1,8 @@
 //lib/presentation/screens/signup_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 import '../../../bloc/auth/auth_bloc.dart';
-import '../../../bloc/auth/auth_event.dart';
-import '../../../bloc/auth/auth_state.dart';
 import '../../../data/model/signup_request.dart';
 import '../../constants/app_strings.dart';
 import '../../constants/app_colors.dart';
@@ -66,11 +65,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
-            // Navigate to home screen
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Sign up successful!')),
+              SnackBar(content: Text(state.message ?? 'Success!')),
             );
-          } else if (state is AuthFailure) {
+            Navigator.of(context).pushReplacementNamed('/signin');
+          } else if (state is AuthError) {
             ScaffoldMessenger.of(
               context,
             ).showSnackBar(SnackBar(content: Text(state.error)));

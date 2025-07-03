@@ -1,40 +1,33 @@
-//lib/bloc/auth/auth_event.dart
-import 'package:equatable/equatable.dart';
-import 'package:sportefy/data/model/Signin_request.dart';
-import '../../data/model/signup_request.dart';
+part of 'auth_bloc.dart';
 
-abstract class AuthEvent extends Equatable {
-  const AuthEvent();
+abstract class AuthEvent {}
 
-  @override
-  List<Object?> get props => [];
+class AuthCheckRequested extends AuthEvent {}
+
+class SignInRequested extends AuthEvent {
+  final SignInRequest signInRequest;
+
+  SignInRequested({required this.signInRequest});
 }
 
 class SignUpRequested extends AuthEvent {
   final SignupRequest signupRequest;
 
-  const SignUpRequested({required this.signupRequest});
-
-  @override
-  List<Object?> get props => [signupRequest];
+  SignUpRequested({required this.signupRequest});
 }
+
+enum OAuthProviderTypes { apple, google, facebook }
 
 class OAuthSignInRequested extends AuthEvent {
-  final OAuthProvider provider;
+  final supabase.OAuthProvider provider;
 
-  const OAuthSignInRequested({required this.provider});
-
-  @override
-  List<Object?> get props => [provider];
+  OAuthSignInRequested({required this.provider});
 }
 
-class SignInRequested extends AuthEvent {
-  final SignInRequest signInRequest;
+class SignOutRequested extends AuthEvent {}
 
-  const SignInRequested({required this.signInRequest});
+class SupabaseAuthStateChanged extends AuthEvent {
+  final supabase.AuthState supabaseAuthState;
 
-  @override
-  List<Object?> get props => [signInRequest];
+  SupabaseAuthStateChanged(this.supabaseAuthState);
 }
-
-enum OAuthProvider { apple, google, facebook }

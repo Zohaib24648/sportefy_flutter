@@ -1,10 +1,9 @@
 //lib/presentation/screens/SignIn_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 import '../../../bloc/auth/auth_bloc.dart';
-import '../../../bloc/auth/auth_event.dart';
-import '../../../bloc/auth/auth_state.dart';
-import '../../../data/model/Signin_request.dart';
+import '../../../data/model/signin_request.dart';
 import '../../constants/app_strings.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_styles.dart';
@@ -24,7 +23,7 @@ class _SignInScreenState extends State<SignInScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _rememberMe = false;
+  bool _rememberMe = true;
   bool _obscurePassword = true;
 
   @override
@@ -58,12 +57,9 @@ class _SignInScreenState extends State<SignInScreen> {
       backgroundColor: AppColors.backgroundColor,
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state is AuthSuccess) {
-            // Navigate to home screen
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Sign up successful!')),
-            );
-          } else if (state is AuthFailure) {
+          if (state is Authenticated) {
+            Navigator.of(context).pushReplacementNamed('/home');
+          } else if (state is AuthError) {
             ScaffoldMessenger.of(
               context,
             ).showSnackBar(SnackBar(content: Text(state.error)));
@@ -117,7 +113,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               20,
                             ),
                           ),
-                          _buildCreateAccountButton(context),
+                          _buildSignInButton(context),
                           SizedBox(
                             height: ResponsiveHelper.getResponsiveSpacing(
                               context,
@@ -282,11 +278,11 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  Widget _buildCreateAccountButton(BuildContext context) {
+  Widget _buildSignInButton(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
         return PrimaryButton(
-          text: AppStrings.createAccount,
+          text: AppStrings.signIn,
           onPressed: _handleSignIn,
           isLoading: state is AuthLoading,
         );
@@ -318,7 +314,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
               ),
               TextSpan(
-                text: AppStrings.signIn,
+                text: AppStrings.signUp,
                 style: AppStyles.linkText(context),
               ),
             ],

@@ -1,33 +1,27 @@
-//lib/bloc/auth/auth_state.dart
-import 'package:equatable/equatable.dart';
+part of 'auth_bloc.dart';
 
-import '../../data/model/user.dart';
-
-abstract class AuthState extends Equatable {
-  const AuthState();
-
-  @override
-  List<Object?> get props => [];
-}
+abstract class AuthState {}
 
 class AuthInitial extends AuthState {}
 
 class AuthLoading extends AuthState {}
 
 class AuthSuccess extends AuthState {
-  final User user;
+  final String? message;
 
-  const AuthSuccess({required this.user});
-
-  @override
-  List<Object?> get props => [user];
+  AuthSuccess({this.message});
 }
 
-class AuthFailure extends AuthState {
+class AuthError extends AuthState {
   final String error;
 
-  const AuthFailure({required this.error});
-
-  @override
-  List<Object?> get props => [error];
+  AuthError(this.error);
 }
+
+class Authenticated extends AuthState {
+  final supabase.User user;
+
+  Authenticated(this.user);
+}
+
+class Unauthenticated extends AuthState {}

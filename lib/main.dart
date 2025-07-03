@@ -1,17 +1,34 @@
-//lib/main.dart
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sportefy/presentation/constants/app_colors.dart';
-import 'package:sportefy/presentation/screens/auth/signin_screen.dart';
-import 'package:sportefy/presentation/screens/auth/signup_screen.dart';
-
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:sportefy/presentation/screens/general/splash_screen.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 import 'bloc/auth/auth_bloc.dart';
-import 'data/repository/auth_repository.dart';
+import 'dependency_injection.dart';
+import 'presentation/screens/auth/signin_screen.dart';
+import 'presentation/screens/auth/signup_screen.dart';
+import 'presentation/screens/home/home_screen.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const Sportefy());
+  await dotenv.load(fileName: ".env");
+
+  await Supabase.initialize(
+    url: dotenv.env['SUPABASE_URL'] ?? '',
+    anonKey: dotenv.env['SUPABASE_ANON_KEY'] ?? '',
+    authOptions: const FlutterAuthClientOptions(
+      authFlowType: AuthFlowType.pkce,
+    ),
+  );
+
+  configureDependencies();
+
+  runApp(
+    BlocProvider(
+      create: (_) => getIt<AuthBloc>()..add(AuthCheckRequested()),
+      child: const Sportefy(),
+    ),
+  );
 }
 
 class Sportefy extends StatelessWidget {
@@ -19,28 +36,24 @@ class Sportefy extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiRepositoryProvider(
-      providers: [RepositoryProvider(create: (context) => AuthRepository())],
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) =>
-                AuthBloc(authRepository: context.read<AuthRepository>()),
-          ),
-        ],
-        child: MaterialApp(
-          theme: ThemeData.light().copyWith(
-            scaffoldBackgroundColor: AppColors.backgroundColor,
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: AppColors.primaryColor,
-            ),
-          ),
-          home: const SignUpScreen(),
-          routes: {
-            '/signup': (context) => const SignUpScreen(),
-            '/signin': (context) => const SignInScreen(),
-          },
-        ),
+    return MaterialApp(
+      title: 'Sportefy',
+      debugShowCheckedModeBanner: false,
+      routes: {
+        '/signin': (context) => const SignInScreen(),
+        '/signup': (context) => const SignUpScreen(),
+        '/home': (context) => const HomePage(),
+      },
+      home: BlocBuilder<AuthBloc, AuthState>(
+        builder: (context, state) {
+          if (state is AuthInitial || state is AuthLoading) {
+            return const SplashScreen();
+          } else if (state is Authenticated) {
+            return const HomePage();
+          } else {
+            return const SignInScreen();
+          }
+        },
       ),
     );
   }
