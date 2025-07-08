@@ -1,6 +1,7 @@
 //lib/presentation/screens/SignIn_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sportefy/presentation/widgets/constants/or-divider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 import '../../../bloc/auth/auth_bloc.dart';
 import '../../../data/model/signin_request.dart';
@@ -75,9 +76,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 child: ConstrainedBox(
                   constraints: BoxConstraints(
                     minHeight: constraints.maxHeight,
-                    maxWidth: ResponsiveHelper.isDesktop(context)
-                        ? 400
-                        : double.infinity,
+                    maxWidth: double.infinity,
                   ),
                   child: IntrinsicHeight(
                     child: Form(
@@ -99,7 +98,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               24,
                             ),
                           ),
-                          _buildDivider(context),
+                          OrDivider(),
                           SizedBox(
                             height: ResponsiveHelper.getResponsiveSpacing(
                               context,
@@ -117,14 +116,14 @@ class _SignInScreenState extends State<SignInScreen> {
                           SizedBox(
                             height: ResponsiveHelper.getResponsiveSpacing(
                               context,
-                              24,
+                              16,
                             ),
                           ),
                           _buildSignUpLink(context),
                           SizedBox(
                             height: ResponsiveHelper.getResponsiveSpacing(
                               context,
-                              20,
+                              8,
                             ),
                           ),
                         ],
@@ -145,88 +144,49 @@ class _SignInScreenState extends State<SignInScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(AppStrings.signIn, style: AppStyles.heading(context)),
-        SizedBox(height: ResponsiveHelper.getResponsiveSpacing(context, 16)),
+        SizedBox(height: ResponsiveHelper.getResponsiveSpacing(context, 8)),
         Text(AppStrings.signInDescription, style: AppStyles.bodyText(context)),
       ],
     );
   }
 
   Widget _buildSocialLoginSection(BuildContext context) {
-    if (ResponsiveHelper.getResponsiveWidth(context) < 350) {
-      return Column(
-        children: [
-          OAuthButton(
-            icon: Icons.apple,
-            label: AppStrings.appleId,
-            onPressed: () => _handleOAuthSignIn(OAuthProvider.apple),
-          ),
-          SizedBox(height: ResponsiveHelper.getResponsiveSpacing(context, 8)),
-          OAuthButton(
-            icon: Icons.g_mobiledata,
-            label: AppStrings.google,
-            onPressed: () => _handleOAuthSignIn(OAuthProvider.google),
-          ),
-          SizedBox(height: ResponsiveHelper.getResponsiveSpacing(context, 8)),
-          OAuthButton(
-            icon: Icons.facebook,
-            label: AppStrings.facebook,
-            onPressed: () => _handleOAuthSignIn(OAuthProvider.facebook),
-          ),
-        ],
-      );
-    }
-
     return Row(
       children: [
         Expanded(
           child: OAuthButton(
-            icon: Icons.apple,
-            label: AppStrings.appleId,
-            onPressed: () => _handleOAuthSignIn(OAuthProvider.apple),
-          ),
-        ),
-        SizedBox(width: ResponsiveHelper.getResponsiveSpacing(context, 10)),
-        Expanded(
-          child: OAuthButton(
-            icon: Icons.g_mobiledata,
-            label: AppStrings.google,
-            onPressed: () => _handleOAuthSignIn(OAuthProvider.google),
-          ),
-        ),
-        SizedBox(width: ResponsiveHelper.getResponsiveSpacing(context, 10)),
-        Expanded(
-          child: OAuthButton(
-            icon: Icons.facebook,
-            label: AppStrings.facebook,
-            onPressed: () => _handleOAuthSignIn(OAuthProvider.facebook),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildDivider(BuildContext context) {
-    return Row(
-      children: [
-        const Expanded(
-          child: Divider(color: AppColors.dividerColor, thickness: 2),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: ResponsiveHelper.getResponsiveSpacing(context, 16),
-          ),
-          child: Text(
-            AppStrings.or,
-            style: TextStyle(
-              color: const Color(0xFF262626),
-              fontSize: ResponsiveHelper.getResponsiveFontSize(context, 14),
-              fontFamily: 'Plus Jakarta Sans',
-              fontWeight: FontWeight.w400,
+            icon: Image.asset(
+              'assets/logos/apple.png',
+              width: 24,
+              height: 24,
             ),
+            label: AppStrings.appleId,
+            onPressed: () => _handleOAuthSignIn(OAuthProvider.apple),
           ),
         ),
-        const Expanded(
-          child: Divider(color: AppColors.dividerColor, thickness: 1),
+        SizedBox(width: ResponsiveHelper.getResponsiveSpacing(context, 10)),
+        Expanded(
+          child: OAuthButton(
+            icon: Image.asset(
+              'assets/logos/google.png',
+              width: 24,
+              height: 24,
+            ),
+            label: AppStrings.google,
+            onPressed: () => _handleOAuthSignIn(OAuthProvider.google),
+          ),
+        ),
+        SizedBox(width: ResponsiveHelper.getResponsiveSpacing(context, 10)),
+        Expanded(
+          child: OAuthButton(
+            icon: Image.asset(
+              'assets/logos/facebook.png',
+              width: 24,
+              height: 24,
+            ),
+            label: AppStrings.facebook,
+            onPressed: () => _handleOAuthSignIn(OAuthProvider.facebook),
+          ),
         ),
       ],
     );

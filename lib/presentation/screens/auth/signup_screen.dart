@@ -1,6 +1,7 @@
 //lib/presentation/screens/signup_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sportefy/presentation/widgets/constants/or-divider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 import '../../../bloc/auth/auth_bloc.dart';
 import '../../../data/model/signup_request.dart';
@@ -85,9 +86,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 child: ConstrainedBox(
                   constraints: BoxConstraints(
                     minHeight: constraints.maxHeight,
-                    maxWidth: ResponsiveHelper.isDesktop(context)
-                        ? 400
-                        : double.infinity,
+                    maxWidth: double.infinity,
                   ),
                   child: IntrinsicHeight(
                     child: Form(
@@ -109,7 +108,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               24,
                             ),
                           ),
-                          _buildDivider(context),
+                          OrDivider(),
                           SizedBox(
                             height: ResponsiveHelper.getResponsiveSpacing(
                               context,
@@ -120,14 +119,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           SizedBox(
                             height: ResponsiveHelper.getResponsiveSpacing(
                               context,
-                              20,
+                              8,
                             ),
                           ),
                           _buildTermsCheckbox(context),
                           SizedBox(
                             height: ResponsiveHelper.getResponsiveSpacing(
                               context,
-                              32,
+                              8,
                             ),
                           ),
                           _buildCreateAccountButton(context),
@@ -162,92 +161,54 @@ class _SignUpScreenState extends State<SignUpScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(AppStrings.signUp, style: AppStyles.heading(context)),
-        SizedBox(height: ResponsiveHelper.getResponsiveSpacing(context, 16)),
+        SizedBox(height: ResponsiveHelper.getResponsiveSpacing(context, 8)),
         Text(AppStrings.signUpDescription, style: AppStyles.bodyText(context)),
       ],
     );
   }
 
   Widget _buildSocialLoginSection(BuildContext context) {
-    if (ResponsiveHelper.getResponsiveWidth(context) < 350) {
-      return Column(
-        children: [
-          OAuthButton(
-            icon: Icons.apple,
-            label: AppStrings.appleId,
-            onPressed: () => _handleOAuthSignIn(OAuthProvider.apple),
-          ),
-          SizedBox(height: ResponsiveHelper.getResponsiveSpacing(context, 8)),
-          OAuthButton(
-            icon: Icons.g_mobiledata,
-            label: AppStrings.google,
-            onPressed: () => _handleOAuthSignIn(OAuthProvider.google),
-          ),
-          SizedBox(height: ResponsiveHelper.getResponsiveSpacing(context, 8)),
-          OAuthButton(
-            icon: Icons.facebook,
-            label: AppStrings.facebook,
-            onPressed: () => _handleOAuthSignIn(OAuthProvider.facebook),
-          ),
-        ],
-      );
-    }
-
     return Row(
       children: [
         Expanded(
           child: OAuthButton(
-            icon: Icons.apple,
-            label: AppStrings.appleId,
-            onPressed: () => _handleOAuthSignIn(OAuthProvider.apple),
-          ),
-        ),
-        SizedBox(width: ResponsiveHelper.getResponsiveSpacing(context, 10)),
-        Expanded(
-          child: OAuthButton(
-            icon: Icons.g_mobiledata,
-            label: AppStrings.google,
-            onPressed: () => _handleOAuthSignIn(OAuthProvider.google),
-          ),
-        ),
-        SizedBox(width: ResponsiveHelper.getResponsiveSpacing(context, 10)),
-        Expanded(
-          child: OAuthButton(
-            icon: Icons.facebook,
-            label: AppStrings.facebook,
-            onPressed: () => _handleOAuthSignIn(OAuthProvider.facebook),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildDivider(BuildContext context) {
-    return Row(
-      children: [
-        const Expanded(
-          child: Divider(color: AppColors.dividerColor, thickness: 2),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: ResponsiveHelper.getResponsiveSpacing(context, 16),
-          ),
-          child: Text(
-            AppStrings.or,
-            style: TextStyle(
-              color: const Color(0xFF262626),
-              fontSize: ResponsiveHelper.getResponsiveFontSize(context, 14),
-              fontFamily: 'Plus Jakarta Sans',
-              fontWeight: FontWeight.w400,
+            icon: Image.asset(
+              'assets/logos/apple.png',
+              width: 24,
+              height: 24,
             ),
+            label: AppStrings.appleId,
+            onPressed: () => _handleOAuthSignIn(OAuthProvider.apple),
           ),
         ),
-        const Expanded(
-          child: Divider(color: AppColors.dividerColor, thickness: 1),
+        SizedBox(width: ResponsiveHelper.getResponsiveSpacing(context, 10)),
+        Expanded(
+          child: OAuthButton(
+            icon: Image.asset(
+              'assets/logos/google.png',
+              width: 24,
+              height: 24,
+            ),
+            label: AppStrings.google,
+            onPressed: () => _handleOAuthSignIn(OAuthProvider.google),
+          ),
+        ),
+        SizedBox(width: ResponsiveHelper.getResponsiveSpacing(context, 10)),
+        Expanded(
+          child: OAuthButton(
+            icon: Image.asset(
+              'assets/logos/facebook.png',
+              width: 24,
+              height: 24,
+            ),
+            label: AppStrings.facebook,
+            onPressed: () => _handleOAuthSignIn(OAuthProvider.facebook),
+          ),
         ),
       ],
     );
   }
+
 
   Widget _buildFormFields(BuildContext context) {
     return Column(
@@ -256,10 +217,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
           controller: _nameController,
           hintText: AppStrings.name,
           keyboardType: TextInputType.name,
-          prefixIcon: Icon(
-            Icons.person,
-            color: const Color.fromARGB(128, 234, 0, 0),
-          ),
           validator: (value) {
             if (value == null || value.isEmpty) {
               return 'Please enter your name';
@@ -337,10 +294,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Widget _buildTermsCheckbox(BuildContext context) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Transform.scale(
-          scale: ResponsiveHelper.isMobile(context) ? 0.9 : 1.0,
+          scale:  0.9,
           child: Checkbox(
             value: _agreedToTerms,
             onChanged: (value) {
@@ -361,43 +319,39 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 _agreedToTerms = !_agreedToTerms;
               });
             },
-            child: Padding(
-              padding: const EdgeInsets.only(top: 12),
-              child: RichText(
-                text: TextSpan(
-                  style: TextStyle(
-                    fontSize: ResponsiveHelper.getResponsiveFontSize(
-                      context,
-                      12,
-                    ),
-                    fontFamily: 'Lexend',
-                    height: 1.83,
+            child: RichText(
+              text: TextSpan(
+                style: TextStyle(
+                  fontSize: ResponsiveHelper.getResponsiveFontSize(
+                    context,
+                    12,
                   ),
-                  children: [
-                    TextSpan(
-                      text: AppStrings.agreeToTerms,
-                      style: const TextStyle(
-                        color: AppColors.textTertiary,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    TextSpan(
-                      text: AppStrings.termsOfService,
-                      style: AppStyles.linkText(context).copyWith(fontSize: 12),
-                    ),
-                    TextSpan(
-                      text: AppStrings.and,
-                      style: const TextStyle(
-                        color: AppColors.textTertiary,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    TextSpan(
-                      text: AppStrings.privacyPolicy,
-                      style: AppStyles.linkText(context).copyWith(fontSize: 12),
-                    ),
-                  ],
+                  fontFamily: 'Lexend',
                 ),
+                children: [
+                  TextSpan(
+                    text: AppStrings.agreeToTerms,
+                    style: const TextStyle(
+                      color: AppColors.textTertiary,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  TextSpan(
+                    text: AppStrings.termsOfService,
+                    style: AppStyles.linkText(context).copyWith(fontSize: 12),
+                  ),
+                  TextSpan(
+                    text: AppStrings.and,
+                    style: const TextStyle(
+                      color: AppColors.textTertiary,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  TextSpan(
+                    text: AppStrings.privacyPolicy,
+                    style: AppStyles.linkText(context).copyWith(fontSize: 12),
+                  ),
+                ],
               ),
             ),
           ),
@@ -431,7 +385,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
             style: TextStyle(
               fontSize: ResponsiveHelper.getResponsiveFontSize(context, 14),
               fontFamily: 'Lexend',
-              height: 1.57,
             ),
             children: [
               const TextSpan(

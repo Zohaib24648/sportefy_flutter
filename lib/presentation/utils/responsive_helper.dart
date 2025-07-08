@@ -10,42 +10,57 @@ class ResponsiveHelper {
     return MediaQuery.of(context).size.height;
   }
 
-  // Define breakpoints
-  static bool isMobile(BuildContext context) => getResponsiveWidth(context) < 768;
-  static bool isTablet(BuildContext context) => getResponsiveWidth(context) >= 768 && getResponsiveWidth(context) < 1024;
-  static bool isDesktop(BuildContext context) => getResponsiveWidth(context) >= 1024;
-
-  // Responsive font sizes
+  // Responsive font sizes for mobile screens
   static double getResponsiveFontSize(BuildContext context, double baseFontSize) {
     double screenWidth = getResponsiveWidth(context);
+
+    // Small phones (< 360px width)
     if (screenWidth < 360) {
       return baseFontSize * 0.85;
-    } else if (screenWidth > 768) {
-      return baseFontSize * 1.1;
     }
+    // Large phones (> 414px width - iPhone Plus sizes and above)
+    else if (screenWidth > 414) {
+      return baseFontSize * 1.05;
+    }
+    // Regular phones
     return baseFontSize;
   }
 
-  // Responsive spacing
+  // Responsive spacing for mobile screens
   static double getResponsiveSpacing(BuildContext context, double baseSpacing) {
     double screenWidth = getResponsiveWidth(context);
+
+    // Small phones
     if (screenWidth < 360) {
       return baseSpacing * 0.75;
-    } else if (screenWidth > 768) {
-      return baseSpacing * 1.2;
     }
+    // Large phones
+    else if (screenWidth > 414) {
+      return baseSpacing * 1.1;
+    }
+    // Regular phones
     return baseSpacing;
   }
 
-  // Get horizontal padding based on screen size
+  // Get horizontal padding for mobile screens
   static double getHorizontalPadding(BuildContext context) {
     double screenWidth = getResponsiveWidth(context);
-    if (isDesktop(context)) {
-      return screenWidth * 0.25; // 25% padding on desktop
-    } else if (isTablet(context)) {
-      return screenWidth * 0.15; // 15% padding on tablet
-    } else {
-      return screenWidth * 0.05; // 5% padding on mobile
+
+    // Slightly more padding for larger phones
+    if (screenWidth > 414) {
+      return 24.0;
     }
+    // Standard padding for regular phones
+    else if (screenWidth >= 360) {
+      return 16.0;
+    }
+    // Reduced padding for small phones
+    return 12.0;
   }
+
+  // Helper to check if it's a small mobile screen
+  static bool isSmallMobile(BuildContext context) => getResponsiveWidth(context) < 360;
+
+  // Helper to check if it's a large mobile screen
+  static bool isLargeMobile(BuildContext context) => getResponsiveWidth(context) > 414;
 }
