@@ -9,7 +9,6 @@ class AppStyles {
     fontSize: ResponsiveHelper.getResponsiveFontSize(context, 34),
     fontFamily: 'Lexend',
     fontWeight: FontWeight.w500,
-    height: 1.18,
   );
 
   static TextStyle bodyText(BuildContext context) => TextStyle(
@@ -17,7 +16,6 @@ class AppStyles {
     fontSize: ResponsiveHelper.getResponsiveFontSize(context, 14),
     fontFamily: 'Lexend',
     fontWeight: FontWeight.w400,
-    height: 1.57,
   );
 
   static TextStyle buttonText(BuildContext context) => TextStyle(

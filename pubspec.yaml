@@ -23,6 +23,8 @@ dependencies:
   injectable: ^2.5.0
   google_maps_flutter: ^2.12.3
   flutter_svg: ^2.2.0
+  flutter_native_splash: ^2.4.6
+  gap: ^3.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -35,4 +37,27 @@ flutter:
   assets:
     - .env
     - assets/logos/
+    - assets/images/
 
+
+  fonts:
+    - family: Lexend
+      fonts:
+        - asset: assets/fonts/Lexend-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/Lexend-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/Lexend-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Lexend-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Lexend-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Lexend-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Lexend-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Lexend-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/Lexend-Black.ttf
+          weight: 900

@@ -16,11 +16,11 @@ class ResponsiveHelper {
 
     // Small phones (< 360px width)
     if (screenWidth < 360) {
-      return baseFontSize * 0.85;
+      return baseFontSize * 0.8;
     }
     // Large phones (> 414px width - iPhone Plus sizes and above)
     else if (screenWidth > 414) {
-      return baseFontSize * 1.05;
+      return baseFontSize * 1.2;
     }
     // Regular phones
     return baseFontSize;

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:sportefy/presentation/screens/general/splash_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 import 'bloc/auth/auth_bloc.dart';
 import 'dependency_injection.dart';
 import 'presentation/screens/auth/signin_screen.dart';
 import 'presentation/screens/auth/signup_screen.dart';
-import 'presentation/screens/home/home_screen.dart';
+import 'presentation/navigation/main_navigation_wrapper.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,14 +41,12 @@ class Sportefy extends StatelessWidget {
       routes: {
         '/signin': (context) => const SignInScreen(),
         '/signup': (context) => const SignUpScreen(),
-        '/home': (context) => const HomePage(),
+        '/home': (context) => const MainNavigationWrapper(),
       },
       home: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
-          if (state is AuthInitial || state is AuthLoading) {
-            return const SplashScreen();
-          } else if (state is Authenticated) {
-            return const HomePage();
+          if (state is Authenticated) {
+            return const MainNavigationWrapper();
           } else {
             return const SignInScreen();
           }

@@ -1,5 +1,6 @@
 //lib/presentation/widgets/oauth_button.dart
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import '../constants/app_colors.dart';
 import '../utils/responsive_helper.dart';
 
@@ -20,14 +21,13 @@ class OAuthButton extends StatelessWidget {
     return Material(
       color: AppColors.oauthButtonColor,
       borderRadius: BorderRadius.circular(14),
-      elevation: 0,
       child: InkWell(
         onTap: onPressed,
         borderRadius: BorderRadius.circular(14),
         child: Container(
           padding: EdgeInsets.symmetric(
             vertical: ResponsiveHelper.getResponsiveSpacing(context, 16),
-            horizontal: ResponsiveHelper.getResponsiveSpacing(context, 8),
+            horizontal: ResponsiveHelper.getResponsiveSpacing(context, 4),
           ),
           // decoration: BoxDecoration(
           //   borderRadius: BorderRadius.circular(14),
@@ -44,9 +44,7 @@ class OAuthButton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               icon,
-              SizedBox(
-                width: ResponsiveHelper.getResponsiveSpacing(context, 8),
-              ),
+              const Gap(4),
               Text(
                 label,
                 style: TextStyle(
