@@ -45,8 +45,22 @@ class Sportefy extends StatelessWidget {
       },
       home: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
+          print('Main: Auth state changed to $state');
           if (state is Authenticated) {
             return const MainNavigationWrapper();
+          } else if (state is AuthLoading) {
+            return const Scaffold(
+              body: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(),
+                    SizedBox(height: 16),
+                    Text('Loading...'),
+                  ],
+                ),
+              ),
+            );
           } else {
             return const SignInScreen();
           }

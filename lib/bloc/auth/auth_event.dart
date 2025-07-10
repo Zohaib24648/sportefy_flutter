@@ -24,7 +24,9 @@ class OAuthSignInRequested extends AuthEvent {
   OAuthSignInRequested({required this.provider});
 }
 
-class SignOutRequested extends AuthEvent {}
+class SignOutRequested extends AuthEvent {
+  SignOutRequested();
+}
 
 class SupabaseAuthStateChanged extends AuthEvent {
   final supabase.AuthState supabaseAuthState;

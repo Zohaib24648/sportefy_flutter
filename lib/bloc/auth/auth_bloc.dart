@@ -95,12 +95,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     SignOutRequested event,
     Emitter<AuthState> emit,
   ) async {
+    print('Sign out requested');
     emit(AuthLoading());
     try {
+      print('Calling repository signOut...');
       await _authRepository.signOut();
-      emit(Unauthenticated());
+      print('Repository signOut completed');
+
+      // Let the Supabase auth state change handler manage the state
+      // The _onSupabaseAuthStateChanged will emit Unauthenticated when signedOut event is received
     } catch (e) {
+      print('Sign out error: $e');
       emit(AuthError(_getErrorMessage(e)));
+      // Emit Unauthenticated as fallback if signOut fails
+      emit(Unauthenticated());
     }
   }
 
@@ -110,6 +118,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     final authEvent = event.supabaseAuthState.event;
     final user = event.supabaseAuthState.session?.user;
+
+    // Add debug logging
+    print('Auth state changed: $authEvent, user: ${user?.email}');
 
     switch (authEvent) {
       case supabase.AuthChangeEvent.signedIn:
@@ -140,9 +151,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _startAuthSubscription() {
+    print('Starting auth state subscription...');
     _authStateSubscription = _authRepository.authStateChanges.listen((
       supabaseAuthState,
     ) {
+      print('Auth state subscription received: ${supabaseAuthState.event}');
       add(SupabaseAuthStateChanged(supabaseAuthState));
     });
   }

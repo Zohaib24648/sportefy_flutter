@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgets/bottom_navigation_bar.dart';
 import '../screens/home/home_screen.dart';
 import '../screens/search/search_screen.dart';
-import '../screens/add/add_screen.dart';
+import '../screens/qr_check_in/qr_screen_bloc.dart';
 import '../screens/profile/profile_screen.dart';
 import '../screens/history/history_screen.dart';
 
@@ -17,34 +17,51 @@ class MainNavigationWrapper extends StatefulWidget {
 
 class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
   late int _currentIndex;
+  final Map<int, Widget> _screenCache = {};
 
   @override
   void initState() {
     super.initState();
     _currentIndex = widget.initialIndex;
+    _initializeScreens();
+  }
+
+  void _initializeScreens() {
+    // Pre-build screens that should maintain state
+    _screenCache[0] = HomePage(onNavigateToTab: _onNavItemTapped);
+    _screenCache[1] = const SearchScreen();
+    _screenCache[3] = const ProfileScreen();
+    _screenCache[4] = const HistoryScreen();
+
+    // Initialize QR screen if it's the initial screen
+    if (_currentIndex == 2) {
+      _screenCache[2] = const QRScreen();
+    }
+    // Note: QR screen (index 2) is not cached and will be built/disposed dynamically
   }
 
   void _onNavItemTapped(int index) {
     setState(() {
+      final previousIndex = _currentIndex;
       _currentIndex = index;
+
+      // Handle QR screen lifecycle
+      if (previousIndex == 2 && index != 2) {
+        // Disposing QR screen when navigating away from it
+        _screenCache.remove(2);
+        print('QR Screen disposed - navigated away from scanner');
+      }
+
+      if (index == 2 && !_screenCache.containsKey(2)) {
+        // Creating new QR screen when navigating to it
+        _screenCache[2] = const QRScreen();
+        print('QR Screen created - navigated to scanner');
+      }
     });
   }
 
   Widget _getScreen(int index) {
-    switch (index) {
-      case 0:
-        return HomePage(onNavigateToTab: _onNavItemTapped);
-      case 1:
-        return const SearchScreen();
-      case 2:
-        return const AddScreen();
-      case 3:
-        return const ProfileScreen();
-      case 4:
-        return const HistoryScreen();
-      default:
-        return HomePage(onNavigateToTab: _onNavItemTapped);
-    }
+    return _screenCache[index] ?? const SizedBox.shrink();
   }
 
   @override

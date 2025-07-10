@@ -12,6 +12,7 @@ import '../../utils/responsive_helper.dart';
 import '../../widgets/custom_text_field.dart';
 import '../../widgets/oauth_button.dart';
 import '../../widgets/primary_button.dart';
+import '../../widgets/clickable_text.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -172,11 +173,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       children: [
         Expanded(
           child: OAuthButton(
-            icon: Image.asset(
-              'assets/logos/apple.png',
-              width: 24,
-              height: 24,
-            ),
+            icon: Image.asset('assets/logos/apple.png', width: 24, height: 24),
             label: AppStrings.appleId,
             onPressed: () => _handleOAuthSignIn(OAuthProvider.apple),
           ),
@@ -184,11 +181,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         SizedBox(width: ResponsiveHelper.getResponsiveSpacing(context, 10)),
         Expanded(
           child: OAuthButton(
-            icon: Image.asset(
-              'assets/logos/google.png',
-              width: 24,
-              height: 24,
-            ),
+            icon: Image.asset('assets/logos/google.png', width: 24, height: 24),
             label: AppStrings.google,
             onPressed: () => _handleOAuthSignIn(OAuthProvider.google),
           ),
@@ -208,7 +201,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ],
     );
   }
-
 
   Widget _buildFormFields(BuildContext context) {
     return Column(
@@ -298,7 +290,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Transform.scale(
-          scale:  0.9,
+          scale: 0.9,
           child: Checkbox(
             value: _agreedToTerms,
             onChanged: (value) {
@@ -319,40 +311,45 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 _agreedToTerms = !_agreedToTerms;
               });
             },
-            child: RichText(
-              text: TextSpan(
-                style: TextStyle(
-                  fontSize: ResponsiveHelper.getResponsiveFontSize(
-                    context,
-                    12,
+            child: Wrap(
+              children: [
+                Text(
+                  AppStrings.agreeToTerms,
+                  style: TextStyle(
+                    fontSize: ResponsiveHelper.getResponsiveFontSize(
+                      context,
+                      12,
+                    ),
+                    fontFamily: 'Lexend',
+                    color: AppColors.textTertiary,
+                    fontWeight: FontWeight.w400,
                   ),
-                  fontFamily: 'Lexend',
                 ),
-                children: [
-                  TextSpan(
-                    text: AppStrings.agreeToTerms,
-                    style: const TextStyle(
-                      color: AppColors.textTertiary,
-                      fontWeight: FontWeight.w400,
+                ClickableText(
+                  text: AppStrings.termsOfService,
+                  url: 'https://sportefy.com/terms',
+                  fontSize: 12,
+                  color: AppColors.primaryColor,
+                ),
+                Text(
+                  AppStrings.and,
+                  style: TextStyle(
+                    fontSize: ResponsiveHelper.getResponsiveFontSize(
+                      context,
+                      12,
                     ),
+                    fontFamily: 'Lexend',
+                    color: AppColors.textTertiary,
+                    fontWeight: FontWeight.w400,
                   ),
-                  TextSpan(
-                    text: AppStrings.termsOfService,
-                    style: AppStyles.linkText(context).copyWith(fontSize: 12),
-                  ),
-                  TextSpan(
-                    text: AppStrings.and,
-                    style: const TextStyle(
-                      color: AppColors.textTertiary,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  TextSpan(
-                    text: AppStrings.privacyPolicy,
-                    style: AppStyles.linkText(context).copyWith(fontSize: 12),
-                  ),
-                ],
-              ),
+                ),
+                ClickableText(
+                  text: AppStrings.privacyPolicy,
+                  url: 'https://sportefy.com/privacy',
+                  fontSize: 12,
+                  color: AppColors.primaryColor,
+                ),
+              ],
             ),
           ),
         ),
@@ -374,33 +371,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Widget _buildSignInLink(BuildContext context) {
     return Center(
-      child: GestureDetector(
-        onTap: () {
-          // Navigate to sign in screen
-          Navigator.of(context).pushReplacementNamed('/signin');
-        },
-        child: RichText(
-          textAlign: TextAlign.center,
-          text: TextSpan(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            AppStrings.haveAccount,
             style: TextStyle(
               fontSize: ResponsiveHelper.getResponsiveFontSize(context, 14),
               fontFamily: 'Lexend',
+              color: AppColors.textTertiary,
+              fontWeight: FontWeight.w400,
             ),
-            children: [
-              const TextSpan(
-                text: AppStrings.haveAccount,
-                style: TextStyle(
-                  color: AppColors.textTertiary,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-              TextSpan(
-                text: AppStrings.signIn,
-                style: AppStyles.linkText(context),
-              ),
-            ],
           ),
-        ),
+          ClickableText(
+            text: AppStrings.signIn,
+            routeName: '/signin',
+            color: AppColors.primaryColor,
+            fontSize: 14,
+            isBold: false,
+          ),
+        ],
       ),
     );
   }

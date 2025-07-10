@@ -85,12 +85,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         ),
         if (_errorText != null)
           Padding(
-            padding: EdgeInsets.only(
-              left: ResponsiveHelper.getResponsiveSpacing(context, 16),
-              top: ResponsiveHelper.getResponsiveSpacing(context, 4),
-              right: ResponsiveHelper.getResponsiveSpacing(context, 16),
-              bottom: ResponsiveHelper.getResponsiveSpacing(context, 8),
-            ),
+            padding: EdgeInsets.only(left: 16, top: 4, right: 16, bottom: 8),
             child: Text(
               _errorText!,
               style: TextStyle(

@@ -29,17 +29,6 @@ class OAuthButton extends StatelessWidget {
             vertical: ResponsiveHelper.getResponsiveSpacing(context, 16),
             horizontal: ResponsiveHelper.getResponsiveSpacing(context, 4),
           ),
-          // decoration: BoxDecoration(
-          //   borderRadius: BorderRadius.circular(14),
-          //   boxShadow: const [
-          //     BoxShadow(
-          //       color: AppColors.shadowColor,
-          //       blurRadius: 8,
-          //       offset: Offset(0, 2),
-          //       spreadRadius: 0,
-          //     ),
-          //   ],
-          // ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
