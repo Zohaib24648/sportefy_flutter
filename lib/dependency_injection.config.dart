@@ -14,6 +14,7 @@ import 'package:injectable/injectable.dart' as _i526;
 import 'package:sportefy/bloc/auth/auth_bloc.dart' as _i633;
 import 'package:sportefy/bloc/check_in/check_in_bloc.dart' as _i686;
 import 'package:sportefy/bloc/history/history_bloc.dart' as _i63;
+import 'package:sportefy/bloc/profile/profile_bloc.dart' as _i812;
 import 'package:sportefy/bloc/qr/qr_bloc.dart' as _i328;
 import 'package:sportefy/core/app_module.dart' as _i893;
 import 'package:sportefy/data/db/database.dart' as _i201;
@@ -21,6 +22,8 @@ import 'package:sportefy/data/repository/auth_repository.dart' as _i109;
 import 'package:sportefy/data/repository/history_repository.dart' as _i948;
 import 'package:sportefy/data/repository/i_auth_repository.dart' as _i577;
 import 'package:sportefy/data/repository/i_history_repository.dart' as _i527;
+import 'package:sportefy/data/repository/i_profile_repository.dart' as _i411;
+import 'package:sportefy/data/repository/profile_repository.dart' as _i432;
 import 'package:supabase_flutter/supabase_flutter.dart' as _i454;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -38,6 +41,10 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i948.HistoryRepository(gh<_i201.AppDatabase>()),
     );
     gh.factory<_i577.IAuthRepository>(() => _i109.AuthRepository());
+    gh.factory<_i411.IProfileRepository>(() => _i432.ProfileRepository());
+    gh.factory<_i812.ProfileBloc>(
+      () => _i812.ProfileBloc(gh<_i411.IProfileRepository>()),
+    );
     gh.factory<_i686.CheckInBloc>(
       () => _i686.CheckInBloc(gh<_i527.IHistoryRepository>()),
     );
