@@ -8,6 +8,7 @@ import '../../../dependency_injection.dart';
 import '../../constants/app_colors.dart';
 import '../../widgets/history/history_tab_bar.dart';
 import '../../widgets/history/history_tab_content.dart';
+import '../../widgets/history/history_config.dart';
 
 class HistoryScreen extends StatelessWidget {
   const HistoryScreen({super.key});
@@ -37,7 +38,8 @@ class _HistoryScreenContentState extends State<HistoryScreenContent>
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
     _tabController.addListener(_onTabChanged);
-    _loadHistory();
+    // Load initial data for the first tab
+    WidgetsBinding.instance.addPostFrameCallback((_) => _loadHistory());
   }
 
   @override
@@ -47,6 +49,11 @@ class _HistoryScreenContentState extends State<HistoryScreenContent>
     super.dispose();
   }
 
+  String? get _currentUserId {
+    final authState = context.read<AuthBloc>().state;
+    return authState is Authenticated ? authState.user.id : null;
+  }
+
   void _onTabChanged() {
     if (_tabController.indexIsChanging) {
       _loadHistory();
@@ -54,40 +61,36 @@ class _HistoryScreenContentState extends State<HistoryScreenContent>
   }
 
   void _loadHistory() {
-    final authState = context.read<AuthBloc>().state;
-    if (authState is Authenticated) {
-      final historyType = HistoryTabHelper.getHistoryTypeForTab(
-        _tabController.index,
-      );
+    final userId = _currentUserId;
+    if (userId == null) return;
 
-      if (historyType == null) {
-        // Load all history for "All" tab
-        context.read<HistoryBloc>().add(LoadAllHistory(authState.user.id));
-      } else {
-        // Load history by specific type
-        context.read<HistoryBloc>().add(
-          LoadHistoryByType(authState.user.id, historyType),
-        );
-      }
+    final historyType = HistoryTabHelper.getHistoryTypeForTab(
+      _tabController.index,
+    );
+
+    if (historyType == null) {
+      // Load all history for "All" tab
+      context.read<HistoryBloc>().add(LoadAllHistory(userId));
+    } else {
+      // Load history by specific type
+      context.read<HistoryBloc>().add(LoadHistoryByType(userId, historyType));
     }
   }
 
   void _syncHistory() {
-    final authState = context.read<AuthBloc>().state;
-    if (authState is Authenticated) {
-      context.read<HistoryBloc>().add(SyncHistory(authState.user.id));
+    final userId = _currentUserId;
+    if (userId != null) {
+      context.read<HistoryBloc>().add(SyncHistory(userId));
     }
   }
 
   void _loadSampleData() {
-    final authState = context.read<AuthBloc>().state;
-    if (authState is Authenticated) {
-      final sampleItems = HistoryExamples.createAllSampleHistory(
-        authState.user.id,
-      );
-      for (final item in sampleItems) {
-        context.read<HistoryBloc>().add(AddHistoryItem(item));
-      }
+    final userId = _currentUserId;
+    if (userId == null) return;
+
+    final sampleItems = HistoryExamples.createAllSampleHistory(userId);
+    for (final item in sampleItems) {
+      context.read<HistoryBloc>().add(AddHistoryItem(item));
     }
   }
 
@@ -132,21 +135,26 @@ class _HistoryScreenContentState extends State<HistoryScreenContent>
   }
 
   String _formatDateTime(DateTime dateTime) {
-    return '${dateTime.day}/${dateTime.month}/${dateTime.year} at ${dateTime.hour}:${dateTime.minute.toString().padLeft(2, '0')}';
+    return '${dateTime.day.toString().padLeft(2, '0')}/${dateTime.month.toString().padLeft(2, '0')}/${dateTime.year} at ${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
   }
 
   void _handleStateChanges(BuildContext context, HistoryState state) {
-    if (state is HistoryError) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(state.message), backgroundColor: Colors.red),
-      );
-    } else if (state is HistorySyncSuccess) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('History synced successfully!'),
-          backgroundColor: Colors.green,
-        ),
-      );
+    final messenger = ScaffoldMessenger.of(context);
+
+    switch (state) {
+      case HistoryError():
+        messenger.showSnackBar(
+          SnackBar(content: Text(state.message), backgroundColor: Colors.red),
+        );
+      case HistorySyncSuccess():
+        messenger.showSnackBar(
+          const SnackBar(
+            content: Text('History synced successfully!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      default:
+        break;
     }
   }
 
@@ -165,32 +173,15 @@ class _HistoryScreenContentState extends State<HistoryScreenContent>
         builder: (context, state) {
           return TabBarView(
             controller: _tabController,
-            children: [
-              HistoryTabContent(
-                tabIndex: 0,
+            children: List.generate(
+              4,
+              (index) => HistoryTabContent(
+                tabIndex: index,
                 state: state,
                 onRefresh: _loadHistory,
                 onItemTap: _onItemTap,
               ),
-              HistoryTabContent(
-                tabIndex: 1,
-                state: state,
-                onRefresh: _loadHistory,
-                onItemTap: _onItemTap,
-              ),
-              HistoryTabContent(
-                tabIndex: 2,
-                state: state,
-                onRefresh: _loadHistory,
-                onItemTap: _onItemTap,
-              ),
-              HistoryTabContent(
-                tabIndex: 3,
-                state: state,
-                onRefresh: _loadHistory,
-                onItemTap: _onItemTap,
-              ),
-            ],
+            ),
           );
         },
       ),

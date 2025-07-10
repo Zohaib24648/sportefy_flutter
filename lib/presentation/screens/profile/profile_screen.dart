@@ -32,7 +32,7 @@ class ProfileScreen extends StatelessWidget {
               return IconButton(
                 icon: const Icon(Icons.logout),
                 onPressed: () {
-                  print('Logout button pressed');
+                  // Debug: Logout button pressed
                   context.read<AuthBloc>().add(SignOutRequested());
                 },
               );

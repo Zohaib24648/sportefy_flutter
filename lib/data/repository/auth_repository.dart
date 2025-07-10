@@ -39,12 +39,12 @@ class AuthRepository implements IAuthRepository {
 
   @override
   Future<void> signOut() async {
-    print('AuthRepository: Starting sign out...');
+    // Debug: AuthRepository: Starting sign out...
     try {
       await _supabase.auth.signOut(scope: SignOutScope.global);
-      print('AuthRepository: Sign out completed successfully');
+      // Debug: AuthRepository: Sign out completed successfully
     } catch (e) {
-      print('AuthRepository: Sign out failed: $e');
+      // Debug: AuthRepository: Sign out failed: $e
       rethrow;
     }
   }

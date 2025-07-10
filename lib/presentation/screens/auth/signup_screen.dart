@@ -1,7 +1,7 @@
 //lib/presentation/screens/signup_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sportefy/presentation/widgets/constants/or-divider.dart';
+import 'package:sportefy/presentation/widgets/constants/or_divider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 import '../../../bloc/auth/auth_bloc.dart';
 import '../../../data/model/signup_request.dart';

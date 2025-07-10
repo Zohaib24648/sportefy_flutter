@@ -45,7 +45,7 @@ class Sportefy extends StatelessWidget {
       },
       home: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
-          print('Main: Auth state changed to $state');
+          // Debug: Auth state changed to $state
           if (state is Authenticated) {
             return const MainNavigationWrapper();
           } else if (state is AuthLoading) {

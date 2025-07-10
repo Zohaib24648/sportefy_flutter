@@ -49,13 +49,13 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
       if (previousIndex == 2 && index != 2) {
         // Disposing QR screen when navigating away from it
         _screenCache.remove(2);
-        print('QR Screen disposed - navigated away from scanner');
+        // Debug: QR Screen disposed - navigated away from scanner
       }
 
       if (index == 2 && !_screenCache.containsKey(2)) {
         // Creating new QR screen when navigating to it
         _screenCache[2] = const QRScreen();
-        print('QR Screen created - navigated to scanner');
+        // Debug: QR Screen created - navigated to scanner
       }
     });
   }

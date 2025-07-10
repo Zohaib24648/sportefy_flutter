@@ -72,7 +72,7 @@ class CheckInBloc extends Bloc<CheckInEvent, CheckInState> {
         await _historyRepository.addHistoryItem(failedItem);
       } catch (dbError) {
         // If we can't save to database, log but don't fail the main operation
-        print('Failed to save error to database: $dbError');
+        // Debug: Failed to save error to database: $dbError
       }
 
       emit(CheckInError('Failed to check in: ${e.toString()}'));

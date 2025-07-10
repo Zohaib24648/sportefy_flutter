@@ -40,7 +40,7 @@ class HomePage extends StatelessWidget {
                         gradient: LinearGradient(
                           colors: [
                             AppColors.primaryColor,
-                            AppColors.primaryColor.withOpacity(0.8),
+                            AppColors.primaryColor.withValues(alpha: 0.8),
                           ],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,

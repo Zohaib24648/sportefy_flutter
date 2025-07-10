@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../bloc/history/history_bloc.dart';
 import '../../../data/model/history_item.dart';
 import 'history_list_view.dart';
-import 'history_tab_bar.dart';
+import 'history_config.dart';
 
 class HistoryTabContent extends StatelessWidget {
   final int tabIndex;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../data/model/history_item.dart';
 import '../../constants/app_colors.dart';
+import 'history_config.dart';
 
 class HistoryTabBar extends StatelessWidget implements PreferredSizeWidget {
   final TabController controller;
@@ -62,77 +62,11 @@ class HistoryTabBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   IconData _getTabIcon(int index) {
-    switch (index) {
-      case 0:
-        return Icons.qr_code_scanner;
-      case 1:
-        return Icons.event_seat;
-      case 2:
-        return Icons.payment;
-      case 3:
-        return Icons.history;
-      default:
-        return Icons.history;
-    }
+    return HistoryTabHelper.tabIcons[index % HistoryTabHelper.tabIcons.length];
   }
 
   String _getTabTitle(int index) {
-    switch (index) {
-      case 0:
-        return 'Check-ins';
-      case 1:
-        return 'Bookings';
-      case 2:
-        return 'Payments';
-      case 3:
-        return 'All';
-      default:
-        return 'All';
-    }
-  }
-}
-
-class HistoryTabHelper {
-  static HistoryType? getHistoryTypeForTab(int index) {
-    switch (index) {
-      case 0:
-        return HistoryType.checkIn;
-      case 1:
-        return HistoryType.booking;
-      case 2:
-        return HistoryType.payment;
-      case 3:
-        return null; // All types
-      default:
-        return null;
-    }
-  }
-
-  static IconData getIconForType(HistoryType? type) {
-    if (type == null) return Icons.history;
-
-    switch (type) {
-      case HistoryType.checkIn:
-        return Icons.qr_code_scanner;
-      case HistoryType.booking:
-        return Icons.event_seat;
-      case HistoryType.payment:
-        return Icons.payment;
-    }
-  }
-
-  static String getEmptyMessageForTab(int index) {
-    switch (index) {
-      case 0:
-        return 'Start scanning QR codes to build your check-in history!';
-      case 1:
-        return 'Book your first event to see your booking history!';
-      case 2:
-        return 'Make your first payment to see your payment history!';
-      case 3:
-        return 'No activity yet. Start using the app to build your history!';
-      default:
-        return 'No activity yet. Start using the app to build your history!';
-    }
+    return HistoryTabHelper.tabTitles[index %
+        HistoryTabHelper.tabTitles.length];
   }
 }
