@@ -95,17 +95,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     SignOutRequested event,
     Emitter<AuthState> emit,
   ) async {
-    // Debug: Sign out requested
+    print('AuthBloc: Sign out requested');
     emit(AuthLoading());
     try {
-      // Debug: Calling repository signOut...
+      print('AuthBloc: Calling repository signOut...');
       await _authRepository.signOut();
-      // Debug: Repository signOut completed
+      print('AuthBloc: Repository signOut completed');
 
       // Let the Supabase auth state change handler manage the state
       // The _onSupabaseAuthStateChanged will emit Unauthenticated when signedOut event is received
     } catch (e) {
-      // Debug: Sign out error: $e
+      print('AuthBloc: Sign out error: $e');
       emit(AuthError(_getErrorMessage(e)));
       // Emit Unauthenticated as fallback if signOut fails
       emit(Unauthenticated());
@@ -119,7 +119,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final authEvent = event.supabaseAuthState.event;
     final user = event.supabaseAuthState.session?.user;
 
-    // Debug: Auth state changed: $authEvent, user: ${user?.email}
+    print('AuthBloc: Auth state changed: $authEvent, user: ${user?.email}');
 
     switch (authEvent) {
       case supabase.AuthChangeEvent.signedIn:
@@ -128,6 +128,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         }
         break;
       case supabase.AuthChangeEvent.signedOut:
+        print('AuthBloc: Emitting Unauthenticated state');
         emit(Unauthenticated());
         break;
       case supabase.AuthChangeEvent.tokenRefreshed:

@@ -1,12 +1,114 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../bloc/auth/auth_bloc.dart';
 import '../../constants/app_colors.dart';
+import '../../widgets/homepage_tile.dart';
+import '../../widgets/search_bar.dart';
+import '../../widgets/home_page_chip.dart';
 
 class HomePage extends StatelessWidget {
   final Function(int)? onNavigateToTab;
 
   const HomePage({super.key, this.onNavigateToTab});
+
+  List<Map<String, dynamic>> _getChipData() {
+    return [
+      {
+        'title': 'Football',
+        'icon': Icons.sports_soccer,
+        'onTap': () {
+          debugPrint('Football chip tapped');
+          onNavigateToTab?.call(1); // Navigate to search with football filter
+        },
+      },
+      {
+        'title': 'Basketball',
+        'icon': Icons.sports_basketball,
+        'onTap': () {
+          debugPrint('Basketball chip tapped');
+          onNavigateToTab?.call(1);
+        },
+      },
+      {
+        'title': 'Tennis',
+        'icon': Icons.sports_tennis,
+        'onTap': () {
+          debugPrint('Tennis chip tapped');
+          onNavigateToTab?.call(1);
+        },
+      },
+      {
+        'title': 'Swimming',
+        'icon': Icons.pool,
+        'onTap': () {
+          debugPrint('Swimming chip tapped');
+          onNavigateToTab?.call(1);
+        },
+      },
+      {
+        'title': 'Running',
+        'icon': Icons.directions_run,
+        'onTap': () {
+          debugPrint('Running chip tapped');
+          onNavigateToTab?.call(1);
+        },
+      },
+      {
+        'title': 'Gym',
+        'icon': Icons.fitness_center,
+        'onTap': () {
+          debugPrint('Gym chip tapped');
+          onNavigateToTab?.call(1);
+        },
+      },
+    ];
+  }
+
+  List<Map<String, dynamic>> _getTileData() {
+    return [
+      {
+        'subtitle': 'Book Play. Win!',
+        'title': 'Customize Your Own Event',
+        'buttonText': 'Book Now',
+        'backgroundColor': const Color(0xFFFFD0BA),
+        'onTap': () {
+          debugPrint('Navigating to Create Event tab (index 2)');
+          onNavigateToTab?.call(2); // Navigate to QR/create tab
+        },
+      },
+      {
+        'subtitle': 'Find & Join',
+        'title': 'Discover Sports Events',
+        'buttonText': 'Explore',
+        'backgroundColor': const Color(0xFFB8E6B8),
+        'onTap': () {
+          debugPrint('Navigating to Search tab (index 1)');
+          onNavigateToTab?.call(1); // Navigate to search tab
+        },
+      },
+      {
+        'subtitle': 'Connect & Play',
+        'title': 'Meet Fellow Athletes',
+        'buttonText': 'Connect',
+        'backgroundColor': const Color(0xFFB8D4FF),
+        'onTap': () {
+          debugPrint('Navigating to Profile tab (index 3)');
+          onNavigateToTab?.call(3); // Navigate to profile tab
+        },
+      },
+      {
+        'subtitle': 'Track & Improve',
+        'title': 'Your Activity History',
+        'buttonText': 'View History',
+        'backgroundColor': const Color(0xFFFFB8E6),
+        'onTap': () {
+          debugPrint('Navigating to History tab (index 4)');
+          onNavigateToTab?.call(4); // Navigate to history tab
+        },
+      },
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,140 +128,105 @@ class HomePage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Welcome section
-                  Card(
-                    elevation: 4,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                  // Search Bar
+                  EnhancedSearchBar(
+                    hintText: 'Search for sports events...',
+                    onTap: () {
+                      // Navigate to search tab when search bar is tapped
+                      HapticFeedback.lightImpact();
+                      debugPrint(
+                        'Search bar tapped - navigating to search tab',
+                      );
+                      onNavigateToTab?.call(1);
+                    },
+                    enabled: false, // Make it non-editable so it just navigates
+                    backgroundColor: Colors.white,
+                    borderColor: Colors.transparent,
+                    showShadow: true,
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: AppColors.primaryColor,
+                      size: 24,
                     ),
-                    child: Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        gradient: LinearGradient(
-                          colors: [
-                            AppColors.primaryColor,
-                            AppColors.primaryColor.withValues(alpha: 0.8),
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Welcome to Sportefy!',
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
+                    suffixIcon: Icon(
+                      Icons.filter_list,
+                      color: Colors.grey[600],
+                      size: 24,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+
+                  // Sports Categories Chips
+                  SizedBox(
+                    height: 55,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: _getChipData().length,
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      itemBuilder: (context, index) {
+                        final chipData = _getChipData()[index];
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 12),
+                          child: HomepageChip(
+                            title: chipData['title']!,
+                            icon: chipData['icon'] as IconData,
+                            onTap: () {
+                              HapticFeedback.lightImpact();
+                              chipData['onTap']?.call();
+                            },
                           ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'Hello, ${state.user.email?.split('@')[0] ?? 'User'}!',
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Colors.white70,
-                            ),
-                          ),
-                        ],
-                      ),
+                        );
+                      },
                     ),
                   ),
                   const SizedBox(height: 24),
 
-                  // Quick Actions section
-                  const Text(
-                    'Quick Actions',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 16),
-
+                  // Featured Events section
                   Row(
                     children: [
-                      Expanded(
-                        child: _buildQuickActionCard(
-                          icon: Icons.search,
-                          title: 'Find Sports',
-                          subtitle: 'Discover activities',
-                          onTap: () {
-                            onNavigateToTab?.call(1); // Navigate to search tab
-                          },
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: _buildQuickActionCard(
-                          icon: Icons.add_circle,
-                          title: 'Create Event',
-                          subtitle: 'Start something new',
-                          onTap: () {
-                            onNavigateToTab?.call(2); // Navigate to add tab
-                          },
+                      Icon(Icons.star, color: AppColors.primaryColor, size: 24),
+                      const SizedBox(width: 8),
+                      const Text(
+                        'Featured Events',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 16),
-
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _buildQuickActionCard(
-                          icon: Icons.people,
-                          title: 'My Profile',
-                          subtitle: 'View your info',
-                          onTap: () {
-                            onNavigateToTab?.call(3); // Navigate to profile tab
-                          },
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: _buildQuickActionCard(
-                          icon: Icons.history,
-                          title: 'Activity Log',
-                          subtitle: 'Check your history',
-                          onTap: () {
-                            onNavigateToTab?.call(4); // Navigate to history tab
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 24),
-
-                  // Stats section
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Your Stats',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
+                  Expanded(
+                    flex: 1,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: _getTileData().length,
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      itemBuilder: (context, index) {
+                        final tileData = _getTileData()[index];
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 16),
+                          child: SizedBox(
+                            width: 280,
+                            height: 160,
+                            child: HomepageTile(
+                              subtitle: tileData['subtitle']!,
+                              title: tileData['title']!,
+                              buttonText: tileData['buttonText']!,
+                              backgroundColor:
+                                  tileData['backgroundColor'] as Color,
+                              onTap: () {
+                                // Add haptic feedback for better UX
+                                HapticFeedback.lightImpact();
+                                tileData['onTap']?.call();
+                              },
                             ),
                           ),
-                          const SizedBox(height: 12),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              _buildStatItem('Events', '0'),
-                              _buildStatItem('Friends', '0'),
-                              _buildStatItem('Activities', '0'),
-                            ],
-                          ),
-                        ],
-                      ),
+                        );
+                      },
                     ),
                   ),
+                  const Expanded(flex: 2, child: SizedBox()),
                 ],
               ),
             );
@@ -167,60 +234,6 @@ class HomePage extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         },
       ),
-    );
-  }
-
-  Widget _buildQuickActionCard({
-    required IconData icon,
-    required String title,
-    required String subtitle,
-    required VoidCallback onTap,
-  }) {
-    return Card(
-      elevation: 2,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(8),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              Icon(icon, size: 32, color: AppColors.primaryColor),
-              const SizedBox(height: 8),
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 4),
-              Text(
-                subtitle,
-                style: const TextStyle(fontSize: 12, color: Colors.grey),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildStatItem(String label, String value) {
-    return Column(
-      children: [
-        Text(
-          value,
-          style: const TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: AppColors.primaryColor,
-          ),
-        ),
-        Text(label, style: const TextStyle(fontSize: 14, color: Colors.grey)),
-      ],
     );
   }
 }

@@ -1,39 +1,33 @@
-//lib/presentation/widgets/custom_text_field.dart
+//lib/presentation/widgets/custom_dropdown_field.dart
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_styles.dart';
 import '../utils/responsive_helper.dart';
 
-class CustomTextField extends StatefulWidget {
-  final TextEditingController controller;
+class CustomDropdownField<T> extends StatefulWidget {
+  final T? value;
   final String hintText;
-  final bool obscureText;
-  final TextInputType keyboardType;
-  final Widget? suffixIcon;
-  final Widget? prefixIcon;
-  final String? Function(String?)? validator;
-  final int? maxLines;
+  final List<DropdownMenuItem<T>> items;
+  final void Function(T?)? onChanged;
+  final String? Function(T?)? validator;
 
-  const CustomTextField({
+  const CustomDropdownField({
     super.key,
-    required this.controller,
+    this.value,
     required this.hintText,
-    this.obscureText = false,
-    this.keyboardType = TextInputType.text,
-    this.suffixIcon,
-    this.prefixIcon,
+    required this.items,
+    this.onChanged,
     this.validator,
-    this.maxLines = 1,
   });
 
   @override
-  State<CustomTextField> createState() => _CustomTextFieldState();
+  State<CustomDropdownField<T>> createState() => _CustomDropdownFieldState<T>();
 }
 
-class _CustomTextFieldState extends State<CustomTextField> {
+class _CustomDropdownFieldState<T> extends State<CustomDropdownField<T>> {
   String? _errorText;
 
-  void _validateInput(String? value) {
+  void _validateInput(T? value) {
     if (widget.validator != null) {
       setState(() {
         _errorText = widget.validator!(value);
@@ -63,13 +57,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
               ),
             ],
           ),
-          child: TextField(
-            controller: widget.controller,
-            obscureText: widget.obscureText,
-            keyboardType: widget.keyboardType,
+          child: DropdownButtonFormField<T>(
+            value: widget.value,
+            items: widget.items,
+            onChanged: (value) {
+              _validateInput(value);
+              widget.onChanged?.call(value);
+            },
             style: AppStyles.textFieldStyle(context),
-            onChanged: _validateInput,
-            maxLines: widget.maxLines,
             decoration: InputDecoration(
               hintText: widget.hintText,
               hintStyle: AppStyles.hintTextStyle(context),
@@ -81,17 +76,22 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 horizontal: ResponsiveHelper.getResponsiveSpacing(context, 24),
                 vertical: ResponsiveHelper.getResponsiveSpacing(context, 18),
               ),
-              suffixIcon: widget.suffixIcon,
-              prefixIcon: widget.prefixIcon,
             ),
+            dropdownColor: AppColors.cardColor,
+            icon: const Icon(Icons.keyboard_arrow_down, color: Colors.grey),
           ),
         ),
         if (_errorText != null)
           Padding(
-            padding: EdgeInsets.only(left: 16, top: 4, right: 16, bottom: 8),
+            padding: const EdgeInsets.only(
+              left: 16,
+              top: 4,
+              right: 16,
+              bottom: 8,
+            ),
             child: Text(
               _errorText!,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.red,
                 fontSize: 12,
                 fontWeight: FontWeight.w400,

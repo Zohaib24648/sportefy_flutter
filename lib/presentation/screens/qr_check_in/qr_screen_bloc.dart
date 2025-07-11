@@ -10,6 +10,7 @@ import '../../../dependency_injection.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_styles.dart';
 import '../../utils/responsive_helper.dart';
+import '../../navigation/main_navigation_wrapper.dart';
 
 class QRScreen extends StatelessWidget {
   const QRScreen({super.key});
@@ -199,7 +200,8 @@ class QRScreenContent extends StatelessWidget {
                 builder: (buttonContext) => ElevatedButton(
                   onPressed: () {
                     Navigator.of(buttonContext).pop();
-                    Navigator.of(context).pop(data); // Return scanned data
+                    // Navigate to history screen to show the latest check-in
+                    _navigateToHistory(context);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primaryColor,
@@ -215,6 +217,30 @@ class QRScreenContent extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _navigateToHistory(BuildContext context) {
+    // Get the current user ID for refreshing history
+    final authState = context.read<AuthBloc>().state;
+    final userId = authState is Authenticated ? authState.user.id : null;
+
+    // Navigate back to the main navigation wrapper and switch to history tab (index 4)
+    Navigator.of(context).popUntil((route) => route.isFirst);
+
+    // Replace current route with MainNavigationWrapper showing history tab
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => const MainNavigationWrapper(initialIndex: 4),
+      ),
+    );
+
+    // Add a post-frame callback to refresh the history after navigation
+    if (userId != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        // The history will be automatically loaded by the HistoryScreen when it's initialized
+        // with the check-in tab selected (index 0)
+      });
+    }
   }
 
   @override

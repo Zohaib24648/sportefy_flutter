@@ -5,6 +5,7 @@ import '../../../bloc/profile/profile_bloc.dart';
 import '../../../dependency_injection.dart';
 import '../../constants/app_colors.dart';
 import '../../widgets/simple_profile_image.dart';
+import '../../widgets/confirmation_dialog.dart';
 import 'profile_edit_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -87,9 +88,21 @@ class _ProfileScreenContentState extends State<ProfileScreenContent> {
               }
               return IconButton(
                 icon: const Icon(Icons.logout),
-                onPressed: () {
-                  // Debug: Logout button pressed
-                  context.read<AuthBloc>().add(SignOutRequested());
+                onPressed: () async {
+                  final confirmed = await ConfirmationDialog.show(
+                    context: context,
+                    title: 'Sign Out',
+                    message:
+                        'Are you sure you want to sign out of your account?',
+                    confirmText: 'Sign Out',
+                    cancelText: 'Cancel',
+                    icon: Icons.logout,
+                    iconColor: Colors.red,
+                  );
+
+                  if (confirmed == true && context.mounted) {
+                    context.read<AuthBloc>().add(SignOutRequested());
+                  }
                 },
               );
             },

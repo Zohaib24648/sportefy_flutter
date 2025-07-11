@@ -8,6 +8,7 @@ import '../../../dependency_injection.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_styles.dart';
 import '../../widgets/custom_text_field.dart';
+import '../../widgets/custom_dropdown_field.dart';
 import '../../widgets/primary_button.dart';
 import '../../utils/responsive_helper.dart';
 
@@ -285,19 +286,9 @@ class _ProfileEditScreenContentState extends State<ProfileEditScreenContent> {
                       keyboardType: TextInputType.phone,
                     ),
 
-                    // Gender Dropdown
-                    DropdownButtonFormField<String>(
+                    CustomDropdownField<String>(
                       value: _selectedGender,
-                      decoration: InputDecoration(
-                        hintText: 'Gender',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 12,
-                        ),
-                      ),
+                      hintText: 'Gender',
                       items: const [
                         DropdownMenuItem(value: 'male', child: Text('Male')),
                         DropdownMenuItem(
@@ -312,8 +303,6 @@ class _ProfileEditScreenContentState extends State<ProfileEditScreenContent> {
                         });
                       },
                     ),
-
-                    const SizedBox(height: 16),
 
                     CustomTextField(
                       controller: _ageController,
@@ -338,50 +327,11 @@ class _ProfileEditScreenContentState extends State<ProfileEditScreenContent> {
                     ),
                     const SizedBox(height: 16),
 
-                    // Address field with multiple lines
-                    Container(
-                      margin: EdgeInsets.symmetric(
-                        vertical: ResponsiveHelper.getResponsiveSpacing(
-                          context,
-                          4,
-                        ),
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColors.cardColor,
-                        borderRadius: BorderRadius.circular(14),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: AppColors.shadowColor,
-                            blurRadius: 8,
-                            offset: Offset(0, 2),
-                            spreadRadius: 0,
-                          ),
-                        ],
-                      ),
-                      child: TextField(
-                        controller: _addressController,
-                        keyboardType: TextInputType.streetAddress,
-                        style: AppStyles.textFieldStyle(context),
-                        maxLines: 2,
-                        decoration: InputDecoration(
-                          hintText: 'Address',
-                          hintStyle: AppStyles.hintTextStyle(context),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(14),
-                            borderSide: BorderSide.none,
-                          ),
-                          contentPadding: EdgeInsets.symmetric(
-                            horizontal: ResponsiveHelper.getResponsiveSpacing(
-                              context,
-                              24,
-                            ),
-                            vertical: ResponsiveHelper.getResponsiveSpacing(
-                              context,
-                              18,
-                            ),
-                          ),
-                        ),
-                      ),
+                    CustomTextField(
+                      controller: _addressController,
+                      hintText: 'Address',
+                      keyboardType: TextInputType.streetAddress,
+                      maxLines: 2,
                     ),
 
                     CustomTextField(
