@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:sportefy/presentation/widgets/home_page_grid_tile.dart';
 import '../../../bloc/auth/auth_bloc.dart';
 import '../../constants/app_colors.dart';
 import '../../widgets/homepage_tile.dart';
@@ -12,11 +15,76 @@ class HomePage extends StatelessWidget {
 
   const HomePage({super.key, this.onNavigateToTab});
 
+  List<Map<String, dynamic>> _getDummyVenues() {
+    return [
+      {
+        'name': 'Red Meadows Sports Complex',
+        'imageUrl':
+            'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400',
+        'sports': ['Football', 'Cricket'],
+        'rating': 4.0,
+        'reviewCount': 175,
+        'distance': '1.8 km',
+        'price': '\$25/hr',
+      },
+      {
+        'name': 'Blue Court Tennis Club',
+        'imageUrl':
+            'https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=400',
+        'sports': ['Tennis', 'Badminton'],
+        'rating': 4.5,
+        'reviewCount': 89,
+        'distance': '2.3 km',
+        'price': '\$30/hr',
+      },
+      {
+        'name': 'Green Valley Swimming Pool',
+        'imageUrl':
+            'https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=400',
+        'sports': ['Swimming', 'Water Polo'],
+        'rating': 4.2,
+        'reviewCount': 234,
+        'distance': '0.9 km',
+        'price': '\$15/hr',
+      },
+      {
+        'name': 'Urban Fitness Center',
+        'imageUrl':
+            'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400',
+        'sports': ['Gym', 'CrossFit'],
+        'rating': 4.7,
+        'reviewCount': 456,
+        'distance': '1.2 km',
+        'price': '\$20/hr',
+      },
+      {
+        'name': 'Mountain Trail Basketball',
+        'imageUrl':
+            'https://images.unsplash.com/photo-1546519638-68e109498ffc?w=400',
+        'sports': ['Basketball', 'Volleyball'],
+        'rating': 3.8,
+        'reviewCount': 67,
+        'distance': '3.1 km',
+        'price': '\$18/hr',
+      },
+      {
+        'name': 'Riverside Running Track',
+        'imageUrl':
+            'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400',
+        'sports': ['Running', 'Athletics'],
+        'rating': 4.3,
+        'reviewCount': 123,
+        'distance': '1.5 km',
+        'price': 'Free',
+      },
+    ];
+  }
+
   List<Map<String, dynamic>> _getChipData() {
     return [
       {
         'title': 'Football',
-        'icon': Icons.sports_soccer,
+        'icon': 'assets/icons/football.png',
         'onTap': () {
           debugPrint('Football chip tapped');
           onNavigateToTab?.call(1); // Navigate to search with football filter
@@ -24,41 +92,17 @@ class HomePage extends StatelessWidget {
       },
       {
         'title': 'Basketball',
-        'icon': Icons.sports_basketball,
+        'icon': 'assets/icons/basketball.png',
         'onTap': () {
           debugPrint('Basketball chip tapped');
           onNavigateToTab?.call(1);
         },
       },
       {
-        'title': 'Tennis',
-        'icon': Icons.sports_tennis,
+        'title': 'Cricket',
+        'icon': 'assets/icons/cricket_ball.png',
         'onTap': () {
-          debugPrint('Tennis chip tapped');
-          onNavigateToTab?.call(1);
-        },
-      },
-      {
-        'title': 'Swimming',
-        'icon': Icons.pool,
-        'onTap': () {
-          debugPrint('Swimming chip tapped');
-          onNavigateToTab?.call(1);
-        },
-      },
-      {
-        'title': 'Running',
-        'icon': Icons.directions_run,
-        'onTap': () {
-          debugPrint('Running chip tapped');
-          onNavigateToTab?.call(1);
-        },
-      },
-      {
-        'title': 'Gym',
-        'icon': Icons.fitness_center,
-        'onTap': () {
-          debugPrint('Gym chip tapped');
+          debugPrint('Cricket chip tapped');
           onNavigateToTab?.call(1);
         },
       },
@@ -123,7 +167,7 @@ class HomePage extends StatelessWidget {
       body: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
           if (state is Authenticated) {
-            return Padding(
+            return SingleChildScrollView(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -156,59 +200,28 @@ class HomePage extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
 
-                  // Sports Categories Chips
-                  SizedBox(
-                    height: 55,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: _getChipData().length,
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      itemBuilder: (context, index) {
-                        final chipData = _getChipData()[index];
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 12),
-                          child: HomepageChip(
-                            title: chipData['title']!,
-                            icon: chipData['icon'] as IconData,
-                            onTap: () {
-                              HapticFeedback.lightImpact();
-                              chipData['onTap']?.call();
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-
-                  // Featured Events section
-                  Row(
-                    children: [
-                      Icon(Icons.star, color: AppColors.primaryColor, size: 24),
-                      const SizedBox(width: 8),
-                      const Text(
-                        'Featured Events',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
+                  // Featured Events Carousel
+                  CarouselSlider(
+                    options: CarouselOptions(
+                      height: 160,
+                      autoPlay: true,
+                      autoPlayInterval: const Duration(seconds: 4),
+                      autoPlayAnimationDuration: const Duration(
+                        milliseconds: 400,
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Expanded(
-                    flex: 1,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: _getTileData().length,
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      itemBuilder: (context, index) {
-                        final tileData = _getTileData()[index];
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 16),
-                          child: SizedBox(
-                            width: 280,
-                            height: 160,
+                      autoPlayCurve: Curves.fastOutSlowIn,
+                      enlargeCenterPage: true,
+                      enlargeFactor: 0.25,
+                      viewportFraction: 0.8,
+                      aspectRatio: 16 / 9,
+                      initialPage: 0,
+                    ),
+                    items: _getTileData().map((tileData) {
+                      return Builder(
+                        builder: (BuildContext context) {
+                          return Container(
+                            width: MediaQuery.of(context).size.width,
+                            margin: const EdgeInsets.symmetric(horizontal: 5.0),
                             child: HomepageTile(
                               subtitle: tileData['subtitle']!,
                               title: tileData['title']!,
@@ -221,12 +234,80 @@ class HomePage extends StatelessWidget {
                                 tileData['onTap']?.call();
                               },
                             ),
+                          );
+                        },
+                      );
+                    }).toList(),
+                  ),
+                  const Gap(20),
+
+                  // Sports Category Chips - Fixed Height
+                  SizedBox(
+                    height: 40,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: _getChipData().length,
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      itemBuilder: (context, index) {
+                        final chipData = _getChipData()[index];
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 12),
+                          child: HomepageChip(
+                            title: chipData['title']!,
+                            iconAsset: chipData['icon'] as String,
+                            onTap: () {
+                              HapticFeedback.lightImpact();
+                              chipData['onTap']?.call();
+                            },
                           ),
                         );
                       },
                     ),
                   ),
-                  const Expanded(flex: 2, child: SizedBox()),
+                  const SizedBox(height: 24),
+
+                  // Section Title
+                  const Row(
+                    children: [
+                      Icon(Icons.location_on, color: Colors.grey, size: 20),
+                      SizedBox(width: 8),
+                      Text(
+                        'Nearby Venues',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+
+                  // Venues Grid - Shrink Wrap to avoid scrolling conflicts
+                  GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 12.0,
+                          mainAxisSpacing: 12.0,
+                          childAspectRatio: 0.8,
+                        ),
+                    itemCount: _getDummyVenues().length,
+                    itemBuilder: (context, index) {
+                      final venueData = _getDummyVenues()[index];
+                      final venue = Venue.fromMap(venueData);
+                      return VenueGridTile(
+                        venue: venue,
+                        onTap: () {
+                          HapticFeedback.lightImpact();
+                          debugPrint('Venue tapped: ${venue.name}');
+                          onNavigateToTab?.call(1);
+                        },
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 20), // Bottom padding
                 ],
               ),
             );

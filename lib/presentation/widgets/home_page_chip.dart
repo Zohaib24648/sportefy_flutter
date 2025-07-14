@@ -4,20 +4,20 @@ class HomepageChip extends StatelessWidget {
   const HomepageChip({
     Key? key,
     required this.title,
-    this.imageUrl,
     this.icon,
+    this.iconAsset,
     this.onTap,
     this.backgroundColor = Colors.white,
     this.textColor = const Color(0xFF272727),
-    this.width, // if null → auto
-    this.height, // if null → content-based
-    this.horizontalPadding = 5,
+    this.width,
+    this.height,
+    this.horizontalPadding = 10,
     this.verticalPadding = 0,
   }) : super(key: key);
 
   final String title;
-  final String? imageUrl;
   final IconData? icon;
+  final String? iconAsset;
   final VoidCallback? onTap;
   final Color backgroundColor;
   final Color textColor;
@@ -42,11 +42,24 @@ class HomepageChip extends StatelessWidget {
           borderRadius: BorderRadius.circular(15), // big pill
         ),
         child: Row(
-          mainAxisSize: MainAxisSize.min, // 👈  shrink-wrap
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            _Avatar(imageUrl: imageUrl, icon: icon),
-            const SizedBox(width: 6),
+            if (icon != null || iconAsset != null) ...[
+              SizedBox(
+                width: 20,
+                height: 20,
+                child: iconAsset != null
+                    ? Image.asset(
+                        iconAsset!,
+                        width: 20,
+                        height: 20,
+                        fit: BoxFit.contain,
+                      )
+                    : Icon(icon!, size: 20, color: textColor),
+              ),
+              const SizedBox(width: 6),
+            ],
             Text(
               title,
               style: TextStyle(
@@ -62,37 +75,4 @@ class HomepageChip extends StatelessWidget {
       ),
     );
   }
-}
-
-/// Wrapped into its own widget just to keep build() tidy.
-class _Avatar extends StatelessWidget {
-  const _Avatar({this.imageUrl, this.icon});
-
-  final String? imageUrl;
-  final IconData? icon;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 26,
-      height: 26,
-      decoration: BoxDecoration(
-        color: Colors.grey[100],
-        borderRadius: BorderRadius.circular(13),
-      ),
-      child: imageUrl != null
-          ? ClipRRect(
-              borderRadius: BorderRadius.circular(13),
-              child: Image.network(
-                imageUrl!,
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => _fallbackIcon,
-              ),
-            )
-          : _fallbackIcon,
-    );
-  }
-
-  Widget get _fallbackIcon =>
-      Icon(icon ?? Icons.sports, size: 16, color: Colors.grey[600]);
 }

@@ -7,14 +7,14 @@ class HomepageTile extends StatelessWidget {
   static const _kBaseSize = Size(364, 158);
 
   const HomepageTile({
-    Key? key,
+    super.key,
     required this.subtitle,
     required this.title,
     required this.buttonText,
     this.backgroundColor = const Color(0xFFFFD0BA),
     this.onTap,
     this.size,
-  }) : super(key: key);
+  });
 
   final String subtitle;
   final String title;
@@ -22,13 +22,10 @@ class HomepageTile extends StatelessWidget {
   final Color backgroundColor;
   final VoidCallback? onTap;
 
-  /// If provided, the tile tries to fill this exact size.
-  /// Otherwise it stretches to max width & keeps the aspect ratio.
   final Size? size;
 
   @override
   Widget build(BuildContext context) {
-    // “Stretch-to-fit” behaviour, but keep the original aspect ratio.
     return LayoutBuilder(
       builder: (context, constraints) {
         final target =
@@ -38,10 +35,8 @@ class HomepageTile extends StatelessWidget {
               constraints.maxWidth * _kBaseSize.height / _kBaseSize.width,
             );
 
-        // scale-factor vs. the original Figma artboard
         final scale = target.width / _kBaseSize.width;
 
-        // Handy helpers so the code below stays readable
         double s(double value) => value * scale;
 
         return Container(
@@ -58,7 +53,7 @@ class HomepageTile extends StatelessWidget {
               Text(
                 subtitle,
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: Colors.white.withOpacity(.67),
+                  color: Colors.white.withValues(alpha: .67),
                   fontSize: s(12),
                   fontWeight: FontWeight.w600,
                   letterSpacing: -0.12 * scale,

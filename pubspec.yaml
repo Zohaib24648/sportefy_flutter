@@ -28,6 +28,7 @@ dependencies:
   mobile_scanner: ^7.0.1
   url_launcher: ^6.3.1
   crypto: ^3.0.5
+  carousel_slider: ^5.1.1
 
 
 dev_dependencies:
@@ -43,6 +44,7 @@ flutter:
     - .env
     - assets/logos/
     - assets/images/
+    - assets/icons/
 
 
   fonts:
