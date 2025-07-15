@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bloc/auth/auth_bloc.dart';
+import '../../bloc/connectivity/connectivity_bloc.dart';
+import '../../bloc/connectivity/connectivity_event.dart';
+import '../../dependency_injection.dart';
 import '../widgets/bottom_navigation_bar.dart';
+import '../widgets/connectivity_widgets.dart';
 import '../screens/home/home_screen.dart';
 import '../screens/search/search_screen.dart';
 import '../screens/qr_check_in/qr_screen_bloc.dart';
@@ -68,23 +72,29 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) {
-        if (state is Unauthenticated) {
-          // Navigate to signin screen when user is logged out
-          Navigator.of(
-            context,
-          ).pushNamedAndRemoveUntil('/signin', (route) => false);
-        }
-      },
-      child: Scaffold(
-        body: IndexedStack(
-          index: _currentIndex,
-          children: List.generate(5, (index) => _getScreen(index)),
-        ),
-        bottomNavigationBar: CustomBottomNavBar(
-          currentIndex: _currentIndex,
-          onTap: _onNavItemTapped,
+    return BlocProvider(
+      create: (context) =>
+          getIt<ConnectivityBloc>()..add(ConnectivityInitialized()),
+      child: BlocListener<AuthBloc, AuthState>(
+        listener: (context, state) {
+          if (state is Unauthenticated) {
+            // Navigate to signin screen when user is logged out
+            Navigator.of(
+              context,
+            ).pushNamedAndRemoveUntil('/signin', (route) => false);
+          }
+        },
+        child: ConnectivityBanner(
+          child: Scaffold(
+            body: IndexedStack(
+              index: _currentIndex,
+              children: List.generate(5, (index) => _getScreen(index)),
+            ),
+            bottomNavigationBar: CustomBottomNavBar(
+              currentIndex: _currentIndex,
+              onTap: _onNavItemTapped,
+            ),
+          ),
         ),
       ),
     );
