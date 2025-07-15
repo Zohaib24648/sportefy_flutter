@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class HomepageChip extends StatelessWidget {
   const HomepageChip({
-    Key? key,
+    super.key,
     required this.title,
     this.icon,
     this.iconAsset,
@@ -13,7 +13,7 @@ class HomepageChip extends StatelessWidget {
     this.height,
     this.horizontalPadding = 10,
     this.verticalPadding = 0,
-  }) : super(key: key);
+  });
 
   final String title;
   final IconData? icon;

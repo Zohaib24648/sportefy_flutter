@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 class SportsSection extends StatelessWidget {
-  const SportsSection({Key? key}) : super(key: key);
+  const SportsSection({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -64,10 +64,10 @@ class AmenitiesSection extends StatelessWidget {
   final String selectedAmenity;
 
   const AmenitiesSection({
-    Key? key,
+    super.key,
     required this.amenities,
     required this.selectedAmenity,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

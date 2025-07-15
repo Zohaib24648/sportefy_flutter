@@ -29,7 +29,7 @@ class EnhancedSearchBar extends StatefulWidget {
   final bool showSearchIcon;
 
   const EnhancedSearchBar({
-    Key? key,
+    super.key,
     this.hintText = 'Search by Venue or Location',
     this.onChanged,
     this.onSubmitted,
@@ -54,7 +54,7 @@ class EnhancedSearchBar extends StatefulWidget {
     this.showShadow = true,
     this.suggestions,
     this.showSearchIcon = true,
-  }) : super(key: key);
+  });
 
   @override
   State<EnhancedSearchBar> createState() => _EnhancedSearchBarState();
@@ -192,7 +192,7 @@ class _EnhancedSearchBarState extends State<EnhancedSearchBar>
           return Container(
             height: widget.height,
             decoration: BoxDecoration(
-              color: widget.backgroundColor ?? Colors.white.withOpacity(0.9),
+              color: widget.backgroundColor ?? Colors.white.withValues(alpha: 0.9),
               borderRadius: widget.borderRadius ?? BorderRadius.circular(10),
               border: Border.all(
                 color:
@@ -208,8 +208,8 @@ class _EnhancedSearchBarState extends State<EnhancedSearchBar>
                   ? [
                       BoxShadow(
                         color: Color.lerp(
-                          Colors.black.withOpacity(0.05),
-                          theme.primaryColor.withOpacity(0.1),
+                          Colors.black.withValues(alpha: .05),
+                          theme.primaryColor.withValues(alpha: 0.1),
                           _focusAnimation.value,
                         )!,
                         blurRadius: 10 + (_focusAnimation.value * 5),
@@ -243,7 +243,7 @@ class _EnhancedSearchBarState extends State<EnhancedSearchBar>
                 hintStyle:
                     widget.hintStyle ??
                     TextStyle(
-                      color: Colors.black.withOpacity(0.48),
+                      color: Colors.black.withValues(alpha: 0.48),
                       fontSize: 14,
                       fontFamily: 'Lexend',
                       fontWeight: FontWeight.w300,
@@ -301,10 +301,10 @@ class AnimatedSearchIcon extends StatelessWidget {
   final bool isFocused;
 
   const AnimatedSearchIcon({
-    Key? key,
+    super.key,
     required this.animation,
     required this.isFocused,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -339,10 +339,9 @@ class _SuggestionsOverlay extends StatelessWidget {
   final Function(String) onSuggestionTap;
 
   const _SuggestionsOverlay({
-    Key? key,
     required this.suggestions,
     required this.onSuggestionTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -371,7 +370,7 @@ class _SuggestionsOverlay extends StatelessWidget {
                 decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
-                      color: Colors.grey.withOpacity(0.2),
+                      color: Colors.grey.withValues(alpha: 0.2),
                       width: index == suggestions.length - 1 ? 0 : 1,
                     ),
                   ),
@@ -406,7 +405,7 @@ class _SuggestionsOverlay extends StatelessWidget {
 
 // Usage Examples
 class SearchBarExamples extends StatefulWidget {
-  const SearchBarExamples({Key? key}) : super(key: key);
+  const SearchBarExamples({super.key});
 
   @override
   State<SearchBarExamples> createState() => _SearchBarExamplesState();
@@ -467,8 +466,8 @@ class _SearchBarExamplesState extends State<SearchBarExamples> {
             _buildSectionTitle('Custom Styled Search'),
             EnhancedSearchBar(
               hintText: 'Find your favorite sport...',
-              backgroundColor: Colors.purple.withOpacity(0.1),
-              borderColor: Colors.purple.withOpacity(0.3),
+              backgroundColor: Colors.purple.withValues(alpha: 0.1),
+              borderColor: Colors.purple.withValues(alpha: 0.3),
               height: 60,
               borderRadius: BorderRadius.circular(30),
               prefixIcon: Container(
@@ -479,7 +478,7 @@ class _SearchBarExamplesState extends State<SearchBarExamples> {
                 ),
               ),
               hintStyle: TextStyle(
-                color: Colors.purple.withOpacity(0.6),
+                color: Colors.purple.withValues(alpha: 0.6),
                 fontSize: 16,
               ),
               textStyle: const TextStyle(
@@ -526,7 +525,7 @@ class _SearchBarExamplesState extends State<SearchBarExamples> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.grey.withOpacity(0.3)),
+                border: Border.all(color: Colors.grey.withValues(alpha: 0.3)),
               ),
               child: Text(
                 searchQuery.isEmpty

@@ -36,7 +36,7 @@ class ConfirmationDialog extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: (iconColor ?? AppColors.primaryColor).withOpacity(0.1),
+                  color: (iconColor ?? AppColors.primaryColor).withValues(alpha:0.1),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -111,7 +111,7 @@ class ConfirmationDialog extends StatelessWidget {
     );
   }
 
-  /// Show a confirmation dialog and return a Future<bool?>
+  /// Show a confirmation dialog and return a Future bool?
   /// Returns true if confirmed, false if cancelled, null if dismissed
   static Future<bool?> show({
     required BuildContext context,

@@ -10,14 +10,14 @@ class FacilityImageSection extends StatelessWidget {
   final bool isOpen24Hours;
 
   const FacilityImageSection({
-    Key? key,
+    super.key,
     required this.imageUrl,
     required this.facilityName,
     required this.rating,
     required this.reviewCount,
     required this.pricePerHour,
     required this.isOpen24Hours,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +100,7 @@ class FacilityImageSection extends StatelessWidget {
                       style: const TextStyle(
                         color: Color(0xFF272727),
                         fontSize: 12,
-                        fontFamily: 'Roboto',
+                        fontFamily: 'Lexend',
                         fontWeight: FontWeight.w400,
                       ),
                     ),

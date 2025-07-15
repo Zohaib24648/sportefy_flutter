@@ -26,7 +26,7 @@ class HistoryTable extends Table {
 
 // Connect table(s) to your database class
 @DriftDatabase(tables: [HistoryTable])
-@injectable
+@singleton
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 

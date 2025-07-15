@@ -2,14 +2,14 @@
 import 'package:flutter/material.dart';
 import 'package:sportefy/presentation/widgets/facility/custom_app_bar.dart';
 import 'package:sportefy/presentation/widgets/facility/image_section.dart';
-import 'package:sportefy/presentation/widgets/facility/info_card.dart';
+import 'package:sportefy/presentation/widgets/facility/location_section.dart';
 import 'package:sportefy/presentation/widgets/facility/proceed_button.dart';
 import 'package:sportefy/presentation/widgets/facility/ratings_and_reviews_section.dart';
 import 'package:sportefy/presentation/widgets/facility/rules_button.dart';
 import 'package:sportefy/presentation/widgets/facility/sports_section.dart';
 
 class FacilityDetailsPage extends StatelessWidget {
-  const FacilityDetailsPage({Key? key}) : super(key: key);
+  const FacilityDetailsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,17 +30,13 @@ class FacilityDetailsPage extends StatelessWidget {
 
                   // Facility Image and Info
                   const FacilityImageSection(
-                    imageUrl: "https://placehold.co/388x244",
+                    imageUrl: "",
                     facilityName: "Red Meadows",
                     rating: 4.5,
                     reviewCount: 1427,
                     pricePerHour: 1000,
                     isOpen24Hours: true,
                   ),
-                  const SizedBox(height: 30),
-
-                  // Facility Info Card (placeholder for additional info)
-                  const FacilityInfoCard(),
                   const SizedBox(height: 30),
 
                   // Location Section

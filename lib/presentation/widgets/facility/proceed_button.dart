@@ -2,13 +2,26 @@ import 'package:flutter/material.dart';
 
 // widgets/proceed_button.dart
 class ProceedButton extends StatelessWidget {
-  const ProceedButton({Key? key}) : super(key: key);
+  const ProceedButton({super.key});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Handle proceed action
+        // Handle proceed action - navigate to booking screen
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Proceeding to booking...'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+        // TODO: Implement navigation to booking screen
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => const BookingScreen(),
+        //   ),
+        // );
       },
       child: Container(
         width: double.infinity,

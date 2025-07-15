@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 class RatingsReviewsSection extends StatelessWidget {
-  const RatingsReviewsSection({Key? key}) : super(key: key);
+  const RatingsReviewsSection({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class RatingsReviewsSection extends StatelessWidget {
           height: 167,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(9),
-            border: Border.all(width: 1, color: Colors.black.withOpacity(0.06)),
+            border: Border.all(width: 1, color: Colors.black.withValues(alpha: .06)),
           ),
           // Add rating overview content here
         ),
@@ -50,7 +50,7 @@ class RatingsReviewsSection extends StatelessWidget {
         ),
         const SizedBox(height: 7),
         const Text(
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+          'Lorem ipsum dolor sit, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
           style: TextStyle(
             color: Color(0xFF63616A),
             fontSize: 14,

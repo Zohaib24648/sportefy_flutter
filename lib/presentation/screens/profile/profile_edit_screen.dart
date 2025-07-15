@@ -207,8 +207,9 @@ class _ProfileEditScreenContentState extends State<ProfileEditScreenContent> {
                                           },
                                       loadingBuilder:
                                           (context, child, loadingProgress) {
-                                            if (loadingProgress == null)
+                                            if (loadingProgress == null) {
                                               return child;
+                                            }
                                             return const CircularProgressIndicator();
                                           },
                                     ),

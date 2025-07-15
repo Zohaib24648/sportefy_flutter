@@ -9,14 +9,14 @@ class PromotionalCard extends StatelessWidget {
   final bool hasImage;
 
   const PromotionalCard({
-    Key? key,
+    super.key,
     required this.tagline,
     required this.title,
     required this.buttonText,
     required this.backgroundColor,
     this.imageUrl,
     this.hasImage = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +46,7 @@ class PromotionalCard extends StatelessWidget {
               Text(
                 tagline,
                 style: TextStyle(
-                  color: Colors.white.withOpacity(0.67),
+                  color: Colors.white.withValues(alpha: .67),
                   fontSize: 12,
                   fontFamily: 'Lexend',
                   fontWeight: FontWeight.w600,

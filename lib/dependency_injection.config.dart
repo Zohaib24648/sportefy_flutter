@@ -9,18 +9,23 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:dio/dio.dart' as _i361;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:sportefy/bloc/auth/auth_bloc.dart' as _i633;
 import 'package:sportefy/bloc/check_in/check_in_bloc.dart' as _i686;
+import 'package:sportefy/bloc/facility/facility_bloc.dart' as _i743;
 import 'package:sportefy/bloc/history/history_bloc.dart' as _i63;
 import 'package:sportefy/bloc/profile/profile_bloc.dart' as _i812;
 import 'package:sportefy/bloc/qr/qr_bloc.dart' as _i328;
 import 'package:sportefy/core/app_module.dart' as _i893;
+import 'package:sportefy/core/network_module.dart' as _i186;
 import 'package:sportefy/data/db/database.dart' as _i201;
 import 'package:sportefy/data/repository/auth_repository.dart' as _i109;
+import 'package:sportefy/data/repository/facility_repository.dart' as _i133;
 import 'package:sportefy/data/repository/history_repository.dart' as _i948;
 import 'package:sportefy/data/repository/i_auth_repository.dart' as _i577;
+import 'package:sportefy/data/repository/i_facility_repository.dart' as _i826;
 import 'package:sportefy/data/repository/i_history_repository.dart' as _i527;
 import 'package:sportefy/data/repository/i_profile_repository.dart' as _i411;
 import 'package:sportefy/data/repository/profile_repository.dart' as _i432;
@@ -34,16 +39,25 @@ extension GetItInjectableX on _i174.GetIt {
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final appModule = _$AppModule();
+    final networkModule = _$NetworkModule();
     gh.factory<_i328.QrBloc>(() => _i328.QrBloc());
-    gh.factory<_i201.AppDatabase>(() => _i201.AppDatabase());
+    gh.singleton<_i454.SupabaseClient>(() => appModule.supabaseClient);
     gh.singleton<_i454.GoTrueClient>(() => appModule.supabaseAuth);
+    gh.singleton<_i201.AppDatabase>(() => _i201.AppDatabase());
+    gh.lazySingleton<_i361.Dio>(() => networkModule.dio());
     gh.factory<_i527.IHistoryRepository>(
       () => _i948.HistoryRepository(gh<_i201.AppDatabase>()),
     );
     gh.factory<_i577.IAuthRepository>(() => _i109.AuthRepository());
+    gh.lazySingleton<_i826.IFacilityRepository>(
+      () => _i133.FacilityRepository(gh<_i361.Dio>()),
+    );
     gh.factory<_i411.IProfileRepository>(() => _i432.ProfileRepository());
     gh.factory<_i812.ProfileBloc>(
       () => _i812.ProfileBloc(gh<_i411.IProfileRepository>()),
+    );
+    gh.factory<_i743.FacilityBloc>(
+      () => _i743.FacilityBloc(gh<_i826.IFacilityRepository>()),
     );
     gh.factory<_i686.CheckInBloc>(
       () => _i686.CheckInBloc(gh<_i527.IHistoryRepository>()),
@@ -59,3 +73,5 @@ extension GetItInjectableX on _i174.GetIt {
 }
 
 class _$AppModule extends _i893.AppModule {}
+
+class _$NetworkModule extends _i186.NetworkModule {}

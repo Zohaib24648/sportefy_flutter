@@ -40,8 +40,7 @@ class VenueGridTile extends StatelessWidget {
   final Venue venue;
   final VoidCallback? onTap;
 
-  const VenueGridTile({Key? key, required this.venue, this.onTap})
-    : super(key: key);
+  const VenueGridTile({super.key, required this.venue, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +108,7 @@ class VenueGridTile extends StatelessWidget {
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
-                                  fontFamily: 'Roboto',
+                                  fontFamily: 'Lexend',
                                   fontSize: 9,
                                   color: Color(0xFF858585),
                                 ),

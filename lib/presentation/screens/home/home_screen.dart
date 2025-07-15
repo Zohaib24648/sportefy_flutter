@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:sportefy/presentation/widgets/home_page_grid_tile.dart';
+import 'package:sportefy/presentation/screens/facility/facility_screen.dart';
 import '../../../bloc/auth/auth_bloc.dart';
 import '../../constants/app_colors.dart';
 import '../../widgets/homepage_tile.dart';
@@ -86,7 +87,6 @@ class HomePage extends StatelessWidget {
         'title': 'Football',
         'icon': 'assets/icons/football.png',
         'onTap': () {
-          debugPrint('Football chip tapped');
           onNavigateToTab?.call(1); // Navigate to search with football filter
         },
       },
@@ -94,7 +94,6 @@ class HomePage extends StatelessWidget {
         'title': 'Basketball',
         'icon': 'assets/icons/basketball.png',
         'onTap': () {
-          debugPrint('Basketball chip tapped');
           onNavigateToTab?.call(1);
         },
       },
@@ -102,7 +101,6 @@ class HomePage extends StatelessWidget {
         'title': 'Cricket',
         'icon': 'assets/icons/cricket_ball.png',
         'onTap': () {
-          debugPrint('Cricket chip tapped');
           onNavigateToTab?.call(1);
         },
       },
@@ -117,7 +115,6 @@ class HomePage extends StatelessWidget {
         'buttonText': 'Book Now',
         'backgroundColor': const Color(0xFFFFD0BA),
         'onTap': () {
-          debugPrint('Navigating to Create Event tab (index 2)');
           onNavigateToTab?.call(2); // Navigate to QR/create tab
         },
       },
@@ -127,7 +124,6 @@ class HomePage extends StatelessWidget {
         'buttonText': 'Explore',
         'backgroundColor': const Color(0xFFB8E6B8),
         'onTap': () {
-          debugPrint('Navigating to Search tab (index 1)');
           onNavigateToTab?.call(1); // Navigate to search tab
         },
       },
@@ -137,7 +133,6 @@ class HomePage extends StatelessWidget {
         'buttonText': 'Connect',
         'backgroundColor': const Color(0xFFB8D4FF),
         'onTap': () {
-          debugPrint('Navigating to Profile tab (index 3)');
           onNavigateToTab?.call(3); // Navigate to profile tab
         },
       },
@@ -147,7 +142,6 @@ class HomePage extends StatelessWidget {
         'buttonText': 'View History',
         'backgroundColor': const Color(0xFFFFB8E6),
         'onTap': () {
-          debugPrint('Navigating to History tab (index 4)');
           onNavigateToTab?.call(4); // Navigate to history tab
         },
       },
@@ -178,9 +172,6 @@ class HomePage extends StatelessWidget {
                     onTap: () {
                       // Navigate to search tab when search bar is tapped
                       HapticFeedback.lightImpact();
-                      debugPrint(
-                        'Search bar tapped - navigating to search tab',
-                      );
                       onNavigateToTab?.call(1);
                     },
                     enabled: false, // Make it non-editable so it just navigates
@@ -301,8 +292,13 @@ class HomePage extends StatelessWidget {
                         venue: venue,
                         onTap: () {
                           HapticFeedback.lightImpact();
-                          debugPrint('Venue tapped: ${venue.name}');
-                          onNavigateToTab?.call(1);
+                          // Navigate to facility details page
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const FacilityDetailsPage(),
+                            ),
+                          );
                         },
                       );
                     },
