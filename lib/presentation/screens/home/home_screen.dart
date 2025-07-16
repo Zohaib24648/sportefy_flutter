@@ -3,9 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:sportefy/data/services/auth_state_manager.dart';
+import 'package:sportefy/dependency_injection.dart';
 import 'package:sportefy/presentation/constants/image_links.dart';
-import 'package:sportefy/presentation/widgets/custom_circle_avatar.dart';
-import 'package:sportefy/presentation/widgets/flexible_app_bar.dart';
+import 'package:sportefy/presentation/widgets/common/custom_circle_avatar.dart';
+import 'package:sportefy/presentation/widgets/common/flexible_app_bar.dart';
 import 'package:sportefy/presentation/widgets/home_page_grid_tile.dart';
 import 'package:sportefy/presentation/screens/facility/facility_screen.dart';
 import '../../../bloc/auth/auth_bloc.dart';
@@ -156,7 +158,11 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: FlexibleAppBar(
-        leading: CustomCircleAvatar(imageUrl: ImageLinks.fallbackAvatar),
+        leading: CustomCircleAvatar(
+          imageUrl:
+              getIt<AuthStateManager>().userAvatarUrl ??
+              ImageLinks.fallbackAvatar,
+        ),
         title: const Text(
           'Sportefy',
           style: TextStyle(
@@ -165,7 +171,6 @@ class HomePage extends StatelessWidget {
             color: AppColors.primaryColor,
           ),
         ),
-        centerTitle: true,
         actions: [
           AppBarActions.notificationButton(
             onTap: () => (),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../bloc/connectivity/connectivity_bloc.dart';
-import '../../bloc/connectivity/connectivity_state.dart';
+import '../../../bloc/connectivity/connectivity_bloc.dart';
+import '../../../bloc/connectivity/connectivity_state.dart';
 
 class ConnectivityBanner extends StatelessWidget {
   final Widget child;

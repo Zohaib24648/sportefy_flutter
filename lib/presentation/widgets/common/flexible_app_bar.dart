@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 
-
 class FlexibleAppBar extends StatelessWidget implements PreferredSizeWidget {
   const FlexibleAppBar({
     super.key,
     this.leading,
-    this.onLeadingTap,
-    this.showBackButton = false,
     this.title,
-    this.centerTitle = false,
     this.actions,
     this.backgroundColor,
     this.elevation = 0,
@@ -16,10 +12,7 @@ class FlexibleAppBar extends StatelessWidget implements PreferredSizeWidget {
   });
 
   final Widget? leading;
-  final VoidCallback? onLeadingTap;
-  final bool showBackButton;
   final Widget? title;
-  final bool centerTitle;
   final List<Widget>? actions;
   final Color? backgroundColor;
   final double elevation;
@@ -44,17 +37,9 @@ class FlexibleAppBar extends StatelessWidget implements PreferredSizeWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              if (showBackButton || leading != null) ...[
-                _buildLeading(context),
-                const SizedBox(width: 16),
-              ],
-
-              Expanded(
-                child: centerTitle
-                    ? Center(child: _buildTitle())
-                    : _buildTitle(),
-              ),
-
+              if (leading != null) leading!,
+              const SizedBox(width: 16),
+              Expanded(child: title ?? const SizedBox.shrink()),
               if (actions?.isNotEmpty ?? false) ...[
                 const SizedBox(width: 16),
                 Row(mainAxisSize: MainAxisSize.min, children: actions!),
@@ -65,45 +50,7 @@ class FlexibleAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
     );
   }
-
-  Widget _buildLeading(BuildContext context) {
-    if (leading != null) return leading!;
-    return _DefaultBackButton(onTap: onLeadingTap);
-  }
-
-  Widget _buildTitle() {
-    if (title != null) return title!;
-    return const SizedBox.shrink();
-  }
 }
-
-class _DefaultBackButton extends StatelessWidget {
-  const _DefaultBackButton({this.onTap});
-
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap ?? () => Navigator.of(context).maybePop(),
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        width: 48,
-        height: 48,
-        decoration: BoxDecoration(
-          color: Colors.grey.shade100,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Icon(
-          Icons.arrow_back_ios_new,
-          color: Colors.grey.shade700,
-          size: 20,
-        ),
-      ),
-    );
-  }
-}
-
 
 class AppBarActions {
   const AppBarActions._(); // cannot be instantiated
@@ -138,22 +85,22 @@ class AppBarActions {
     Color? backgroundColor,
     Color? iconColor,
   }) => _ActionButton(
-        onTap: onTap,
-        backgroundColor: backgroundColor,
-        icon: Icons.search_outlined,
-        iconColor: iconColor,
-      );
+    onTap: onTap,
+    backgroundColor: backgroundColor,
+    icon: Icons.search_outlined,
+    iconColor: iconColor,
+  );
 
   static Widget moreButton({
     required VoidCallback onTap,
     Color? backgroundColor,
     Color? iconColor,
   }) => _ActionButton(
-        onTap: onTap,
-        backgroundColor: backgroundColor,
-        icon: Icons.more_vert,
-        iconColor: iconColor,
-      );
+    onTap: onTap,
+    backgroundColor: backgroundColor,
+    icon: Icons.more_vert,
+    iconColor: iconColor,
+  );
 
   static Widget customButton({
     required VoidCallback onTap,
@@ -162,12 +109,12 @@ class AppBarActions {
     Color? iconColor,
     double size = 24,
   }) => _ActionButton(
-        onTap: onTap,
-        backgroundColor: backgroundColor,
-        icon: icon,
-        iconColor: iconColor,
-        iconSize: size,
-      );
+    onTap: onTap,
+    backgroundColor: backgroundColor,
+    icon: icon,
+    iconColor: iconColor,
+    iconSize: size,
+  );
 }
 
 class _ActionButton extends StatelessWidget {
@@ -199,7 +146,11 @@ class _ActionButton extends StatelessWidget {
             color: backgroundColor ?? Colors.grey.shade100,
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Icon(icon, color: iconColor ?? Colors.grey.shade700, size: iconSize),
+          child: Icon(
+            icon,
+            color: iconColor ?? Colors.grey.shade700,
+            size: iconSize,
+          ),
         ),
       ),
     );

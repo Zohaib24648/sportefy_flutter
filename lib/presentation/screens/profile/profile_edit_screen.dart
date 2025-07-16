@@ -7,9 +7,9 @@ import '../../../data/model/user_profile.dart';
 import '../../../dependency_injection.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_styles.dart';
-import '../../widgets/custom_text_field.dart';
+import '../../widgets/common/custom_text_field.dart';
 import '../../widgets/custom_dropdown_field.dart';
-import '../../widgets/primary_button.dart';
+import '../../widgets/common/primary_button.dart';
 import '../../utils/responsive_helper.dart';
 
 class ProfileEditScreen extends StatelessWidget {

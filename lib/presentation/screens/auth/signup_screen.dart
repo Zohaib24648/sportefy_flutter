@@ -1,7 +1,7 @@
 //lib/presentation/screens/signup_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sportefy/presentation/widgets/constants/or_divider.dart';
+import 'package:sportefy/presentation/widgets/common/or_divider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 import '../../../bloc/auth/auth_bloc.dart';
 import '../../../data/model/signup_request.dart';
@@ -9,10 +9,10 @@ import '../../constants/app_strings.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_styles.dart';
 import '../../utils/responsive_helper.dart';
-import '../../widgets/custom_text_field.dart';
+import '../../widgets/common/custom_text_field.dart';
 import '../../widgets/oauth_button.dart';
-import '../../widgets/primary_button.dart';
-import '../../widgets/clickable_text.dart';
+import '../../widgets/common/primary_button.dart';
+import '../../widgets/common/clickable_text.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
