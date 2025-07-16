@@ -52,11 +52,6 @@ class ConnectivityBloc extends Bloc<ConnectivityEvent, ConnectivityState> {
         isMobile,
       ),
     );
-
-    // Log connectivity change for debugging
-    print(
-      'ConnectivityBloc: Connection changed to $connectionType (Connected: $isConnected)',
-    );
   }
 
   Future<void> _onConnectivityCheckRequested(

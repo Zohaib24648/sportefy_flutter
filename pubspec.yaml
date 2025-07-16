@@ -30,6 +30,7 @@ dependencies:
   crypto: ^3.0.5
   carousel_slider: ^5.1.1
   connectivity_plus: ^6.1.4
+  flutter_secure_storage: ^9.2.2
 
 
 dev_dependencies:

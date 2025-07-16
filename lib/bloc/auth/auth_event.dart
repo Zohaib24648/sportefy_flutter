@@ -11,9 +11,9 @@ class SignInRequested extends AuthEvent {
 }
 
 class SignUpRequested extends AuthEvent {
-  final SignupRequest signupRequest;
+  final SignUpRequest signUpRequest;
 
-  SignUpRequested({required this.signupRequest});
+  SignUpRequested({required this.signUpRequest});
 }
 
 enum OAuthProviderTypes { apple, google, facebook }

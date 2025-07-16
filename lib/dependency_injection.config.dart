@@ -31,6 +31,8 @@ import 'package:sportefy/data/repository/i_facility_repository.dart' as _i826;
 import 'package:sportefy/data/repository/i_history_repository.dart' as _i527;
 import 'package:sportefy/data/repository/i_profile_repository.dart' as _i411;
 import 'package:sportefy/data/repository/profile_repository.dart' as _i432;
+import 'package:sportefy/data/services/auth_state_manager.dart' as _i81;
+import 'package:sportefy/data/services/secure_storage_service.dart' as _i691;
 import 'package:supabase_flutter/supabase_flutter.dart' as _i454;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -47,6 +49,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i454.GoTrueClient>(() => appModule.supabaseAuth);
     gh.singleton<_i306.ConnectivityService>(() => _i306.ConnectivityService());
     gh.singleton<_i201.AppDatabase>(() => _i201.AppDatabase());
+    gh.singleton<_i691.SecureStorageService>(
+      () => _i691.SecureStorageService(),
+    );
     gh.lazySingleton<_i361.Dio>(() => networkModule.dio());
     gh.factory<_i203.ConnectivityBloc>(
       () => _i203.ConnectivityBloc(gh<_i306.ConnectivityService>()),
@@ -54,7 +59,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i527.IHistoryRepository>(
       () => _i948.HistoryRepository(gh<_i201.AppDatabase>()),
     );
-    gh.factory<_i577.IAuthRepository>(() => _i109.AuthRepository());
     gh.lazySingleton<_i826.IFacilityRepository>(
       () => _i133.FacilityRepository(gh<_i361.Dio>()),
     );
@@ -65,6 +69,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i743.FacilityBloc>(
       () => _i743.FacilityBloc(gh<_i826.IFacilityRepository>()),
     );
+    gh.factory<_i577.IAuthRepository>(
+      () => _i109.AuthRepository(gh<_i691.SecureStorageService>()),
+    );
     gh.factory<_i686.CheckInBloc>(
       () => _i686.CheckInBloc(gh<_i527.IHistoryRepository>()),
     );
@@ -73,6 +80,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i633.AuthBloc>(
       () => _i633.AuthBloc(gh<_i577.IAuthRepository>()),
+    );
+    gh.singleton<_i81.AuthStateManager>(
+      () => _i81.AuthStateManager(
+        gh<_i577.IAuthRepository>(),
+        gh<_i691.SecureStorageService>(),
+      ),
     );
     return this;
   }

@@ -1,12 +1,12 @@
 //lib/data/model/signup_request.dart
-class SignupRequest {
+class SignUpRequest {
   final String name;
   final String email;
   final String password;
   final String confirmPassword;
   final bool agreedToTerms;
 
-  SignupRequest({
+  SignUpRequest({
     required this.name,
     required this.email,
     required this.password,

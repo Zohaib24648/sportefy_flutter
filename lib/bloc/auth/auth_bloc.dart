@@ -44,11 +44,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     emit(AuthLoading());
     try {
-      await _authRepository.signInWithEmailAndPassword(
-        email: event.signInRequest.email,
-        password: event.signInRequest.password,
+      final response = await _authRepository.signInWithEmailAndPassword(
+        request: event.signInRequest,
       );
-      // Auth state change will handle the authenticated state
+
+      // If we get a user immediately, emit authenticated state
+      if (response.user != null) {
+        emit(Authenticated(response.user!));
+      }
+      // Otherwise, auth state change will handle the authenticated state
     } catch (e) {
       emit(AuthError(_getErrorMessage(e)));
       emit(Unauthenticated());
@@ -61,17 +65,29 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     emit(AuthLoading());
     try {
-      await _authRepository.signUpWithEmailAndPassword(
-        email: event.signupRequest.email,
-        password: event.signupRequest.password,
-        metadata: {'name': event.signupRequest.name},
+      final response = await _authRepository.signUpWithEmailAndPassword(
+        request: event.signUpRequest,
       );
-      emit(
-        AuthSuccess(
-          message:
-              'Sign up successful! Please check your email to verify your account.',
-        ),
-      );
+
+      // Check if email confirmation is required
+      if (response.user != null && response.session == null) {
+        emit(
+          AuthSuccess(
+            message:
+                'Sign up successful! Please check your email to verify your account.',
+          ),
+        );
+      } else if (response.user != null && response.session != null) {
+        // User is immediately signed in (no email confirmation required)
+        emit(Authenticated(response.user!));
+      } else {
+        emit(
+          AuthSuccess(
+            message:
+                'Sign up successful! Please check your email to verify your account.',
+          ),
+        );
+      }
     } catch (e) {
       emit(AuthError(_getErrorMessage(e)));
       emit(Unauthenticated());
@@ -84,7 +100,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     emit(AuthLoading());
     try {
-      await _authRepository.signInWithOAuth(event.provider);
+      final response = await _authRepository.signInWithOAuth(event.provider);
+
+      // For OAuth, the actual authentication happens via redirect
+      // The auth state change will handle the final authenticated state
+      if (response.user != null) {
+        emit(Authenticated(response.user!));
+      }
     } catch (e) {
       emit(AuthError(_getErrorMessage(e)));
       emit(Unauthenticated());
@@ -114,7 +136,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     final authEvent = event.supabaseAuthState.event;
     final user = event.supabaseAuthState.session?.user;
-
 
     switch (authEvent) {
       case supabase.AuthChangeEvent.signedIn:

@@ -42,7 +42,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   void _handleSignUp() {
     if (_formKey.currentState!.validate() && _agreedToTerms) {
-      final signupRequest = SignupRequest(
+      final signupRequest = SignUpRequest(
         name: _nameController.text,
         email: _emailController.text,
         password: _passwordController.text,
@@ -51,7 +51,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       );
 
       context.read<AuthBloc>().add(
-        SignUpRequested(signupRequest: signupRequest),
+        SignUpRequested(signUpRequest: signupRequest),
       );
     }
   }
