@@ -29,10 +29,35 @@ class FacilityImageSection extends StatelessWidget {
           height: 244,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            image: DecorationImage(
-              image: NetworkImage(imageUrl),
-              fit: BoxFit.cover,
-            ),
+            color: const Color(0xFFF2F6F7),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: imageUrl.isNotEmpty
+                ? Image.network(
+                    imageUrl,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => Container(
+                      color: const Color(0xFFF2F6F7),
+                      child: const Center(
+                        child: Icon(
+                          Icons.business,
+                          size: 80,
+                          color: Color(0xFF9C86F2),
+                        ),
+                      ),
+                    ),
+                  )
+                : Container(
+                    color: const Color(0xFFF2F6F7),
+                    child: const Center(
+                      child: Icon(
+                        Icons.business,
+                        size: 80,
+                        color: Color(0xFF9C86F2),
+                      ),
+                    ),
+                  ),
           ),
         ),
         const SizedBox(height: 15),
