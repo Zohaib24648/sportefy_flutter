@@ -9,81 +9,28 @@ import 'package:sportefy/presentation/constants/image_links.dart';
 import 'package:sportefy/presentation/widgets/common/custom_circle_avatar.dart';
 import 'package:sportefy/presentation/widgets/common/flexible_app_bar.dart';
 import 'package:sportefy/presentation/widgets/home_page_grid_tile.dart';
-import 'package:sportefy/presentation/screens/facility/facility_screen.dart';
-import '../../../bloc/auth/auth_bloc.dart';
+import 'package:sportefy/presentation/screens/facility/facility_details_page.dart';
+import '../../../bloc/facility/facility_bloc.dart';
 import '../../constants/app_colors.dart';
 import '../../widgets/homepage_tile.dart';
 import '../../widgets/search_bar.dart';
 import '../../widgets/home_page_chip.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   final Function(int)? onNavigateToTab;
 
   const HomePage({super.key, this.onNavigateToTab});
 
-  List<Map<String, dynamic>> _getDummyVenues() {
-    return [
-      {
-        'name': 'Red Meadows Sports Complex',
-        'imageUrl':
-            'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400',
-        'sports': ['Football', 'Cricket'],
-        'rating': 4.0,
-        'reviewCount': 175,
-        'distance': '1.8 km',
-        'price': '\$25/hr',
-      },
-      {
-        'name': 'Blue Court Tennis Club',
-        'imageUrl':
-            'https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=400',
-        'sports': ['Tennis', 'Badminton'],
-        'rating': 4.5,
-        'reviewCount': 89,
-        'distance': '2.3 km',
-        'price': '\$30/hr',
-      },
-      {
-        'name': 'Green Valley Swimming Pool',
-        'imageUrl':
-            'https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=400',
-        'sports': ['Swimming', 'Water Polo'],
-        'rating': 4.2,
-        'reviewCount': 234,
-        'distance': '0.9 km',
-        'price': '\$15/hr',
-      },
-      {
-        'name': 'Urban Fitness Center',
-        'imageUrl':
-            'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400',
-        'sports': ['Gym', 'CrossFit'],
-        'rating': 4.7,
-        'reviewCount': 456,
-        'distance': '1.2 km',
-        'price': '\$20/hr',
-      },
-      {
-        'name': 'Mountain Trail Basketball',
-        'imageUrl':
-            'https://images.unsplash.com/photo-1546519638-68e109498ffc?w=400',
-        'sports': ['Basketball', 'Volleyball'],
-        'rating': 3.8,
-        'reviewCount': 67,
-        'distance': '3.1 km',
-        'price': '\$18/hr',
-      },
-      {
-        'name': 'Riverside Running Track',
-        'imageUrl':
-            'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400',
-        'sports': ['Running', 'Athletics'],
-        'rating': 4.3,
-        'reviewCount': 123,
-        'distance': '1.5 km',
-        'price': 'Free',
-      },
-    ];
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    // Trigger fetching facilities when the page loads
+    context.read<FacilityBloc>().add(GetFacility(''));
   }
 
   List<Map<String, dynamic>> _getChipData() {
@@ -92,21 +39,23 @@ class HomePage extends StatelessWidget {
         'title': 'Football',
         'icon': 'assets/icons/football.png',
         'onTap': () {
-          onNavigateToTab?.call(1); // Navigate to search with football filter
+          widget.onNavigateToTab?.call(
+            1,
+          ); // Navigate to search with football filter
         },
       },
       {
         'title': 'Basketball',
         'icon': 'assets/icons/basketball.png',
         'onTap': () {
-          onNavigateToTab?.call(1);
+          widget.onNavigateToTab?.call(1);
         },
       },
       {
         'title': 'Cricket',
         'icon': 'assets/icons/cricket_ball.png',
         'onTap': () {
-          onNavigateToTab?.call(1);
+          widget.onNavigateToTab?.call(1);
         },
       },
     ];
@@ -120,7 +69,7 @@ class HomePage extends StatelessWidget {
         'buttonText': 'Book Now',
         'backgroundColor': const Color(0xFFFFD0BA),
         'onTap': () {
-          onNavigateToTab?.call(2); // Navigate to QR/create tab
+          widget.onNavigateToTab?.call(2); // Navigate to QR/create tab
         },
       },
       {
@@ -129,7 +78,7 @@ class HomePage extends StatelessWidget {
         'buttonText': 'Explore',
         'backgroundColor': const Color(0xFFB8E6B8),
         'onTap': () {
-          onNavigateToTab?.call(1); // Navigate to search tab
+          widget.onNavigateToTab?.call(1); // Navigate to search tab
         },
       },
       {
@@ -138,7 +87,7 @@ class HomePage extends StatelessWidget {
         'buttonText': 'Connect',
         'backgroundColor': const Color(0xFFB8D4FF),
         'onTap': () {
-          onNavigateToTab?.call(3); // Navigate to profile tab
+          widget.onNavigateToTab?.call(3); // Navigate to profile tab
         },
       },
       {
@@ -147,7 +96,7 @@ class HomePage extends StatelessWidget {
         'buttonText': 'View History',
         'backgroundColor': const Color(0xFFFFB8E6),
         'onTap': () {
-          onNavigateToTab?.call(4); // Navigate to history tab
+          widget.onNavigateToTab?.call(4); // Navigate to history tab
         },
       },
     ];
@@ -178,9 +127,11 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      body: BlocBuilder<AuthBloc, AuthState>(
+      body: BlocBuilder<FacilityBloc, FacilityState>(
         builder: (context, state) {
-          if (state is Authenticated) {
+          if (state is FacilityLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is FacilityLoaded) {
             return SingleChildScrollView(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -192,7 +143,7 @@ class HomePage extends StatelessWidget {
                     onTap: () {
                       // Navigate to search tab when search bar is tapped
                       HapticFeedback.lightImpact();
-                      onNavigateToTab?.call(1);
+                      widget.onNavigateToTab?.call(1);
                     },
                     enabled: false, // Make it non-editable so it just navigates
                     backgroundColor: Colors.white,
@@ -304,19 +255,22 @@ class HomePage extends StatelessWidget {
                           mainAxisSpacing: 12.0,
                           childAspectRatio: 0.8,
                         ),
-                    itemCount: _getDummyVenues().length,
+                    itemCount: state.items.length,
                     itemBuilder: (context, index) {
-                      final venueData = _getDummyVenues()[index];
-                      final venue = Venue.fromMap(venueData);
-                      return VenueGridTile(
-                        venue: venue,
+                      final facility = Facility.fromFacilityBase(
+                        state.items[index],
+                      );
+                      return FacilityGridTile(
+                        facility: facility,
                         onTap: () {
                           HapticFeedback.lightImpact();
-                          // Navigate to facility details page
+                          // Navigate to facility page with facility ID
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => const FacilityDetailsPage(),
+                              builder: (_) => FacilityDetailsPage(
+                                facilityId: state.items[index].id,
+                              ),
                             ),
                           );
                         },
@@ -327,6 +281,8 @@ class HomePage extends StatelessWidget {
                 ],
               ),
             );
+          } else if (state is FacilityError) {
+            return Center(child: Text(state.message));
           }
           return const Center(child: CircularProgressIndicator());
         },

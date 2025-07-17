@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sportefy/data/model/facility_base.dart';
+import 'package:sportefy/data/model/facility_details.dart';
 import 'package:sportefy/data/repository/i_facility_repository.dart';
 
 /// Simple repository implementation for facility operations
@@ -14,7 +15,8 @@ class FacilityRepository implements IFacilityRepository {
   Future<List<FacilityBase>> getFacilities() async {
     try {
       final response = await _dio.get('/facilities');
-      final List<dynamic> data = response.data;
+      final Map<String, dynamic> responseData = response.data;
+      final List<dynamic> data = responseData['data'];
       return data.map((json) => FacilityBase.fromJson(json)).toList();
     } catch (e) {
       throw Exception('Failed to fetch facilities: $e');
@@ -25,9 +27,23 @@ class FacilityRepository implements IFacilityRepository {
   Future<FacilityBase> getFacilityById(String id) async {
     try {
       final response = await _dio.get('/facilities/$id');
-      return FacilityBase.fromJson(response.data);
+      final Map<String, dynamic> responseData = response.data;
+      final Map<String, dynamic> data = responseData['data'];
+      return FacilityBase.fromJson(data);
     } catch (e) {
       throw Exception('Failed to fetch facility: $e');
+    }
+  }
+
+  @override
+  Future<FacilityDetails> getFacilityDetails(String id) async {
+    try {
+      final response = await _dio.get('/facilities/$id');
+      final Map<String, dynamic> responseData = response.data;
+      final Map<String, dynamic> data = responseData['data'];
+      return FacilityDetails.fromJson(data);
+    } catch (e) {
+      throw Exception('Failed to fetch facility details: $e');
     }
   }
 
@@ -44,7 +60,10 @@ class FacilityRepository implements IFacilityRepository {
   @override
   Future<FacilityBase> updateFacility(String id, FacilityBase facility) async {
     try {
-      final response = await _dio.put('/facilities/$id', data: facility.toJson());
+      final response = await _dio.put(
+        '/facilities/$id',
+        data: facility.toJson(),
+      );
       return FacilityBase.fromJson(response.data);
     } catch (e) {
       throw Exception('Failed to update facility: $e');

@@ -1,4 +1,5 @@
 import 'package:sportefy/data/model/facility_base.dart';
+import 'package:sportefy/data/model/facility_details.dart';
 
 /// Interface for facility repository operations
 abstract class IFacilityRepository {
@@ -7,6 +8,9 @@ abstract class IFacilityRepository {
 
   /// Get facility by ID
   Future<FacilityBase> getFacilityById(String id);
+
+  /// Get detailed facility information by ID
+  Future<FacilityDetails> getFacilityDetails(String id);
 
   /// Create a new facility
   Future<FacilityBase> createFacility(FacilityBase facility);

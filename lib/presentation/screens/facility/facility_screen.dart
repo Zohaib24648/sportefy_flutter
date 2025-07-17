@@ -8,8 +8,8 @@ import 'package:sportefy/presentation/widgets/facility/ratings_and_reviews_secti
 import 'package:sportefy/presentation/widgets/facility/rules_button.dart';
 import 'package:sportefy/presentation/widgets/facility/sports_section.dart';
 
-class FacilityDetailsPage extends StatelessWidget {
-  const FacilityDetailsPage({super.key});
+class FacilityPage extends StatelessWidget {
+  const FacilityPage({super.key});
 
   @override
   Widget build(BuildContext context) {

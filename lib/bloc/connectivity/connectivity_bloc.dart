@@ -22,14 +22,33 @@ class ConnectivityBloc extends Bloc<ConnectivityEvent, ConnectivityState> {
     ConnectivityInitialized event,
     Emitter<ConnectivityState> emit,
   ) async {
-    // Start listening to connectivity changes
-    _connectivitySubscription = _connectivityService.connectivityStream.listen(
-      (results) => add(ConnectivityChanged(results)),
-    );
+    try {
+      // Start listening to connectivity changes
+      _connectivitySubscription = _connectivityService.connectivityStream
+          .listen(
+            (results) {
+              if (!isClosed) {
+                add(ConnectivityChanged(results));
+              }
+            },
+            onError: (error) {
+              // Handle stream errors gracefully
+              if (!isClosed) {
+                // Optionally emit an error state or log the error
+                print('Connectivity stream error: $error');
+              }
+            },
+          );
 
-    // Check initial connectivity
-    final results = await _connectivityService.checkConnectivity();
-    add(ConnectivityChanged(results));
+      // Check initial connectivity
+      final results = await _connectivityService.checkConnectivity();
+      if (!isClosed) {
+        add(ConnectivityChanged(results));
+      }
+    } catch (e) {
+      // Handle initialization errors
+      print('Connectivity initialization error: $e');
+    }
   }
 
   void _onConnectivityChanged(
@@ -59,12 +78,14 @@ class ConnectivityBloc extends Bloc<ConnectivityEvent, ConnectivityState> {
     Emitter<ConnectivityState> emit,
   ) async {
     final results = await _connectivityService.checkConnectivity();
-    add(ConnectivityChanged(results));
+    if (!isClosed) {
+      add(ConnectivityChanged(results));
+    }
   }
 
   @override
-  Future<void> close() {
-    _connectivitySubscription.cancel();
+  Future<void> close() async {
+    await _connectivitySubscription.cancel();
     return super.close();
   }
 }

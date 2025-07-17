@@ -16,6 +16,8 @@ import 'package:sportefy/bloc/auth/auth_bloc.dart' as _i633;
 import 'package:sportefy/bloc/check_in/check_in_bloc.dart' as _i686;
 import 'package:sportefy/bloc/connectivity/connectivity_bloc.dart' as _i203;
 import 'package:sportefy/bloc/facility/facility_bloc.dart' as _i743;
+import 'package:sportefy/bloc/facility_details/facility_details_bloc.dart'
+    as _i205;
 import 'package:sportefy/bloc/history/history_bloc.dart' as _i63;
 import 'package:sportefy/bloc/profile/profile_bloc.dart' as _i812;
 import 'package:sportefy/bloc/qr/qr_bloc.dart' as _i328;
@@ -68,6 +70,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i743.FacilityBloc>(
       () => _i743.FacilityBloc(gh<_i826.IFacilityRepository>()),
+    );
+    gh.factory<_i205.FacilityDetailsBloc>(
+      () => _i205.FacilityDetailsBloc(gh<_i826.IFacilityRepository>()),
     );
     gh.factory<_i577.IAuthRepository>(
       () => _i109.AuthRepository(gh<_i691.SecureStorageService>()),

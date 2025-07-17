@@ -8,9 +8,15 @@ abstract class NetworkModule {
   Dio dio() {
     return Dio(
       BaseOptions(
-        baseUrl: dotenv.env['API_BASE_URL']!, // or hard-code your URL here
-        connectTimeout: Duration(seconds: 5),
-        receiveTimeout: Duration(seconds: 3),
+        baseUrl:
+            dotenv.env['API_BASE_URL'] ??
+            'https://sportefy-backend.onrender.com',
+        connectTimeout: Duration(seconds: 10),
+        receiveTimeout: Duration(seconds: 10),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
       ),
     );
   }

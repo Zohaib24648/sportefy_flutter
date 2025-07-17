@@ -1,46 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:sportefy/data/model/facility_base.dart';
 
 /// ──────────────────────────────────────────────────────────────────────────
 /// 1️⃣  Simple immutable model
 /// ──────────────────────────────────────────────────────────────────────────
-class Venue {
+class Facility {
   final String name;
   final String imageUrl;
-  final List<String> sports;
-  final double rating;
-  final int reviewCount;
-  final String distance;
-  final String price;
+  final String address;
+  final String phoneNumber;
 
-  const Venue({
+  const Facility({
     required this.name,
     required this.imageUrl,
-    required this.sports,
-    required this.rating,
-    required this.reviewCount,
-    required this.distance,
-    required this.price,
+    required this.address,
+    required this.phoneNumber,
   });
 
-  factory Venue.fromMap(Map<String, dynamic> map) => Venue(
-    name: map['name'] as String,
-    imageUrl: map['imageUrl'] as String,
-    sports: List<String>.from(map['sports'] as List),
-    rating: (map['rating'] as num).toDouble(),
-    reviewCount: map['reviewCount'] as int,
-    distance: map['distance'] as String,
-    price: map['price'] as String,
+  factory Facility.fromFacilityBase(FacilityBase base) => Facility(
+    name: base.name,
+    imageUrl: base.coverUrl,
+    address: base.address,
+    phoneNumber: base.phoneNumber,
   );
 }
 
 /// ──────────────────────────────────────────────────────────────────────────
 /// 2️⃣  Reusable tile
 /// ──────────────────────────────────────────────────────────────────────────
-class VenueGridTile extends StatelessWidget {
-  final Venue venue;
+class FacilityGridTile extends StatelessWidget {
+  final Facility facility;
   final VoidCallback? onTap;
 
-  const VenueGridTile({super.key, required this.venue, this.onTap});
+  const FacilityGridTile({super.key, required this.facility, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +48,7 @@ class VenueGridTile extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Image.network(
-                    venue.imageUrl,
+                    facility.imageUrl,
                     width: double.infinity,
                     height: double.infinity,
                     fit: BoxFit.cover,
@@ -83,75 +75,40 @@ class VenueGridTile extends StatelessWidget {
                         ),
                       ],
                     ),
-                    child: Row(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Title & sports
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                venue.name,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontFamily: 'Lexend',
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 12,
-                                  color: Color(0xFF272727),
-                                  height: 1.3,
-                                ),
-                              ),
-                              Text(
-                                venue.sports.join(', '),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontFamily: 'Lexend',
-                                  fontSize: 9,
-                                  color: Color(0xFF858585),
-                                ),
-                              ),
-                            ],
+                        Text(
+                          facility.name,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontFamily: 'Lexend',
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12,
+                            color: Color(0xFF272727),
+                            height: 1.3,
                           ),
                         ),
-                        const SizedBox(width: 8),
-                        // Rating & distance
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Row(
-                              children: [
-                                const Icon(
-                                  Icons.star,
-                                  size: 8,
-                                  color: Color(0xFF272727),
-                                ),
-                                const SizedBox(width: 3),
-                                Text(
-                                  '${venue.rating.toStringAsFixed(1)} '
-                                  '(${venue.reviewCount})',
-                                  style: const TextStyle(
-                                    fontFamily: 'Lexend',
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 9,
-                                    color: Color(0xFF272727),
-                                    height: 1.3,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Text(
-                              venue.distance,
-                              style: const TextStyle(
-                                fontFamily: 'Lexend',
-                                fontSize: 9,
-                                color: Color(0xFF858585),
-                                height: 1.3,
-                              ),
-                            ),
-                          ],
+                        Text(
+                          facility.address,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontFamily: 'Lexend',
+                            fontSize: 9,
+                            color: Color(0xFF858585),
+                          ),
+                        ),
+                        Text(
+                          facility.phoneNumber,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontFamily: 'Lexend',
+                            fontSize: 9,
+                            color: Color(0xFF858585),
+                          ),
                         ),
                       ],
                     ),
