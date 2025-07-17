@@ -8,6 +8,7 @@ import '../../../dependency_injection.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_styles.dart';
 import '../../widgets/common/custom_text_field.dart';
+import '../../widgets/common/shimmer_exports.dart';
 import '../../widgets/custom_dropdown_field.dart';
 import '../../widgets/common/primary_button.dart';
 import '../../utils/responsive_helper.dart';
@@ -162,15 +163,12 @@ class _ProfileEditScreenContentState extends State<ProfileEditScreenContent> {
         child: BlocBuilder<ProfileBloc, ProfileState>(
           builder: (context, state) {
             if (state is ProfileLoading) {
-              return const Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircularProgressIndicator(),
-                    SizedBox(height: 16),
-                    Text('Loading profile...'),
-                  ],
+              return Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: ResponsiveHelper.getHorizontalPadding(context),
+                  vertical: 16,
                 ),
+                child: const AuthFormShimmer(fieldCount: 6),
               );
             }
 

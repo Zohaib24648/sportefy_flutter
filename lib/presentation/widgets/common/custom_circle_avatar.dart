@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sportefy/presentation/constants/image_links.dart';
+import 'shimmer_exports.dart';
 
 class CustomCircleAvatar extends StatelessWidget {
   final String imageUrl;
@@ -30,12 +31,28 @@ class CustomCircleAvatar extends StatelessWidget {
           width: size,
           height: size,
           fit: BoxFit.cover,
+          loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress == null) return child;
+            return AppShimmer(
+              child: Container(width: size, height: size, color: Colors.white),
+            );
+          },
           errorBuilder: (context, error, stackTrace) {
             return Image.network(
               ImageLinks.fallbackAvatar,
               width: size,
               height: size,
               fit: BoxFit.cover,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return AppShimmer(
+                  child: Container(
+                    width: size,
+                    height: size,
+                    color: Colors.white,
+                  ),
+                );
+              },
               errorBuilder: (context, error, stackTrace) {
                 return Container(
                   width: size,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sportefy/data/model/facility_base.dart';
+import 'common/shimmer_exports.dart';
 
 /// ──────────────────────────────────────────────────────────────────────────
 /// 1️⃣  Simple immutable model
@@ -52,6 +53,28 @@ class FacilityGridTile extends StatelessWidget {
                     width: double.infinity,
                     height: double.infinity,
                     fit: BoxFit.cover,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return AppShimmer(
+                        child: Container(
+                          width: double.infinity,
+                          height: double.infinity,
+                          color: Colors.white,
+                        ),
+                      );
+                    },
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        width: double.infinity,
+                        height: double.infinity,
+                        color: Colors.grey[300],
+                        child: const Icon(
+                          Icons.business,
+                          size: 40,
+                          color: Colors.grey,
+                        ),
+                      );
+                    },
                   ),
                 ),
                 // White card overlay

@@ -8,6 +8,7 @@ import 'package:sportefy/dependency_injection.dart';
 import 'package:sportefy/presentation/constants/image_links.dart';
 import 'package:sportefy/presentation/widgets/common/custom_circle_avatar.dart';
 import 'package:sportefy/presentation/widgets/common/flexible_app_bar.dart';
+import 'package:sportefy/presentation/widgets/common/shimmer_exports.dart';
 import 'package:sportefy/presentation/widgets/home_page_grid_tile.dart';
 import 'package:sportefy/presentation/screens/facility/facility_details_page.dart';
 import '../../../bloc/facility/facility_bloc.dart';
@@ -130,7 +131,62 @@ class _HomePageState extends State<HomePage> {
       body: BlocBuilder<FacilityBloc, FacilityState>(
         builder: (context, state) {
           if (state is FacilityLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return SingleChildScrollView(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Search Bar shimmer
+                  AppShimmer(
+                    child: ShimmerContainer(
+                      width: double.infinity,
+                      height: 48,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+
+                  // Carousel shimmer
+                  const CarouselShimmer(),
+                  const SizedBox(height: 20),
+
+                  // Sports chips shimmer
+                  const SportsCategoryChipsShimmer(),
+                  const SizedBox(height: 24),
+
+                  // Section title shimmer
+                  AppShimmer(
+                    child: Row(
+                      children: [
+                        const ShimmerCircle(size: 20),
+                        const SizedBox(width: 8),
+                        ShimmerText(
+                          width: MediaQuery.of(context).size.width * 0.4,
+                          height: 18,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+
+                  // Venues grid shimmer
+                  GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 12.0,
+                          mainAxisSpacing: 12.0,
+                          childAspectRatio: 0.8,
+                        ),
+                    itemCount: 6,
+                    itemBuilder: (context, index) =>
+                        const FacilityGridTileShimmer(),
+                  ),
+                ],
+              ),
+            );
           } else if (state is FacilityLoaded) {
             return SingleChildScrollView(
               padding: const EdgeInsets.all(16.0),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
+import 'common/shimmer_exports.dart';
 
 /// Simple profile image widget with minimal complexity
 class SimpleProfileImage extends StatelessWidget {
@@ -39,14 +40,7 @@ class SimpleProfileImage extends StatelessWidget {
         fit: BoxFit.cover,
         loadingBuilder: (context, child, loadingProgress) {
           if (loadingProgress == null) return child;
-          return SizedBox(
-            width: radius * 0.6,
-            height: radius * 0.6,
-            child: CircularProgressIndicator(
-              strokeWidth: 2,
-              valueColor: AlwaysStoppedAnimation<Color>(iconColor),
-            ),
-          );
+          return AppShimmer(child: ShimmerCircle(size: radius * 2));
         },
         errorBuilder: (context, error, stackTrace) {
           return Icon(Icons.person, size: radius * 0.8, color: iconColor);

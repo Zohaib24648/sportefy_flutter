@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../bloc/history/history_bloc.dart';
 import '../../../data/model/history_item.dart';
+import '../common/shimmer_exports.dart';
 import 'history_list_view.dart';
 import 'history_config.dart';
 
@@ -59,17 +60,38 @@ class HistoryTabContent extends StatelessWidget {
 
   Widget _buildLoadingState() {
     final isSync = state is HistorySyncing;
-    return Center(
+    return Padding(
+      padding: const EdgeInsets.all(16),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CircularProgressIndicator(
-            color: isSync ? Colors.blue : Colors.orange,
-          ),
-          const SizedBox(height: 16),
-          Text(
-            isSync ? 'Syncing with server...' : 'Loading history...',
-            style: const TextStyle(fontSize: 16, color: Colors.grey),
+          if (isSync)
+            Container(
+              padding: const EdgeInsets.all(12),
+              margin: const EdgeInsets.only(bottom: 16),
+              decoration: BoxDecoration(
+                color: Colors.blue.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                children: [
+                  const SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+                  const SizedBox(width: 12),
+                  const Text(
+                    'Syncing with server...',
+                    style: TextStyle(color: Colors.blue),
+                  ),
+                ],
+              ),
+            ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: 8,
+              itemBuilder: (context, index) => const HistoryItemShimmer(),
+            ),
           ),
         ],
       ),

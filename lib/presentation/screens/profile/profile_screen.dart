@@ -4,6 +4,7 @@ import '../../../bloc/auth/auth_bloc.dart';
 import '../../../bloc/profile/profile_bloc.dart';
 import '../../../dependency_injection.dart';
 import '../../constants/app_colors.dart';
+import '../../widgets/common/shimmer_exports.dart';
 import '../../widgets/simple_profile_image.dart';
 import '../../widgets/confirmation_dialog.dart';
 import 'profile_edit_screen.dart';
@@ -147,16 +148,7 @@ class _ProfileScreenContentState extends State<ProfileScreenContent> {
               return BlocBuilder<ProfileBloc, ProfileState>(
                 builder: (context, profileState) {
                   if (profileState is ProfileLoading) {
-                    return const Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CircularProgressIndicator(),
-                          SizedBox(height: 16),
-                          Text('Loading profile...'),
-                        ],
-                      ),
-                    );
+                    return const ProfileShimmer();
                   } else if (profileState is ProfileLoaded) {
                     return SingleChildScrollView(
                       padding: const EdgeInsets.all(16.0),

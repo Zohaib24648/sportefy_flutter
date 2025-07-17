@@ -10,6 +10,7 @@ import '../../../dependency_injection.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_styles.dart';
 import '../../utils/responsive_helper.dart';
+import '../../widgets/common/shimmer_exports.dart';
 import '../../navigation/main_navigation_wrapper.dart';
 
 class QRScreen extends StatelessWidget {
@@ -296,19 +297,7 @@ class QRScreenContent extends StatelessWidget {
         },
         builder: (context, state) {
           if (state is QrLoading) {
-            return const Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircularProgressIndicator(color: Colors.white),
-                  Gap(16),
-                  Text(
-                    'Initializing camera...',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ],
-              ),
-            );
+            return const QRScannerShimmer();
           }
 
           if (state is QrCameraReady) {
