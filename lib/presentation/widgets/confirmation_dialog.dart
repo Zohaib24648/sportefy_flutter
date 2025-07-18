@@ -36,13 +36,15 @@ class ConfirmationDialog extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: (iconColor ?? AppColors.primaryColor).withValues(alpha:0.1),
+                  color: (iconColor ?? AppColors.primary).withValues(
+                    alpha: 0.1,
+                  ),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
                   icon,
                   size: 32,
-                  color: iconColor ?? AppColors.primaryColor,
+                  color: iconColor ?? AppColors.primary,
                 ),
               ),
             if (icon != null) const SizedBox(height: 16),
@@ -87,7 +89,7 @@ class ConfirmationDialog extends StatelessWidget {
                       onConfirm?.call();
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: iconColor ?? AppColors.primaryColor,
+                      backgroundColor: iconColor ?? AppColors.primary,
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       shape: RoundedRectangleBorder(

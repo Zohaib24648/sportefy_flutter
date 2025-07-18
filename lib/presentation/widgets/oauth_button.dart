@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import '../constants/app_colors.dart';
+import '../constants/app_styles.dart';
 import '../utils/responsive_helper.dart';
 
 class OAuthButton extends StatelessWidget {
@@ -36,12 +37,9 @@ class OAuthButton extends StatelessWidget {
               const Gap(4),
               Text(
                 label,
-                style: TextStyle(
-                  color: Colors.black.withValues(alpha: .7),
-                  fontSize: ResponsiveHelper.getResponsiveFontSize(context, 12),
-                  fontFamily: 'Lexend',
-                  fontWeight: FontWeight.w400,
-                ),
+                style: AppStyles.caption(
+                  context,
+                ).copyWith(color: AppColors.grey2),
                 overflow: TextOverflow.ellipsis,
               ),
             ],

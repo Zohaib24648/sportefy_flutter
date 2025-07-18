@@ -52,7 +52,7 @@ class HistoryListView extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(emptyIcon, size: 64, color: AppColors.primaryColor),
+          Icon(emptyIcon, size: 64, color: AppColors.primary),
           const SizedBox(height: 16),
           Text(
             _getEmptyTitle(),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sportefy/data/model/facility_base.dart';
+import '../constants/app_styles.dart';
 import 'common/shimmer_exports.dart';
 
 /// ──────────────────────────────────────────────────────────────────────────
@@ -105,32 +106,26 @@ class FacilityGridTile extends StatelessWidget {
                           facility.name,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontFamily: 'Lexend',
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12,
-                            color: Color(0xFF272727),
-                            height: 1.3,
-                          ),
+                          style: AppTextStyles.bodySmall(
+                            bold: true,
+                          ).copyWith(fontSize: 12, height: 1.3),
                         ),
                         Text(
                           facility.address,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontFamily: 'Lexend',
+                          style: AppTextStyles.bodySmall().copyWith(
                             fontSize: 9,
-                            color: Color(0xFF858585),
+                            color: const Color(0xFF858585),
                           ),
                         ),
                         Text(
                           facility.phoneNumber,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontFamily: 'Lexend',
+                          style: AppTextStyles.bodySmall().copyWith(
                             fontSize: 9,
-                            color: Color(0xFF858585),
+                            color: const Color(0xFF858585),
                           ),
                         ),
                       ],

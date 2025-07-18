@@ -41,6 +41,7 @@ dev_dependencies:
   drift_dev: ^2.26.1
   build_runner: ^2.4.15
   injectable_generator: ^2.7.0
+  mockito: ^5.4.4
 flutter:
   uses-material-design: true
   assets:

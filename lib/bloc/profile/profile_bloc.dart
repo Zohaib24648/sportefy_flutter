@@ -13,6 +13,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   ProfileBloc(this._profileRepository) : super(ProfileInitial()) {
     on<LoadUserProfile>(_onLoadUserProfile);
+    on<LoadCurrentUserProfile>(_onLoadCurrentUserProfile);
     on<UpdateUserProfile>(_onUpdateUserProfile);
     on<UpdateProfileData>(_onUpdateProfileData);
   }
@@ -24,6 +25,20 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     emit(ProfileLoading());
     try {
       final profile = await _profileRepository.getUserProfile(event.userId);
+      emit(ProfileLoaded(profile));
+    } catch (e) {
+      emit(ProfileError('Failed to load profile: ${e.toString()}'));
+    }
+  }
+
+  Future<void> _onLoadCurrentUserProfile(
+    LoadCurrentUserProfile event,
+    Emitter<ProfileState> emit,
+  ) async {
+    emit(ProfileLoading());
+    try {
+      // Pass empty string as userId since the API uses the token to identify the user
+      final profile = await _profileRepository.getUserProfile('');
       emit(ProfileLoaded(profile));
     } catch (e) {
       emit(ProfileError('Failed to load profile: ${e.toString()}'));

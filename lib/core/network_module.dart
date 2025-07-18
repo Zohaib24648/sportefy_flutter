@@ -1,12 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'interceptors/auth_interceptor.dart';
 
 @module
 abstract class NetworkModule {
   @lazySingleton
-  Dio dio() {
-    return Dio(
+  Dio dio(AuthInterceptor authInterceptor) {
+    final dio = Dio(
       BaseOptions(
         baseUrl:
             dotenv.env['API_BASE_URL'] ??
@@ -19,5 +20,10 @@ abstract class NetworkModule {
         },
       ),
     );
+
+    // Add the auth interceptor
+    dio.interceptors.add(authInterceptor);
+
+    return dio;
   }
 }

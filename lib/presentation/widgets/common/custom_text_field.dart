@@ -52,7 +52,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             vertical: ResponsiveHelper.getResponsiveSpacing(context, 4),
           ),
           decoration: BoxDecoration(
-            color: AppColors.cardColor,
+            color: AppColors.white,
             borderRadius: BorderRadius.circular(14),
             boxShadow: const [
               BoxShadow(
@@ -91,11 +91,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
             padding: EdgeInsets.only(left: 16, top: 4, right: 16, bottom: 8),
             child: Text(
               _errorText!,
-              style: TextStyle(
-                color: Colors.red,
-                fontSize: 12,
-                fontWeight: FontWeight.w400,
-              ),
+              style: AppStyles.caption(
+                context,
+              ).copyWith(color: AppColors.error),
             ),
           ),
       ],

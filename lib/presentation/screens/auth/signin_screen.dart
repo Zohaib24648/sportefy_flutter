@@ -56,7 +56,7 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.white,
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is Authenticated) {
@@ -144,9 +144,9 @@ class _SignInScreenState extends State<SignInScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(AppStrings.signIn, style: AppStyles.heading(context)),
+        Text(AppStrings.signIn, style: AppTextStyles.h1),
         SizedBox(height: ResponsiveHelper.getResponsiveSpacing(context, 8)),
-        Text(AppStrings.signInDescription, style: AppStyles.bodyText(context)),
+        Text(AppStrings.signInDescription, style: AppTextStyles.bodyMedium()),
       ],
     );
   }
@@ -218,7 +218,7 @@ class _SignInScreenState extends State<SignInScreen> {
           suffixIcon: IconButton(
             icon: Icon(
               _obscurePassword ? Icons.visibility_off : Icons.visibility,
-              color: AppColors.iconColor,
+              color: AppColors.black2,
             ),
             onPressed: () {
               setState(() {
@@ -253,14 +253,14 @@ class _SignInScreenState extends State<SignInScreen> {
             style: TextStyle(
               fontSize: ResponsiveHelper.getResponsiveFontSize(context, 14),
               fontFamily: 'Lexend',
-              color: AppColors.textTertiary,
+              color: AppColors.grey1,
               fontWeight: FontWeight.w400,
             ),
           ),
           ClickableText(
             text: AppStrings.signUp,
             routeName: '/signup',
-            color: AppColors.primaryColor,
+            color: AppColors.grey1,
             fontSize: 14,
             isBold: false,
           ),

@@ -9,7 +9,7 @@ import '../widgets/common/bottom_navigation_bar.dart';
 import '../widgets/common/connectivity_widgets.dart';
 import '../screens/home/home_screen.dart';
 import '../screens/search/search_screen.dart';
-import '../screens/qr_check_in/qr_screen_bloc.dart';
+import '../screens/qr_check_in/qr_screen.dart';
 import '../screens/profile/profile_screen.dart';
 import '../screens/history/history_screen.dart';
 

@@ -6,7 +6,7 @@ import 'common/shimmer_exports.dart';
 class SimpleProfileImage extends StatelessWidget {
   final String? avatarUrl;
   final double radius;
-  final Color backgroundColor;
+  final Color white;
   final Color iconColor;
   final VoidCallback? onTap;
 
@@ -14,7 +14,7 @@ class SimpleProfileImage extends StatelessWidget {
     super.key,
     this.avatarUrl,
     this.radius = 50,
-    this.backgroundColor = AppColors.primaryColor,
+    this.white = AppColors.primary,
     this.iconColor = Colors.white,
     this.onTap,
   });
@@ -25,7 +25,7 @@ class SimpleProfileImage extends StatelessWidget {
       onTap: onTap,
       child: CircleAvatar(
         radius: radius,
-        backgroundColor: backgroundColor,
+        backgroundColor: white,
         child: ClipOval(child: _buildAvatarContent()),
       ),
     );

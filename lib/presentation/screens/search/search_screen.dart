@@ -31,10 +31,10 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.white,
       appBar: AppBar(
         title: const Text('Search'),
-        backgroundColor: AppColors.primaryColor,
+        backgroundColor: AppColors.primary,
       ),
       body: Column(
         children: [
@@ -45,7 +45,7 @@ class _SearchScreenState extends State<SearchScreen> {
               hintText: 'Search for venues, sports, events...',
               onChanged: _onSearchChanged,
               onSubmitted: _onSearchSubmitted,
-              backgroundColor: Colors.white,
+              white: Colors.white,
               showShadow: true,
             ),
           ),
@@ -90,7 +90,7 @@ class _SearchScreenState extends State<SearchScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.search, size: 64, color: AppColors.primaryColor),
+            Icon(Icons.search, size: 64, color: AppColors.primary),
             SizedBox(height: 16),
             Text(
               'Search for Sports',

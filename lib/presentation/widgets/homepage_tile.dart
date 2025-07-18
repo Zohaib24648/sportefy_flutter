@@ -11,7 +11,7 @@ class HomepageTile extends StatelessWidget {
     required this.subtitle,
     required this.title,
     required this.buttonText,
-    this.backgroundColor = const Color(0xFFFFD0BA),
+    this.white = const Color(0xFFFFD0BA),
     this.onTap,
     this.size,
   });
@@ -19,7 +19,7 @@ class HomepageTile extends StatelessWidget {
   final String subtitle;
   final String title;
   final String buttonText;
-  final Color backgroundColor;
+  final Color white;
   final VoidCallback? onTap;
 
   final Size? size;
@@ -44,7 +44,7 @@ class HomepageTile extends StatelessWidget {
           height: target.height,
           padding: EdgeInsets.symmetric(horizontal: s(24), vertical: s(27)),
           decoration: BoxDecoration(
-            color: backgroundColor,
+            color: white,
             borderRadius: BorderRadius.circular(s(14)),
           ),
           child: Column(

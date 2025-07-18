@@ -87,7 +87,7 @@ class QRScreenContent extends StatelessWidget {
             }
           },
           builder: (context, checkInState) => AlertDialog(
-            backgroundColor: AppColors.cardColor,
+            backgroundColor: AppColors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),
@@ -96,12 +96,12 @@ class QRScreenContent extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: AppColors.primaryColor.withValues(alpha: 0.1),
+                    color: AppColors.primary.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Icon(
                     Icons.qr_code_scanner,
-                    color: AppColors.primaryColor,
+                    color: AppColors.primary,
                     size: 24,
                   ),
                 ),
@@ -125,7 +125,7 @@ class QRScreenContent extends StatelessWidget {
                   'Scanned Data:',
                   style: AppStyles.bodyText(context).copyWith(
                     fontWeight: FontWeight.w500,
-                    color: AppColors.textPrimary,
+                    color: AppColors.black2,
                   ),
                 ),
                 const Gap(8),
@@ -133,9 +133,9 @@ class QRScreenContent extends StatelessWidget {
                   width: double.infinity,
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: AppColors.backgroundColor,
+                    color: AppColors.white,
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: AppColors.dividerColor),
+                    border: Border.all(color: AppColors.black2),
                   ),
                   child: Text(
                     data,
@@ -194,7 +194,7 @@ class QRScreenContent extends StatelessWidget {
                     final qrBloc = BlocProvider.of<QrBloc>(context);
                     qrBloc.add(QrResetScanning());
                   },
-                  child: Text('Scan Again', style: AppStyles.linkText(context)),
+                  child: Text('Scan Again', style: AppTextStyles.link),
                 ),
               ),
               Builder(
@@ -205,12 +205,12 @@ class QRScreenContent extends StatelessWidget {
                     _navigateToHistory(context);
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primaryColor,
+                    backgroundColor: AppColors.primary,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  child: Text('Confirm', style: AppStyles.buttonText(context)),
+                  child: Text('Confirm', style: AppTextStyles.h4),
                 ),
               ),
             ],
@@ -315,7 +315,7 @@ class QRScreenContent extends StatelessWidget {
                 Container(
                   decoration: ShapeDecoration(
                     shape: QrScannerOverlayShape(
-                      borderColor: AppColors.primaryColor,
+                      borderColor: AppColors.primary,
                       borderRadius: 16,
                       borderLength: 30,
                       borderWidth: 4,
@@ -405,7 +405,7 @@ class QRScreenContent extends StatelessWidget {
                       context.read<QrBloc>().add(QrInitializeCamera());
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primaryColor,
+                      backgroundColor: AppColors.primary,
                     ),
                     child: const Text('Retry'),
                   ),
@@ -436,7 +436,7 @@ class QRScreenContent extends StatelessWidget {
           color: Colors.black.withValues(alpha: 0.7),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: AppColors.primaryColor.withValues(alpha: 0.3),
+            color: AppColors.primary.withValues(alpha: 0.3),
             width: 1,
           ),
         ),

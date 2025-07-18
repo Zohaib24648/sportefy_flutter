@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../constants/app_colors.dart';
 
 // Reusable Bottom Navigation Bar Component
 class CustomBottomNavBar extends StatelessWidget {
@@ -50,9 +51,7 @@ class CustomBottomNavBar extends StatelessWidget {
 
   Widget _buildNavItem(int index, IconData icon, String label) {
     final isSelected = currentIndex == index;
-    final color = isSelected
-        ? const Color(0xFF9C86F2)
-        : const Color(0xFFA2A2A2);
+    final color = isSelected ? AppColors.primary : AppColors.grey3;
 
     return Expanded(
       child: InkWell(

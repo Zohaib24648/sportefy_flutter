@@ -24,7 +24,7 @@ class HistoryTabBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: const Text('History'),
-      backgroundColor: AppColors.primaryColor,
+      backgroundColor: AppColors.primary,
       foregroundColor: Colors.white,
       actions: [
         if (onLoadSampleData != null)

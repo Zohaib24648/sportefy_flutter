@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage> {
         'subtitle': 'Book Play. Win!',
         'title': 'Customize Your Own Event',
         'buttonText': 'Book Now',
-        'backgroundColor': const Color(0xFFFFD0BA),
+        'white': const Color(0xFFFFD0BA),
         'onTap': () {
           widget.onNavigateToTab?.call(2); // Navigate to QR/create tab
         },
@@ -77,7 +77,7 @@ class _HomePageState extends State<HomePage> {
         'subtitle': 'Find & Join',
         'title': 'Discover Sports Events',
         'buttonText': 'Explore',
-        'backgroundColor': const Color(0xFFB8E6B8),
+        'white': const Color(0xFFB8E6B8),
         'onTap': () {
           widget.onNavigateToTab?.call(1); // Navigate to search tab
         },
@@ -86,7 +86,7 @@ class _HomePageState extends State<HomePage> {
         'subtitle': 'Connect & Play',
         'title': 'Meet Fellow Athletes',
         'buttonText': 'Connect',
-        'backgroundColor': const Color(0xFFB8D4FF),
+        'white': const Color(0xFFB8D4FF),
         'onTap': () {
           widget.onNavigateToTab?.call(3); // Navigate to profile tab
         },
@@ -95,7 +95,7 @@ class _HomePageState extends State<HomePage> {
         'subtitle': 'Track & Improve',
         'title': 'Your Activity History',
         'buttonText': 'View History',
-        'backgroundColor': const Color(0xFFFFB8E6),
+        'white': const Color(0xFFFFB8E6),
         'onTap': () {
           widget.onNavigateToTab?.call(4); // Navigate to history tab
         },
@@ -106,7 +106,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.white,
       appBar: FlexibleAppBar(
         leading: CustomCircleAvatar(
           imageUrl:
@@ -118,7 +118,7 @@ class _HomePageState extends State<HomePage> {
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
-            color: AppColors.primaryColor,
+            color: AppColors.primary,
           ),
         ),
         actions: [
@@ -202,12 +202,12 @@ class _HomePageState extends State<HomePage> {
                       widget.onNavigateToTab?.call(1);
                     },
                     enabled: false, // Make it non-editable so it just navigates
-                    backgroundColor: Colors.white,
+                    white: Colors.white,
                     borderColor: Colors.transparent,
                     showShadow: true,
                     prefixIcon: Icon(
                       Icons.search,
-                      color: AppColors.primaryColor,
+                      color: AppColors.primary,
                       size: 24,
                     ),
                     suffixIcon: Icon(
@@ -244,8 +244,7 @@ class _HomePageState extends State<HomePage> {
                               subtitle: tileData['subtitle']!,
                               title: tileData['title']!,
                               buttonText: tileData['buttonText']!,
-                              backgroundColor:
-                                  tileData['backgroundColor'] as Color,
+                              white: tileData['white'] as Color,
                               onTap: () {
                                 // Add haptic feedback for better UX
                                 HapticFeedback.lightImpact();

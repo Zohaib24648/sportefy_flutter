@@ -1,5 +1,6 @@
 // widgets/facility_image_section.dart
 import 'package:flutter/material.dart';
+import '../../constants/app_styles.dart';
 
 class FacilityImageSection extends StatelessWidget {
   final String imageUrl;
@@ -70,15 +71,7 @@ class FacilityImageSection extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  facilityName,
-                  style: const TextStyle(
-                    color: Color(0xFF161320),
-                    fontSize: 20,
-                    fontFamily: 'Lexend',
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
+                Text(facilityName, style: AppTextStyles.h3),
                 const SizedBox(height: 2),
                 Row(
                   children: [

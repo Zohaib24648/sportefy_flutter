@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 import 'dart:io';
 import 'bloc/auth/auth_bloc.dart';
+import 'bloc/profile/profile_bloc.dart';
 import 'dependency_injection.dart';
 import 'presentation/screens/auth/signin_screen.dart';
 import 'presentation/screens/auth/signup_screen.dart';
@@ -50,8 +51,13 @@ Future<void> main() async {
   configureDependencies();
 
   runApp(
-    BlocProvider(
-      create: (_) => getIt<AuthBloc>()..add(AuthCheckRequested()),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => getIt<AuthBloc>()..add(AuthCheckRequested()),
+        ),
+        BlocProvider(create: (_) => getIt<ProfileBloc>()),
+      ],
       child: const Sportefy(),
     ),
   );

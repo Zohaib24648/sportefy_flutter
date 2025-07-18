@@ -34,21 +34,21 @@ class UserProfile {
   factory UserProfile.fromJson(Map<String, dynamic> json) {
     return UserProfile(
       id: json['id'] as String,
-      fullName: json['full_name'] as String,
+      fullName: json['fullName'] as String,
       role: json['role'] as String,
-      avatarUrl: json['avatar_url'] as String?,
-      userName: json['user_name'] as String?,
+      avatarUrl: json['avatarUrl'] as String?,
+      userName: json['userName'] as String?,
       gender: json['gender'] as String?,
       age: json['age'] as int?,
       address: json['address'] as String?,
       organization: json['organization'] as String?,
-      createdAt: json['created_at'] != null
-          ? DateTime.parse(json['created_at'] as String)
+      createdAt: json['createdAt'] != null
+          ? DateTime.parse(json['createdAt'] as String)
           : null,
-      updatedAt: json['updated_at'] != null
-          ? DateTime.parse(json['updated_at'] as String)
+      updatedAt: json['updatedAt'] != null
+          ? DateTime.parse(json['updatedAt'] as String)
           : null,
-      phoneNumber: json['phone_number'] as String?,
+      phoneNumber: json['phoneNumber'] as String?,
       email: json['email'] as String,
       credits: json['credits'] as int?,
     );
@@ -57,17 +57,17 @@ class UserProfile {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'full_name': fullName,
+      'fullName': fullName,
       'role': role,
-      'avatar_url': avatarUrl,
-      'user_name': userName,
+      'avatarUrl': avatarUrl,
+      'userName': userName,
       'gender': gender,
       'age': age,
       'address': address,
       'organization': organization,
-      'created_at': createdAt?.toIso8601String(),
-      'updated_at': updatedAt?.toIso8601String(),
-      'phone_number': phoneNumber,
+      'createdAt': createdAt?.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
+      'phoneNumber': phoneNumber,
       'email': email,
       'credits': credits,
     };

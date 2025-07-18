@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import '../../constants/app_styles.dart';
+
 // widgets/promotional_cards.dart
 class PromotionalCard extends StatelessWidget {
   final String tagline;
   final String title;
   final String buttonText;
-  final Color backgroundColor;
+  final Color white;
   final String? imageUrl;
   final bool hasImage;
 
@@ -13,7 +15,7 @@ class PromotionalCard extends StatelessWidget {
     required this.tagline,
     required this.title,
     required this.buttonText,
-    required this.backgroundColor,
+    required this.white,
     this.imageUrl,
     this.hasImage = false,
   });
@@ -25,7 +27,7 @@ class PromotionalCard extends StatelessWidget {
       height: 158,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: backgroundColor,
+        color: white,
         borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
@@ -45,22 +47,15 @@ class PromotionalCard extends StatelessWidget {
             children: [
               Text(
                 tagline,
-                style: TextStyle(
+                style: AppStyles.caption(context).copyWith(
                   color: Colors.white.withValues(alpha: .67),
-                  fontSize: 12,
-                  fontFamily: 'Lexend',
                   fontWeight: FontWeight.w600,
                 ),
               ),
               const SizedBox(height: 4),
               Text(
                 title,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 22,
-                  fontFamily: 'Lexend',
-                  fontWeight: FontWeight.w600,
-                ),
+                style: AppTextStyles.h3.copyWith(color: Colors.white),
               ),
             ],
           ),
@@ -72,10 +67,8 @@ class PromotionalCard extends StatelessWidget {
             ),
             child: Text(
               buttonText,
-              style: const TextStyle(
-                color: Color(0xFF5D3891),
-                fontSize: 10,
-                fontFamily: 'Lexend',
+              style: AppStyles.caption(context).copyWith(
+                color: const Color(0xFF5D3891),
                 fontWeight: FontWeight.w500,
               ),
             ),

@@ -161,7 +161,7 @@ class _HistoryScreenContentState extends State<HistoryScreenContent>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.white,
       appBar: HistoryTabBar(
         controller: _tabController,
         onSyncPressed: _syncHistory,

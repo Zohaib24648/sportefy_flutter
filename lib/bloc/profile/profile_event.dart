@@ -8,6 +8,8 @@ class LoadUserProfile extends ProfileEvent {
   LoadUserProfile(this.userId);
 }
 
+class LoadCurrentUserProfile extends ProfileEvent {}
+
 class UpdateUserProfile extends ProfileEvent {
   final UserProfile profile;
 

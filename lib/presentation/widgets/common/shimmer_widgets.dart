@@ -41,24 +41,25 @@ class FacilityGridTileShimmer extends StatelessWidget {
                 padding: const EdgeInsets.all(12),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     // Title
-                    const ShimmerText(width: double.infinity, height: 18),
-                    const SizedBox(height: 8),
+                    const ShimmerText(width: double.infinity, height: 16),
+                    const SizedBox(height: 6),
                     // Address
                     ShimmerText(
                       width: MediaQuery.of(context).size.width * 0.3,
-                      height: 14,
+                      height: 12,
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 6),
                     // Rating or additional info
                     Row(
                       children: [
-                        const ShimmerCircle(size: 16),
-                        const SizedBox(width: 8),
+                        const ShimmerCircle(size: 12),
+                        const SizedBox(width: 6),
                         ShimmerText(
                           width: MediaQuery.of(context).size.width * 0.2,
-                          height: 14,
+                          height: 12,
                         ),
                       ],
                     ),

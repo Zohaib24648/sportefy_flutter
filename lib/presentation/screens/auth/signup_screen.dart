@@ -63,7 +63,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.white,
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
@@ -161,9 +161,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(AppStrings.signUp, style: AppStyles.heading(context)),
+        Text(AppStrings.signUp, style: AppTextStyles.h1),
         SizedBox(height: ResponsiveHelper.getResponsiveSpacing(context, 8)),
-        Text(AppStrings.signUpDescription, style: AppStyles.bodyText(context)),
+        Text(AppStrings.signUpDescription, style: AppTextStyles.bodyMedium()),
       ],
     );
   }
@@ -246,7 +246,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           suffixIcon: IconButton(
             icon: Icon(
               _obscurePassword ? Icons.visibility_off : Icons.visibility,
-              color: AppColors.iconColor,
+              color: AppColors.grey1,
             ),
             onPressed: () {
               setState(() {
@@ -271,7 +271,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           suffixIcon: IconButton(
             icon: Icon(
               _obscureConfirmPassword ? Icons.visibility_off : Icons.visibility,
-              color: AppColors.iconColor,
+              color: AppColors.grey1,
             ),
             onPressed: () {
               setState(() {
@@ -298,7 +298,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 _agreedToTerms = value ?? false;
               });
             },
-            activeColor: AppColors.primaryColor,
+            activeColor: AppColors.primary,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(5),
             ),
@@ -315,39 +315,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
               children: [
                 Text(
                   AppStrings.agreeToTerms,
-                  style: TextStyle(
-                    fontSize: ResponsiveHelper.getResponsiveFontSize(
-                      context,
-                      12,
-                    ),
-                    fontFamily: 'Lexend',
-                    color: AppColors.textTertiary,
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style: AppStyles.caption(
+                    context,
+                  ).copyWith(color: AppColors.secondary),
                 ),
                 ClickableText(
                   text: AppStrings.termsOfService,
                   url: 'https://sportefy.com/terms',
                   fontSize: 12,
-                  color: AppColors.primaryColor,
+                  color: AppColors.primary,
                 ),
                 Text(
                   AppStrings.and,
-                  style: TextStyle(
-                    fontSize: ResponsiveHelper.getResponsiveFontSize(
-                      context,
-                      12,
-                    ),
-                    fontFamily: 'Lexend',
-                    color: AppColors.textTertiary,
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style: AppStyles.caption(
+                    context,
+                  ).copyWith(color: AppColors.secondary),
                 ),
                 ClickableText(
                   text: AppStrings.privacyPolicy,
                   url: 'https://sportefy.com/privacy',
                   fontSize: 12,
-                  color: AppColors.primaryColor,
+                  color: AppColors.primary,
                 ),
               ],
             ),
@@ -379,14 +367,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
             style: TextStyle(
               fontSize: ResponsiveHelper.getResponsiveFontSize(context, 14),
               fontFamily: 'Lexend',
-              color: AppColors.textTertiary,
+              color: AppColors.grey1,
               fontWeight: FontWeight.w400,
             ),
           ),
           ClickableText(
             text: AppStrings.signIn,
             routeName: '/signin',
-            color: AppColors.primaryColor,
+            color: AppColors.primary,
             fontSize: 14,
             isBold: false,
           ),

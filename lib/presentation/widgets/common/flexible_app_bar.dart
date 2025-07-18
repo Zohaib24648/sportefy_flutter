@@ -6,7 +6,7 @@ class FlexibleAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.leading,
     this.title,
     this.actions,
-    this.backgroundColor,
+    this.white,
     this.elevation = 0,
     this.padding = const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
   });
@@ -14,7 +14,7 @@ class FlexibleAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? leading;
   final Widget? title;
   final List<Widget>? actions;
-  final Color? backgroundColor;
+  final Color? white;
   final double elevation;
   final EdgeInsetsGeometry padding;
 
@@ -24,7 +24,7 @@ class FlexibleAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final bg = backgroundColor ?? theme.scaffoldBackgroundColor;
+    final bg = white ?? theme.scaffoldBackgroundColor;
 
     return Material(
       color: bg,
@@ -58,7 +58,7 @@ class AppBarActions {
   static Widget notificationButton({
     required VoidCallback onTap,
     int notificationCount = 0,
-    Color? backgroundColor,
+    Color? white,
     Color? iconColor,
   }) {
     return Stack(
@@ -66,7 +66,7 @@ class AppBarActions {
       children: [
         _ActionButton(
           onTap: onTap,
-          backgroundColor: backgroundColor,
+          white: white,
           icon: Icons.notifications_outlined,
           iconColor: iconColor,
         ),
@@ -82,22 +82,22 @@ class AppBarActions {
 
   static Widget searchButton({
     required VoidCallback onTap,
-    Color? backgroundColor,
+    Color? white,
     Color? iconColor,
   }) => _ActionButton(
     onTap: onTap,
-    backgroundColor: backgroundColor,
+    white: white,
     icon: Icons.search_outlined,
     iconColor: iconColor,
   );
 
   static Widget moreButton({
     required VoidCallback onTap,
-    Color? backgroundColor,
+    Color? white,
     Color? iconColor,
   }) => _ActionButton(
     onTap: onTap,
-    backgroundColor: backgroundColor,
+    white: white,
     icon: Icons.more_vert,
     iconColor: iconColor,
   );
@@ -105,12 +105,12 @@ class AppBarActions {
   static Widget customButton({
     required VoidCallback onTap,
     required IconData icon,
-    Color? backgroundColor,
+    Color? white,
     Color? iconColor,
     double size = 24,
   }) => _ActionButton(
     onTap: onTap,
-    backgroundColor: backgroundColor,
+    white: white,
     icon: icon,
     iconColor: iconColor,
     iconSize: size,
@@ -121,14 +121,14 @@ class _ActionButton extends StatelessWidget {
   const _ActionButton({
     required this.onTap,
     required this.icon,
-    this.backgroundColor,
+    this.white,
     this.iconColor,
     this.iconSize = 24,
   });
 
   final VoidCallback onTap;
   final IconData icon;
-  final Color? backgroundColor;
+  final Color? white;
   final Color? iconColor;
   final double iconSize;
 
@@ -143,7 +143,7 @@ class _ActionButton extends StatelessWidget {
           width: 48,
           height: 48,
           decoration: BoxDecoration(
-            color: backgroundColor ?? Colors.grey.shade100,
+            color: white ?? Colors.grey.shade100,
             borderRadius: BorderRadius.circular(12),
           ),
           child: Icon(
@@ -251,7 +251,7 @@ class AppBarLeading {
   static Widget customIcon({
     required IconData icon,
     VoidCallback? onTap,
-    Color? backgroundColor,
+    Color? white,
     Color? iconColor,
     double size = 24,
   }) {
@@ -261,7 +261,7 @@ class AppBarLeading {
         width: 48,
         height: 48,
         decoration: BoxDecoration(
-          color: backgroundColor ?? Colors.grey.shade100,
+          color: white ?? Colors.grey.shade100,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Icon(icon, color: iconColor ?? Colors.grey.shade700, size: size),

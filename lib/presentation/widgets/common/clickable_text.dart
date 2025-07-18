@@ -69,7 +69,7 @@ class _ClickableTextState extends State<ClickableText> {
 
   @override
   Widget build(BuildContext context) {
-    final effectiveColor = widget.color ?? AppColors.primaryColor;
+    final effectiveColor = widget.color ?? AppColors.primary;
     final effectiveFontSize = widget.fontSize ?? 14;
 
     TextStyle defaultStyle = TextStyle(

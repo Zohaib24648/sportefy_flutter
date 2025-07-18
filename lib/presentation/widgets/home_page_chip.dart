@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../constants/app_styles.dart';
 
 class HomepageChip extends StatelessWidget {
   const HomepageChip({
@@ -7,7 +8,7 @@ class HomepageChip extends StatelessWidget {
     this.icon,
     this.iconAsset,
     this.onTap,
-    this.backgroundColor = Colors.white,
+    this.white = Colors.white,
     this.textColor = const Color(0xFF272727),
     this.width,
     this.height,
@@ -19,7 +20,7 @@ class HomepageChip extends StatelessWidget {
   final IconData? icon;
   final String? iconAsset;
   final VoidCallback? onTap;
-  final Color backgroundColor;
+  final Color white;
   final Color textColor;
   final double? width;
   final double? height;
@@ -38,7 +39,7 @@ class HomepageChip extends StatelessWidget {
           vertical: verticalPadding,
         ),
         decoration: BoxDecoration(
-          color: backgroundColor,
+          color: white,
           borderRadius: BorderRadius.circular(15), // big pill
         ),
         child: Row(
@@ -62,12 +63,7 @@ class HomepageChip extends StatelessWidget {
             ],
             Text(
               title,
-              style: TextStyle(
-                color: textColor,
-                fontSize: 10,
-                fontFamily: 'Lexend',
-                fontWeight: FontWeight.w400,
-              ),
+              style: AppStyles.caption(context).copyWith(color: textColor),
               overflow: TextOverflow.ellipsis,
             ),
           ],

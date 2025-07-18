@@ -46,7 +46,7 @@ class _CustomDropdownFieldState<T> extends State<CustomDropdownField<T>> {
             vertical: ResponsiveHelper.getResponsiveSpacing(context, 4),
           ),
           decoration: BoxDecoration(
-            color: AppColors.cardColor,
+            color: AppColors.white,
             borderRadius: BorderRadius.circular(14),
             boxShadow: const [
               BoxShadow(
@@ -77,7 +77,7 @@ class _CustomDropdownFieldState<T> extends State<CustomDropdownField<T>> {
                 vertical: ResponsiveHelper.getResponsiveSpacing(context, 18),
               ),
             ),
-            dropdownColor: AppColors.cardColor,
+            dropdownColor: AppColors.white,
             icon: const Icon(Icons.keyboard_arrow_down, color: Colors.grey),
           ),
         ),

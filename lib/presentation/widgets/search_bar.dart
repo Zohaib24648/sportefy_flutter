@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../constants/app_styles.dart';
 
 // Enhanced Search Bar Widget
 class EnhancedSearchBar extends StatefulWidget {
@@ -17,7 +18,7 @@ class EnhancedSearchBar extends StatefulWidget {
   final List<TextInputFormatter>? inputFormatters;
   final int? maxLength;
   final bool autofocus;
-  final Color? backgroundColor;
+  final Color? white;
   final Color? borderColor;
   final double? height;
   final EdgeInsetsGeometry? padding;
@@ -44,7 +45,7 @@ class EnhancedSearchBar extends StatefulWidget {
     this.inputFormatters,
     this.maxLength,
     this.autofocus = false,
-    this.backgroundColor,
+    this.white,
     this.borderColor,
     this.height = 52,
     this.padding,
@@ -192,13 +193,13 @@ class _EnhancedSearchBarState extends State<EnhancedSearchBar>
           return Container(
             height: widget.height,
             decoration: BoxDecoration(
-              color: widget.backgroundColor ?? Colors.white.withValues(alpha: 0.9),
+              color: widget.white ?? Colors.white.withValues(alpha: 0.9),
               borderRadius: widget.borderRadius ?? BorderRadius.circular(10),
               border: Border.all(
                 color:
                     Color.lerp(
                       widget.borderColor ?? Colors.transparent,
-                      theme.primaryColor,
+                      theme.colorScheme.primary,
                       _focusAnimation.value,
                     ) ??
                     Colors.transparent,
@@ -209,7 +210,7 @@ class _EnhancedSearchBarState extends State<EnhancedSearchBar>
                       BoxShadow(
                         color: Color.lerp(
                           Colors.black.withValues(alpha: .05),
-                          theme.primaryColor.withValues(alpha: 0.1),
+                          theme.colorScheme.primary.withValues(alpha: 0.1),
                           _focusAnimation.value,
                         )!,
                         blurRadius: 10 + (_focusAnimation.value * 5),
@@ -228,12 +229,7 @@ class _EnhancedSearchBarState extends State<EnhancedSearchBar>
               autofocus: widget.autofocus,
               style:
                   widget.textStyle ??
-                  TextStyle(
-                    color: theme.textTheme.bodyLarge?.color,
-                    fontSize: 14,
-                    fontFamily: 'Lexend',
-                    fontWeight: FontWeight.w400,
-                  ),
+                  AppStyles.bodyText(context).copyWith(fontSize: 14),
               onSubmitted: (value) {
                 _removeSuggestionsOverlay();
                 widget.onSubmitted?.call(value);
@@ -322,7 +318,7 @@ class AnimatedSearchIcon extends StatelessWidget {
               size: 24,
               color: Color.lerp(
                 Colors.grey[600],
-                theme.primaryColor,
+                theme.colorScheme.primary,
                 animation.value,
               ),
             ),
@@ -466,7 +462,7 @@ class _SearchBarExamplesState extends State<SearchBarExamples> {
             _buildSectionTitle('Custom Styled Search'),
             EnhancedSearchBar(
               hintText: 'Find your favorite sport...',
-              backgroundColor: Colors.purple.withValues(alpha: 0.1),
+              white: Colors.purple.withValues(alpha: 0.1),
               borderColor: Colors.purple.withValues(alpha: 0.3),
               height: 60,
               borderRadius: BorderRadius.circular(30),
@@ -493,7 +489,7 @@ class _SearchBarExamplesState extends State<SearchBarExamples> {
             EnhancedSearchBar(
               hintText: 'Quick search...',
               showShadow: false,
-              backgroundColor: Colors.grey[200],
+              white: Colors.grey[200],
               showSearchIcon: false,
               height: 48,
             ),

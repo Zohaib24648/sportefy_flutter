@@ -1,62 +1,307 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../bloc/auth/auth_bloc.dart';
+import 'package:sportefy/bloc/auth/auth_bloc.dart';
+import 'package:sportefy/presentation/widgets/confirmation_dialog.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../bloc/profile/profile_bloc.dart';
-import '../../../dependency_injection.dart';
+import '../../../data/model/user_profile.dart';
+import '../../../core/utils/debug_utils.dart';
 import '../../constants/app_colors.dart';
-import '../../widgets/common/shimmer_exports.dart';
-import '../../widgets/simple_profile_image.dart';
-import '../../widgets/confirmation_dialog.dart';
-import 'profile_edit_screen.dart';
+import '../../constants/app_styles.dart';
+import '../../widgets/common/primary_button.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<ProfileBloc>(),
-      child: const ProfileScreenContent(),
-    );
-  }
+  _ProfileScreenState createState() => _ProfileScreenState();
 }
 
-class ProfileScreenContent extends StatefulWidget {
-  const ProfileScreenContent({super.key});
+class _ProfileScreenState extends State<ProfileScreen> {
+  bool notificationsEnabled = true;
+  bool _isInitialized = false;
 
-  @override
-  State<ProfileScreenContent> createState() => _ProfileScreenContentState();
-}
-
-class _ProfileScreenContentState extends State<ProfileScreenContent> {
   @override
   void initState() {
     super.initState();
-    // Load user profile when screen initializes
-    final authState = context.read<AuthBloc>().state;
-    if (authState is Authenticated) {
-      context.read<ProfileBloc>().add(LoadUserProfile(authState.user.id));
+    _initializeProfile();
+  }
+
+  Future<void> _initializeProfile() async {
+    if (_isInitialized) return;
+    _isInitialized = true;
+
+    try {
+      // For testing purposes, store the test token
+      await DebugUtils.storeTestToken();
+      if (mounted) {
+        context.read<ProfileBloc>().add(LoadCurrentUserProfile());
+      }
+    } catch (e) {
+      if (mounted) {
+        // Handle error - maybe show a snackbar
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to initialize profile: $e')),
+        );
+      }
     }
   }
 
-  Widget _buildInfoRow(IconData icon, String label, String value) {
+  @override
+  Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    return Scaffold(
+      backgroundColor: AppColors.white,
+      body: SafeArea(
+        child: BlocBuilder<ProfileBloc, ProfileState>(
+          builder: (context, state) {
+            return SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 16, // 6% of screen width
+                  vertical: 14,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Header with back button and title
+                    _buildHeader(context),
+
+                    SizedBox(height: screenHeight * 0.03),
+
+                    // Search bar
+                    _buildSearchBar(),
+
+                    SizedBox(height: screenHeight * 0.04),
+
+                    // User profile section
+                    _buildUserProfileSection(state),
+
+                    SizedBox(height: screenHeight * 0.04),
+
+                    // Account Settings section
+                    _buildSection(
+                      title: 'Account Settings',
+                      items: [
+                        ProfileListItem(
+                          icon: Icons.person_outline,
+                          title: 'Personal Information',
+                          onTap: () =>
+                              _navigateToPage(context, '/personal-info'),
+                        ),
+                        ProfileListItem(
+                          icon: Icons.lock_outline,
+                          title: 'Password & Security',
+                          onTap: () => _navigateToPage(context, '/security'),
+                        ),
+                        ProfileListItem(
+                          icon: Icons.location_on_outlined,
+                          title: 'Address Book',
+                          onTap: () =>
+                              _navigateToPage(context, '/address-book'),
+                        ),
+                        ProfileListItem(
+                          icon: Icons.notifications_outlined,
+                          title: 'Notification',
+                          trailing: Switch(
+                            value: notificationsEnabled,
+                            onChanged: (value) {
+                              setState(() {
+                                notificationsEnabled = value;
+                              });
+                            },
+                            activeColor: AppColors.primary,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    // Pricing section
+                    _buildSection(
+                      title: 'Pricing',
+                      items: [
+                        ProfileListItem(
+                          icon: Icons.card_membership_outlined,
+                          title: 'Membership Plan',
+                          onTap: () => _navigateToPage(context, '/membership'),
+                        ),
+                      ],
+                    ),
+
+                    // Preferences section
+                    _buildSection(
+                      title: 'Preferences',
+                      items: [
+                        ProfileListItem(
+                          icon: Icons.palette_outlined,
+                          title: 'Theme',
+                          onTap: () => _navigateToPage(context, '/theme'),
+                        ),
+                      ],
+                    ),
+
+                    // Resources section
+                    _buildSection(
+                      title: 'Resources',
+                      items: [
+                        ProfileListItem(
+                          icon: Icons.info_outline,
+                          title: 'About',
+                          onTap: () => _navigateToPage(context, '/about'),
+                        ),
+                        ProfileListItem(
+                          icon: Icons.help_outline,
+                          title: 'Help & Support',
+                          onTap: () => _openUrl('https://support.example.com'),
+                        ),
+                        ProfileListItem(
+                          icon: Icons.feedback_outlined,
+                          title: 'Share Feedback',
+                          onTap: () => _openUrl('mailto:feedback@example.com'),
+                        ),
+                      ],
+                    ),
+
+                    // Logout button
+                    _buildLogoutButton(context),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeader(BuildContext context) {
     return Row(
       children: [
-        Icon(icon, color: AppColors.primaryColor),
-        const SizedBox(width: 12),
+        Container(
+          width: 48,
+          height: 48,
+          decoration: BoxDecoration(
+            color: AppColors.white,
+            border: Border.all(color: AppColors.grey5, width: 1),
+            borderRadius: BorderRadius.circular(100),
+          ),
+          child: IconButton(
+            icon: Icon(Icons.arrow_back, color: AppColors.black1),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ),
+        Expanded(
+          child: Text(
+            'Personal Profile',
+            textAlign: TextAlign.center,
+            style: AppTextStyles.h4,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSearchBar() {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        border: Border.all(color: AppColors.grey5),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'Search what you need...',
+                hintStyle: AppStyles.hintTextStyle(context),
+                border: InputBorder.none,
+              ),
+            ),
+          ),
+          Container(
+            width: 32,
+            height: 32,
+            decoration: BoxDecoration(
+              color: AppColors.primary,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(Icons.search, color: AppColors.white, size: 20),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildUserProfileSection(ProfileState state) {
+    if (state is ProfileLoading) {
+      return Container(
+        height: 80,
+        child: Center(
+          child: CircularProgressIndicator(color: AppColors.primary),
+        ),
+      );
+    } else if (state is ProfileError) {
+      return Container(
+        height: 80,
+        child: Center(
+          child: Column(
+            children: [
+              Icon(Icons.error_outline, color: AppColors.error, size: 32),
+              SizedBox(height: 8),
+              Text(
+                'Failed to load profile',
+                style: AppTextStyles.bodySmall().copyWith(
+                  color: AppColors.error,
+                ),
+              ),
+              TextButton(
+                onPressed: () =>
+                    context.read<ProfileBloc>().add(LoadCurrentUserProfile()),
+                child: Text('Retry', style: AppTextStyles.link),
+              ),
+            ],
+          ),
+        ),
+      );
+    } else if (state is ProfileLoaded) {
+      return _buildUserProfile(state.profile);
+    }
+
+    return _buildUserProfile(null);
+  }
+
+  Widget _buildUserProfile(UserProfile? profile) {
+    return Row(
+      children: [
+        Container(
+          width: 80,
+          height: 80,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(40),
+            image: DecorationImage(
+              image: NetworkImage(
+                profile?.avatarUrl ??
+                    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+              ),
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        SizedBox(width: 16),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text(profile?.fullName ?? 'Loading...', style: AppTextStyles.h3),
+              SizedBox(height: 4),
               Text(
-                label,
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey,
-                  fontWeight: FontWeight.w500,
-                ),
+                profile?.email ?? 'Loading...',
+                style: AppTextStyles.bodySmall(),
               ),
-              Text(value, style: const TextStyle(fontSize: 16)),
             ],
           ),
         ),
@@ -64,234 +309,107 @@ class _ProfileScreenContentState extends State<ProfileScreenContent> {
     );
   }
 
+  Widget _buildSection({
+    required String title,
+    required List<ProfileListItem> items,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(title, style: AppTextStyles.h4),
+        SizedBox(height: 16),
+        ...items
+            .map(
+              (item) =>
+                  Padding(padding: EdgeInsets.only(bottom: 15), child: item),
+            )
+            .toList(),
+      ],
+    );
+  }
+
+  Widget _buildLogoutButton(BuildContext context) {
+    return PrimaryButton(
+      text: 'Logout',
+      onPressed: () => ConfirmationDialog.show(
+        context: context,
+        title: 'Logout',
+        message: 'Are you sure you want to logout?',
+        onConfirm: () {
+          context.read<AuthBloc>().add(SignOutRequested());
+        },
+      ),
+    );
+  }
+
+  void _navigateToPage(BuildContext context, String route) {
+    // Navigate to the specified route
+    Navigator.pushNamed(context, route);
+  }
+
+  void _openUrl(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      // Handle error - show snackbar or dialog
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Could not open $url',
+            style: AppTextStyles.bodyNormal().copyWith(color: AppColors.white),
+          ),
+          backgroundColor: AppColors.error,
+        ),
+      );
+    }
+  }
+}
+
+class ProfileListItem extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final VoidCallback? onTap;
+  final Widget? trailing;
+
+  const ProfileListItem({
+    Key? key,
+    required this.icon,
+    required this.title,
+    this.onTap,
+    this.trailing,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
-      appBar: AppBar(
-        title: const Text('Profile'),
-        backgroundColor: AppColors.primaryColor,
-        actions: [
-          BlocBuilder<AuthBloc, AuthState>(
-            builder: (context, state) {
-              if (state is AuthLoading) {
-                return const Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                    ),
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(8),
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 2, horizontal: 8),
+        child: Row(
+          children: [
+            Container(
+              width: 32,
+              height: 32,
+              decoration: BoxDecoration(
+                color: AppColors.white,
+                border: Border.all(color: AppColors.grey5, width: 1),
+                borderRadius: BorderRadius.circular(8),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.shadowColor,
+                    blurRadius: 3,
+                    offset: Offset(0, 0),
                   ),
-                );
-              }
-              return IconButton(
-                icon: const Icon(Icons.logout),
-                onPressed: () async {
-                  final confirmed = await ConfirmationDialog.show(
-                    context: context,
-                    title: 'Sign Out',
-                    message:
-                        'Are you sure you want to sign out of your account?',
-                    confirmText: 'Sign Out',
-                    cancelText: 'Cancel',
-                    icon: Icons.logout,
-                    iconColor: Colors.red,
-                  );
-
-                  if (confirmed == true && context.mounted) {
-                    context.read<AuthBloc>().add(SignOutRequested());
-                  }
-                },
-              );
-            },
-          ),
-        ],
-      ),
-      body: MultiBlocListener(
-        listeners: [
-          BlocListener<AuthBloc, AuthState>(
-            listener: (context, state) {
-              if (state is AuthError) {
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(SnackBar(content: Text(state.error)));
-              }
-            },
-          ),
-          BlocListener<ProfileBloc, ProfileState>(
-            listener: (context, state) {
-              if (state is ProfileError) {
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(SnackBar(content: Text(state.error)));
-              }
-            },
-          ),
-        ],
-        child: BlocBuilder<AuthBloc, AuthState>(
-          builder: (context, authState) {
-            if (authState is AuthLoading) {
-              return const Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircularProgressIndicator(),
-                    SizedBox(height: 16),
-                    Text('Signing out...'),
-                  ],
-                ),
-              );
-            } else if (authState is Authenticated) {
-              return BlocBuilder<ProfileBloc, ProfileState>(
-                builder: (context, profileState) {
-                  if (profileState is ProfileLoading) {
-                    return const ProfileShimmer();
-                  } else if (profileState is ProfileLoaded) {
-                    return SingleChildScrollView(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 24),
-                          SimpleProfileImage(
-                            avatarUrl: profileState.profile.avatarUrl,
-                            radius: 60,
-                          ),
-                          const SizedBox(height: 16),
-                          ElevatedButton.icon(
-                            onPressed: () async {
-                              // Capture references before async operation
-                              final authBloc = context.read<AuthBloc>();
-                              final profileBloc = context.read<ProfileBloc>();
-
-                              await Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => ProfileEditScreen(
-                                    initialProfile: profileState.profile,
-                                  ),
-                                ),
-                              );
-
-                              // Only reload if the screen is still mounted
-                              if (mounted) {
-                                // Reload profile when returning from edit screen
-                                final authState = authBloc.state;
-                                if (authState is Authenticated) {
-                                  profileBloc.add(
-                                    LoadUserProfile(authState.user.id),
-                                  );
-                                }
-                              }
-                            },
-                            icon: const Icon(Icons.edit),
-                            label: const Text('Edit Profile'),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.primaryColor,
-                              foregroundColor: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(height: 24),
-                          Card(
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Column(
-                                children: [
-                                  _buildInfoRow(
-                                    Icons.person,
-                                    'Name',
-                                    profileState.profile.fullName,
-                                  ),
-                                  const SizedBox(height: 16),
-                                  _buildInfoRow(
-                                    Icons.email,
-                                    'Email',
-                                    profileState.profile.email,
-                                  ),
-                                  const SizedBox(height: 16),
-                                  _buildInfoRow(
-                                    Icons.fingerprint,
-                                    'User ID',
-                                    profileState.profile.id,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 24),
-                          Card(
-                            child: Column(
-                              children: [
-                                ListTile(
-                                  leading: const Icon(Icons.settings),
-                                  title: const Text('Settings'),
-                                  trailing: const Icon(Icons.arrow_forward_ios),
-                                  onTap: () {},
-                                ),
-                                const Divider(height: 1),
-                                ListTile(
-                                  leading: const Icon(Icons.help),
-                                  title: const Text('Help & Support'),
-                                  trailing: const Icon(Icons.arrow_forward_ios),
-                                  onTap: () {},
-                                ),
-                                const Divider(height: 1),
-                                ListTile(
-                                  leading: const Icon(Icons.info),
-                                  title: const Text('About'),
-                                  trailing: const Icon(Icons.arrow_forward_ios),
-                                  onTap: () {},
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  } else if (profileState is ProfileError) {
-                    return Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.error_outline,
-                            size: 64,
-                            color: Colors.grey,
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            'Failed to load profile',
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            profileState.error,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(color: Colors.grey),
-                          ),
-                          const SizedBox(height: 16),
-                          ElevatedButton(
-                            onPressed: () {
-                              context.read<ProfileBloc>().add(
-                                LoadUserProfile(authState.user.id),
-                              );
-                            },
-                            child: const Text('Retry'),
-                          ),
-                        ],
-                      ),
-                    );
-                  }
-                  return const Center(child: CircularProgressIndicator());
-                },
-              );
-            }
-            return const Center(child: CircularProgressIndicator());
-          },
+                ],
+              ),
+              child: Icon(icon, size: 16, color: AppColors.black2),
+            ),
+            SizedBox(width: 12),
+            Expanded(child: Text(title, style: AppStyles.bodyText(context))),
+            trailing ??
+                Icon(Icons.arrow_forward_ios, size: 16, color: AppColors.grey3),
+          ],
         ),
       ),
     );
