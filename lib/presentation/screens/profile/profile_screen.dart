@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 import 'package:sportefy/bloc/auth/auth_bloc.dart';
 import 'package:sportefy/presentation/widgets/confirmation_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -65,22 +66,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Header with back button and title
                     _buildHeader(context),
-
-                    SizedBox(height: screenHeight * 0.03),
-
-                    // Search bar
+                    Gap(16),
                     _buildSearchBar(),
-
-                    SizedBox(height: screenHeight * 0.04),
-
-                    // User profile section
+                    Gap(16),
                     _buildUserProfileSection(state),
-
-                    SizedBox(height: screenHeight * 0.04),
-
-                    // Account Settings section
+                    Gap(16),
                     _buildSection(
                       title: 'Account Settings',
                       items: [
@@ -205,7 +196,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _buildSearchBar() {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 2),
       decoration: BoxDecoration(
         color: AppColors.white,
         border: Border.all(color: AppColors.grey5),
@@ -238,14 +229,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget _buildUserProfileSection(ProfileState state) {
     if (state is ProfileLoading) {
-      return Container(
+      return SizedBox(
         height: 80,
         child: Center(
           child: CircularProgressIndicator(color: AppColors.primary),
         ),
       );
     } else if (state is ProfileError) {
-      return Container(
+      return SizedBox(
         height: 80,
         child: Center(
           child: Column(
@@ -284,19 +275,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
             borderRadius: BorderRadius.circular(40),
             image: DecorationImage(
               image: NetworkImage(
-                profile?.avatarUrl ??
-                    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+                // profile?.avatarUrl ??
+                "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
               ),
               fit: BoxFit.cover,
             ),
           ),
+          child: profile?.avatarUrl == null
+              ? Icon(Icons.person, size: 40, color: AppColors.grey3)
+              : null,
         ),
         SizedBox(width: 16),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(profile?.fullName ?? 'Loading...', style: AppTextStyles.h3),
+              Text(
+                profile?.fullName ?? 'Loading...',
+                style: AppTextStyles.bodyMedium(bold: true),
+              ),
               SizedBox(height: 4),
               Text(
                 profile?.email ?? 'Loading...',
