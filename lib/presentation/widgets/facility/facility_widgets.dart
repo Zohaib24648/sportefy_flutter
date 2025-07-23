@@ -1,7 +1,7 @@
 // Barrel export for all facility widgets
 export 'amenities_section.dart';
 export 'contact_info_section.dart';
-export 'custom_app_bar.dart';
+export '../common/custom_top_bar.dart';
 export 'description_section.dart';
 export 'facility_error_widget.dart';
 export 'facility_loading_widget.dart';

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../constants/app_styles.dart';
+import '../../theme/app_text_styles.dart';
+import '../../theme/app_colors.dart';
 
 // widgets/promotional_cards.dart
 class PromotionalCard extends StatelessWidget {
@@ -47,27 +48,27 @@ class PromotionalCard extends StatelessWidget {
             children: [
               Text(
                 tagline,
-                style: AppStyles.caption(context).copyWith(
-                  color: Colors.white.withValues(alpha: .67),
+                style: AppTextStyles.caption.copyWith(
+                  color: AppColors.white.withValues(alpha: .67),
                   fontWeight: FontWeight.w600,
                 ),
               ),
               const SizedBox(height: 4),
               Text(
                 title,
-                style: AppTextStyles.h3.copyWith(color: Colors.white),
+                style: AppTextStyles.h3.copyWith(color: AppColors.white),
               ),
             ],
           ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.white,
               borderRadius: BorderRadius.circular(81),
             ),
             child: Text(
               buttonText,
-              style: AppStyles.caption(context).copyWith(
+              style: AppTextStyles.caption.copyWith(
                 color: const Color(0xFF5D3891),
                 fontWeight: FontWeight.w500,
               ),

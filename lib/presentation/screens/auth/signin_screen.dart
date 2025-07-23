@@ -6,8 +6,8 @@ import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 import '../../../bloc/auth/auth_bloc.dart';
 import '../../../data/model/signin_request.dart';
 import '../../constants/app_strings.dart';
-import '../../constants/app_colors.dart';
-import '../../constants/app_styles.dart';
+import '../../theme/app_colors.dart';
+import '../../theme/app_text_styles.dart';
 import '../../utils/responsive_helper.dart';
 import '../../widgets/common/custom_text_field.dart';
 import '../../widgets/oauth_button.dart';
@@ -146,7 +146,7 @@ class _SignInScreenState extends State<SignInScreen> {
       children: [
         Text(AppStrings.signIn, style: AppTextStyles.h1),
         SizedBox(height: ResponsiveHelper.getResponsiveSpacing(context, 8)),
-        Text(AppStrings.signInDescription, style: AppTextStyles.bodyMedium()),
+        Text(AppStrings.signInDescription, style: AppTextStyles.body),
       ],
     );
   }

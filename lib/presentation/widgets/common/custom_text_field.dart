@@ -1,7 +1,7 @@
 //lib/presentation/widgets/custom_text_field.dart
 import 'package:flutter/material.dart';
-import '../../constants/app_colors.dart';
-import '../../constants/app_styles.dart';
+import '../../theme/app_colors.dart';
+import '../../theme/app_text_styles.dart';
 import '../../utils/responsive_helper.dart';
 
 class CustomTextField extends StatefulWidget {
@@ -67,12 +67,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
             controller: widget.controller,
             obscureText: widget.obscureText,
             keyboardType: widget.keyboardType,
-            style: AppStyles.textFieldStyle(context),
+            style: AppTextStyles.body,
             onChanged: _validateInput,
             maxLines: widget.maxLines,
             decoration: InputDecoration(
               hintText: widget.hintText,
-              hintStyle: AppStyles.hintTextStyle(context),
+              hintStyle: AppTextStyles.body.copyWith(color: AppColors.grey),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),
                 borderSide: BorderSide.none,
@@ -91,9 +91,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
             padding: EdgeInsets.only(left: 16, top: 4, right: 16, bottom: 8),
             child: Text(
               _errorText!,
-              style: AppStyles.caption(
+              style: Theme.of(
                 context,
-              ).copyWith(color: AppColors.error),
+              ).textTheme.labelMedium?.copyWith(color: AppColors.error),
             ),
           ),
       ],

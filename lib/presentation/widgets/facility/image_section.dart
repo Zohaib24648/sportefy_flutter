@@ -1,6 +1,6 @@
 // widgets/facility_image_section.dart
 import 'package:flutter/material.dart';
-import '../../constants/app_styles.dart';
+import '../../theme/app_text_styles.dart';
 
 class FacilityImageSection extends StatelessWidget {
   final String imageUrl;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../theme/app_colors.dart';
 
 // widgets/proceed_button.dart
 class ProceedButton extends StatelessWidget {
@@ -42,7 +43,7 @@ class ProceedButton extends StatelessWidget {
           child: Text(
             'Proceed Now',
             style: TextStyle(
-              color: Colors.white,
+              color: AppColors.white,
               fontSize: 16,
               fontFamily: 'Lexend',
               fontWeight: FontWeight.w500,

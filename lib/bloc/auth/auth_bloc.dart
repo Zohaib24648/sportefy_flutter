@@ -48,11 +48,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         request: event.signInRequest,
       );
 
-      // If we get a user immediately, emit authenticated state
       if (response.user != null) {
         emit(Authenticated(response.user!));
       }
-      // Otherwise, auth state change will handle the authenticated state
     } catch (e) {
       emit(AuthError(_getErrorMessage(e)));
       emit(Unauthenticated());
@@ -69,7 +67,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         request: event.signUpRequest,
       );
 
-      // Check if email confirmation is required
       if (response.user != null && response.session == null) {
         emit(
           AuthSuccess(
@@ -78,7 +75,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           ),
         );
       } else if (response.user != null && response.session != null) {
-        // User is immediately signed in (no email confirmation required)
         emit(Authenticated(response.user!));
       } else {
         emit(
@@ -102,8 +98,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       final response = await _authRepository.signInWithOAuth(event.provider);
 
-      // For OAuth, the actual authentication happens via redirect
-      // The auth state change will handle the final authenticated state
       if (response.user != null) {
         emit(Authenticated(response.user!));
       }
@@ -120,12 +114,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(AuthLoading());
     try {
       await _authRepository.signOut();
-
-      // Let the Supabase auth state change handler manage the state
-      // The _onSupabaseAuthStateChanged will emit Unauthenticated when signedOut event is received
     } catch (e) {
       emit(AuthError(_getErrorMessage(e)));
-      // Emit Unauthenticated as fallback if signOut fails
       emit(Unauthenticated());
     }
   }
@@ -166,11 +156,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _startAuthSubscription() {
-    // Debug: Starting auth state subscription...
     _authStateSubscription = _authRepository.authStateChanges.listen((
       supabaseAuthState,
     ) {
-      // Debug: Auth state subscription received: ${supabaseAuthState.event}
       add(SupabaseAuthStateChanged(supabaseAuthState));
     });
   }

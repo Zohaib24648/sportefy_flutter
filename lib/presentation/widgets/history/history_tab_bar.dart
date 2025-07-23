@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../constants/app_colors.dart';
+import '../../theme/app_colors.dart';
 import 'history_config.dart';
 
 class HistoryTabBar extends StatelessWidget implements PreferredSizeWidget {
@@ -25,7 +25,7 @@ class HistoryTabBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: const Text('History'),
       backgroundColor: AppColors.primary,
-      foregroundColor: Colors.white,
+      foregroundColor: AppColors.white,
       actions: [
         if (onLoadSampleData != null)
           IconButton(
@@ -48,9 +48,9 @@ class HistoryTabBar extends StatelessWidget implements PreferredSizeWidget {
       ],
       bottom: TabBar(
         controller: controller,
-        indicatorColor: Colors.white,
-        labelColor: Colors.white,
-        unselectedLabelColor: Colors.white.withValues(alpha: 0.7),
+        indicatorColor: AppColors.white,
+        labelColor: AppColors.white,
+        unselectedLabelColor: AppColors.white.withValues(alpha: 0.7),
         tabs: [
           Tab(icon: Icon(_getTabIcon(0)), text: _getTabTitle(0)),
           Tab(icon: Icon(_getTabIcon(1)), text: _getTabTitle(1)),

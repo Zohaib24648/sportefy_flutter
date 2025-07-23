@@ -57,7 +57,7 @@ class FacilityDetailsPageContent extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // Custom App Bar
-                        const CustomAppBar(title: 'Venue Details'),
+                        // const CustomAppBar(title: 'Venue Details'),
                         const SizedBox(height: 14),
 
                         // Facility Image and Info

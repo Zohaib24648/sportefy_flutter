@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../constants/app_styles.dart';
+import '../theme/app_colors.dart';
+import '../theme/app_text_styles.dart';
 
 // Enhanced Search Bar Widget
 class EnhancedSearchBar extends StatefulWidget {
@@ -193,7 +194,7 @@ class _EnhancedSearchBarState extends State<EnhancedSearchBar>
           return Container(
             height: widget.height,
             decoration: BoxDecoration(
-              color: widget.white ?? Colors.white.withValues(alpha: 0.9),
+              color: widget.white ?? AppColors.white.withValues(alpha: 0.9),
               borderRadius: widget.borderRadius ?? BorderRadius.circular(10),
               border: Border.all(
                 color:
@@ -209,7 +210,7 @@ class _EnhancedSearchBarState extends State<EnhancedSearchBar>
                   ? [
                       BoxShadow(
                         color: Color.lerp(
-                          Colors.black.withValues(alpha: .05),
+                          AppColors.shadow,
                           theme.colorScheme.primary.withValues(alpha: 0.1),
                           _focusAnimation.value,
                         )!,
@@ -228,8 +229,7 @@ class _EnhancedSearchBarState extends State<EnhancedSearchBar>
               maxLength: widget.maxLength,
               autofocus: widget.autofocus,
               style:
-                  widget.textStyle ??
-                  AppStyles.bodyText(context).copyWith(fontSize: 14),
+                  widget.textStyle ?? AppTextStyles.body.copyWith(fontSize: 14),
               onSubmitted: (value) {
                 _removeSuggestionsOverlay();
                 widget.onSubmitted?.call(value);
@@ -239,7 +239,7 @@ class _EnhancedSearchBarState extends State<EnhancedSearchBar>
                 hintStyle:
                     widget.hintStyle ??
                     TextStyle(
-                      color: Colors.black.withValues(alpha: 0.48),
+                      color: AppColors.grey.withValues(alpha: 0.8),
                       fontSize: 14,
                       fontFamily: 'Lexend',
                       fontWeight: FontWeight.w300,
@@ -282,7 +282,7 @@ class _EnhancedSearchBarState extends State<EnhancedSearchBar>
             widget.onClear?.call();
             _removeSuggestionsOverlay();
           },
-          color: Colors.grey[600],
+          color: AppColors.grey,
         ),
       );
     }
@@ -317,7 +317,7 @@ class AnimatedSearchIcon extends StatelessWidget {
               Icons.search,
               size: 24,
               color: Color.lerp(
-                Colors.grey[600],
+                AppColors.grey,
                 theme.colorScheme.primary,
                 animation.value,
               ),
@@ -347,7 +347,7 @@ class _SuggestionsOverlay extends StatelessWidget {
       child: Container(
         constraints: const BoxConstraints(maxHeight: 200),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.white,
           borderRadius: BorderRadius.circular(8),
         ),
         child: ListView.builder(
@@ -366,7 +366,7 @@ class _SuggestionsOverlay extends StatelessWidget {
                 decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
-                      color: Colors.grey.withValues(alpha: 0.2),
+                      color: AppColors.lightGrey.withValues(alpha: 0.5),
                       width: index == suggestions.length - 1 ? 0 : 1,
                     ),
                   ),
@@ -376,7 +376,7 @@ class _SuggestionsOverlay extends StatelessWidget {
                     Icon(
                       Icons.location_on_outlined,
                       size: 20,
-                      color: Colors.grey[600],
+                      color: AppColors.grey,
                     ),
                     const SizedBox(width: 12),
                     Expanded(

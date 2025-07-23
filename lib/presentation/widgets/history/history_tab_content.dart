@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../theme/app_colors.dart';
 import '../../../bloc/history/history_bloc.dart';
 import '../../../data/model/history_item.dart';
 import '../common/shimmer_exports.dart';
@@ -69,7 +70,7 @@ class HistoryTabContent extends StatelessWidget {
               padding: const EdgeInsets.all(12),
               margin: const EdgeInsets.only(bottom: 16),
               decoration: BoxDecoration(
-                color: Colors.blue.withValues(alpha: 0.1),
+                color: AppColors.info.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Row(
@@ -82,7 +83,7 @@ class HistoryTabContent extends StatelessWidget {
                   const SizedBox(width: 12),
                   const Text(
                     'Syncing with server...',
-                    style: TextStyle(color: Colors.blue),
+                    style: TextStyle(color: AppColors.info),
                   ),
                 ],
               ),
@@ -103,7 +104,7 @@ class HistoryTabContent extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.error_outline, size: 64, color: Colors.red),
+          const Icon(Icons.error_outline, size: 64, color: AppColors.error),
           const SizedBox(height: 16),
           const Text(
             'Oops! Something went wrong',
@@ -114,7 +115,7 @@ class HistoryTabContent extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 32),
             child: Text(
               error,
-              style: const TextStyle(fontSize: 14, color: Colors.grey),
+              style: const TextStyle(fontSize: 14, color: AppColors.grey),
               textAlign: TextAlign.center,
             ),
           ),
@@ -130,7 +131,7 @@ class HistoryTabContent extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.history, size: 64, color: Colors.grey),
+          Icon(Icons.history, size: 64, color: AppColors.grey),
           SizedBox(height: 16),
           Text(
             'Welcome to History',
@@ -139,7 +140,7 @@ class HistoryTabContent extends StatelessWidget {
           SizedBox(height: 8),
           Text(
             'Pull down to refresh and load your activity history',
-            style: TextStyle(fontSize: 16, color: Colors.grey),
+            style: TextStyle(fontSize: 16, color: AppColors.grey),
             textAlign: TextAlign.center,
           ),
         ],

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../constants/app_colors.dart';
+import '../theme/app_colors.dart';
 
 class ConfirmationDialog extends StatelessWidget {
   final String title;
@@ -56,7 +56,7 @@ class ConfirmationDialog extends StatelessWidget {
             const SizedBox(height: 12),
             Text(
               message,
-              style: const TextStyle(fontSize: 16, color: Colors.grey),
+              style: const TextStyle(fontSize: 16, color: AppColors.grey),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 24),
@@ -72,12 +72,15 @@ class ConfirmationDialog extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
-                        side: BorderSide(color: Colors.grey.shade300),
+                        side: BorderSide(color: AppColors.lightGrey),
                       ),
                     ),
                     child: Text(
                       cancelText,
-                      style: const TextStyle(fontSize: 16, color: Colors.grey),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: AppColors.grey,
+                      ),
                     ),
                   ),
                 ),
@@ -90,7 +93,7 @@ class ConfirmationDialog extends StatelessWidget {
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: iconColor ?? AppColors.primary,
-                      foregroundColor: Colors.white,
+                      foregroundColor: AppColors.white,
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),

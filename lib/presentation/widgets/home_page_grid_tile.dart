@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sportefy/data/model/facility_base.dart';
-import '../constants/app_styles.dart';
+import '../theme/app_colors.dart';
+import '../theme/app_text_styles.dart';
 import 'common/shimmer_exports.dart';
 
 /// ──────────────────────────────────────────────────────────────────────────
@@ -60,7 +61,7 @@ class FacilityGridTile extends StatelessWidget {
                         child: Container(
                           width: double.infinity,
                           height: double.infinity,
-                          color: Colors.white,
+                          color: AppColors.white,
                         ),
                       );
                     },
@@ -68,11 +69,11 @@ class FacilityGridTile extends StatelessWidget {
                       return Container(
                         width: double.infinity,
                         height: double.infinity,
-                        color: Colors.grey[300],
+                        color: AppColors.lightGrey,
                         child: const Icon(
                           Icons.business,
                           size: 40,
-                          color: Colors.grey,
+                          color: AppColors.grey,
                         ),
                       );
                     },
@@ -89,11 +90,11 @@ class FacilityGridTile extends StatelessWidget {
                       vertical: 6,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: AppColors.white,
                       borderRadius: BorderRadius.circular(7),
                       boxShadow: const [
                         BoxShadow(
-                          color: Colors.black12,
+                          color: AppColors.shadow,
                           blurRadius: 4,
                           offset: Offset(0, 2),
                         ),
@@ -106,26 +107,28 @@ class FacilityGridTile extends StatelessWidget {
                           facility.name,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: AppTextStyles.bodySmall(
-                            bold: true,
-                          ).copyWith(fontSize: 12, height: 1.3),
+                          style: AppTextStyles.bodySmall.copyWith(
+                            fontSize: 12,
+                            height: 1.3,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                         Text(
                           facility.address,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: AppTextStyles.bodySmall().copyWith(
+                          style: AppTextStyles.bodySmall.copyWith(
                             fontSize: 9,
-                            color: const Color(0xFF858585),
+                            color: AppColors.grey,
                           ),
                         ),
                         Text(
                           facility.phoneNumber,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: AppTextStyles.bodySmall().copyWith(
+                          style: AppTextStyles.bodySmall.copyWith(
                             fontSize: 9,
-                            color: const Color(0xFF858585),
+                            color: AppColors.grey,
                           ),
                         ),
                       ],

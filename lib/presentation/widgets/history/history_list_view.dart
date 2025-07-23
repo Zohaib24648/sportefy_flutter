@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../data/model/history_item.dart';
-import '../../constants/app_colors.dart';
+import '../../theme/app_colors.dart';
 import 'history_item_tile.dart';
 
 class HistoryListView extends StatelessWidget {

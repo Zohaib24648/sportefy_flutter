@@ -3,16 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:sportefy/data/services/auth_state_manager.dart';
-import 'package:sportefy/dependency_injection.dart';
-import 'package:sportefy/presentation/constants/image_links.dart';
-import 'package:sportefy/presentation/widgets/common/custom_circle_avatar.dart';
-import 'package:sportefy/presentation/widgets/common/flexible_app_bar.dart';
 import 'package:sportefy/presentation/widgets/common/shimmer_exports.dart';
+import 'package:sportefy/presentation/widgets/common/sports_dropdown.dart';
 import 'package:sportefy/presentation/widgets/home_page_grid_tile.dart';
 import 'package:sportefy/presentation/screens/facility/facility_details_page.dart';
+import 'package:sportefy/presentation/widgets/common/custom_top_bar.dart';
 import '../../../bloc/facility/facility_bloc.dart';
-import '../../constants/app_colors.dart';
+import '../../theme/app_colors.dart';
 import '../../widgets/homepage_tile.dart';
 import '../../widgets/search_bar.dart';
 import '../../widgets/home_page_chip.dart';
@@ -107,26 +104,26 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
-      appBar: FlexibleAppBar(
-        leading: CustomCircleAvatar(
-          imageUrl:
-              getIt<AuthStateManager>().userAvatarUrl ??
-              ImageLinks.fallbackAvatar,
-        ),
-        title: const Text(
-          'Sportefy',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: AppColors.primary,
-          ),
-        ),
+      appBar: AppBar(
+        actionsPadding: const EdgeInsets.only(right: 16.0),
+        leadingWidth: 80,
+        leading: ProfilePicture(
+        imageUrl:
+        'https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg',
+        size: 50,
+        membershipType: MembershipType.gold,
+        badge: Icon(Icons.star, color: Colors.white, size: 12),
+      ),
+        title: UserInfo(
+        name: 'John',
+        creditAmount: '500',
+        membershipType: MembershipType.gold,
+      ),
         actions: [
-          AppBarActions.notificationButton(
-            onTap: () => (),
-            notificationCount: 3,
-          ),
+          SportsDropdown()
         ],
+        backgroundColor: AppColors.white,
+        toolbarHeight: 60,
       ),
       body: BlocBuilder<FacilityBloc, FacilityState>(
         builder: (context, state) {
@@ -221,7 +218,7 @@ class _HomePageState extends State<HomePage> {
                   // Featured Events Carousel
                   CarouselSlider(
                     options: CarouselOptions(
-                      height: 160,
+                      height: 130,
                       autoPlay: true,
                       autoPlayInterval: const Duration(seconds: 4),
                       autoPlayAnimationDuration: const Duration(
@@ -229,7 +226,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       autoPlayCurve: Curves.fastOutSlowIn,
                       enlargeCenterPage: true,
-                      enlargeFactor: 0.25,
+                      enlargeFactor: 0.15,
                       viewportFraction: 0.8,
                       aspectRatio: 16 / 9,
                       initialPage: 0,
@@ -244,7 +241,9 @@ class _HomePageState extends State<HomePage> {
                               subtitle: tileData['subtitle']!,
                               title: tileData['title']!,
                               buttonText: tileData['buttonText']!,
-                              white: tileData['white'] as Color,
+                              height: 130,
+                              imageLink:
+                                  'https://img.freepik.com/free-photo/front-view-handsome-athletic-male-rugby-player-holding-ball_23-2148793297.jpg?semt=ais_hybrid&w=740',
                               onTap: () {
                                 // Add haptic feedback for better UX
                                 HapticFeedback.lightImpact();

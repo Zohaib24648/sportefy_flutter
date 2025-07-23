@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../constants/app_colors.dart';
+import '../../theme/app_colors.dart';
+import '../../theme/app_text_styles.dart';
 
 // Reusable Bottom Navigation Bar Component
 class CustomBottomNavBar extends StatelessWidget {
@@ -63,10 +64,8 @@ class CustomBottomNavBar extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               label,
-              style: TextStyle(
+              style: AppTextStyles.caption.copyWith(
                 color: color,
-                fontSize: 14,
-                fontFamily: 'Lexend',
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
               ),
             ),
@@ -86,12 +85,12 @@ class CustomBottomNavBar extends StatelessWidget {
             width: 56,
             height: 56,
             decoration: BoxDecoration(
-              color: const Color(0xFF9C86F2),
+              color: AppColors.primary,
               shape: BoxShape.circle,
               border: Border.all(color: Colors.white, width: 4),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFF9C86F2).withValues(alpha: 0.3),
+                  color: AppColors.primary.withValues(alpha: 0.3),
                   blurRadius: 10,
                   offset: const Offset(0, 5),
                 ),

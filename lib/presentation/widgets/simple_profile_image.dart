@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../constants/app_colors.dart';
+import '../theme/app_colors.dart';
 import 'common/shimmer_exports.dart';
 
 /// Simple profile image widget with minimal complexity

@@ -7,8 +7,8 @@ import '../../../bloc/auth/auth_bloc.dart';
 import '../../../bloc/qr/qr_bloc.dart';
 import '../../../bloc/check_in/check_in_bloc.dart';
 import '../../../dependency_injection.dart';
-import '../../constants/app_colors.dart';
-import '../../constants/app_styles.dart';
+import '../../theme/app_colors.dart';
+import '../../theme/app_text_styles.dart';
 import '../../utils/responsive_helper.dart';
 import '../../widgets/common/shimmer_exports.dart';
 import '../../navigation/main_navigation_wrapper.dart';
@@ -108,7 +108,7 @@ class QRScreenContent extends StatelessWidget {
                 const Gap(12),
                 Text(
                   'QR Code Scanned',
-                  style: AppStyles.heading(context).copyWith(
+                  style: AppTextStyles.h3.copyWith(
                     fontSize: ResponsiveHelper.getResponsiveFontSize(
                       context,
                       20,
@@ -123,7 +123,7 @@ class QRScreenContent extends StatelessWidget {
               children: [
                 Text(
                   'Scanned Data:',
-                  style: AppStyles.bodyText(context).copyWith(
+                  style: AppTextStyles.body.copyWith(
                     fontWeight: FontWeight.w500,
                     color: AppColors.black2,
                   ),
@@ -139,7 +139,7 @@ class QRScreenContent extends StatelessWidget {
                   ),
                   child: Text(
                     data,
-                    style: AppStyles.textFieldStyle(context).copyWith(
+                    style: AppTextStyles.body.copyWith(
                       fontSize: ResponsiveHelper.getResponsiveFontSize(
                         context,
                         14,
@@ -259,7 +259,7 @@ class QRScreenContent extends StatelessWidget {
         ),
         title: Text(
           'Scan QR Code',
-          style: AppStyles.heading(context).copyWith(
+          style: AppTextStyles.h3.copyWith(
             color: Colors.white,
             fontSize: ResponsiveHelper.getResponsiveFontSize(context, 20),
           ),
@@ -347,7 +347,7 @@ class QRScreenContent extends StatelessWidget {
                           state.isScanning
                               ? 'Point your camera at a QR code to scan it'
                               : 'QR code detected, processing...',
-                          style: AppStyles.bodyText(context).copyWith(
+                          style: AppTextStyles.body.copyWith(
                             color: Colors.white,
                             fontSize: ResponsiveHelper.getResponsiveFontSize(
                               context,
@@ -387,16 +387,12 @@ class QRScreenContent extends StatelessWidget {
                   const Gap(16),
                   Text(
                     'Camera Error',
-                    style: AppStyles.heading(
-                      context,
-                    ).copyWith(color: Colors.white),
+                    style: AppTextStyles.h3.copyWith(color: Colors.white),
                   ),
                   const Gap(8),
                   Text(
                     state.error,
-                    style: AppStyles.bodyText(
-                      context,
-                    ).copyWith(color: Colors.white70),
+                    style: AppTextStyles.body.copyWith(color: Colors.white70),
                     textAlign: TextAlign.center,
                   ),
                   const Gap(24),
@@ -447,7 +443,7 @@ class QRScreenContent extends StatelessWidget {
             const Gap(8),
             Text(
               label,
-              style: AppStyles.bodyText(context).copyWith(
+              style: AppTextStyles.body.copyWith(
                 color: Colors.white,
                 fontSize: ResponsiveHelper.getResponsiveFontSize(context, 14),
               ),

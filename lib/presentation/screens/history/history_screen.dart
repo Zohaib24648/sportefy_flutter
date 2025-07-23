@@ -5,7 +5,7 @@ import '../../../bloc/history/history_bloc.dart';
 import '../../../core/utils/history_examples.dart';
 import '../../../data/model/history_item.dart';
 import '../../../dependency_injection.dart';
-import '../../constants/app_colors.dart';
+import '../../theme/app_colors.dart';
 import '../../widgets/history/history_tab_bar.dart';
 import '../../widgets/history/history_tab_content.dart';
 import '../../widgets/history/history_config.dart';

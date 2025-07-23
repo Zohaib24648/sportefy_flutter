@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../constants/app_styles.dart';
+import '../theme/app_colors.dart';
+import '../theme/app_text_styles.dart';
 
 class HomepageChip extends StatelessWidget {
   const HomepageChip({
@@ -8,8 +9,8 @@ class HomepageChip extends StatelessWidget {
     this.icon,
     this.iconAsset,
     this.onTap,
-    this.white = Colors.white,
-    this.textColor = const Color(0xFF272727),
+    this.white = AppColors.white,
+    this.textColor = AppColors.dark,
     this.width,
     this.height,
     this.horizontalPadding = 10,
@@ -63,7 +64,7 @@ class HomepageChip extends StatelessWidget {
             ],
             Text(
               title,
-              style: AppStyles.caption(context).copyWith(color: textColor),
+              style: AppTextStyles.caption.copyWith(color: textColor),
               overflow: TextOverflow.ellipsis,
             ),
           ],

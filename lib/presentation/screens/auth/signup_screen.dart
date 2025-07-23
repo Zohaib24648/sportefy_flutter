@@ -6,8 +6,8 @@ import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 import '../../../bloc/auth/auth_bloc.dart';
 import '../../../data/model/signup_request.dart';
 import '../../constants/app_strings.dart';
-import '../../constants/app_colors.dart';
-import '../../constants/app_styles.dart';
+import '../../theme/app_colors.dart';
+import '../../theme/app_text_styles.dart';
 import '../../utils/responsive_helper.dart';
 import '../../widgets/common/custom_text_field.dart';
 import '../../widgets/oauth_button.dart';
@@ -163,7 +163,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       children: [
         Text(AppStrings.signUp, style: AppTextStyles.h1),
         SizedBox(height: ResponsiveHelper.getResponsiveSpacing(context, 8)),
-        Text(AppStrings.signUpDescription, style: AppTextStyles.bodyMedium()),
+        Text(AppStrings.signUpDescription, style: AppTextStyles.body),
       ],
     );
   }
@@ -315,9 +315,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               children: [
                 Text(
                   AppStrings.agreeToTerms,
-                  style: AppStyles.caption(
-                    context,
-                  ).copyWith(color: AppColors.secondary),
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 ClickableText(
                   text: AppStrings.termsOfService,
@@ -327,9 +325,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 Text(
                   AppStrings.and,
-                  style: AppStyles.caption(
-                    context,
-                  ).copyWith(color: AppColors.secondary),
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 ClickableText(
                   text: AppStrings.privacyPolicy,

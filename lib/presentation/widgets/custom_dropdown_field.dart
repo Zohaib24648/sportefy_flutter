@@ -1,7 +1,7 @@
 //lib/presentation/widgets/custom_dropdown_field.dart
 import 'package:flutter/material.dart';
-import '../constants/app_colors.dart';
-import '../constants/app_styles.dart';
+import '../theme/app_colors.dart';
+import '../theme/app_text_styles.dart';
 import '../utils/responsive_helper.dart';
 
 class CustomDropdownField<T> extends StatefulWidget {
@@ -64,10 +64,10 @@ class _CustomDropdownFieldState<T> extends State<CustomDropdownField<T>> {
               _validateInput(value);
               widget.onChanged?.call(value);
             },
-            style: AppStyles.textFieldStyle(context),
+            style: AppTextStyles.body,
             decoration: InputDecoration(
               hintText: widget.hintText,
-              hintStyle: AppStyles.hintTextStyle(context),
+              hintStyle: AppTextStyles.body.copyWith(color: AppColors.grey),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),
                 borderSide: BorderSide.none,
@@ -78,7 +78,7 @@ class _CustomDropdownFieldState<T> extends State<CustomDropdownField<T>> {
               ),
             ),
             dropdownColor: AppColors.white,
-            icon: const Icon(Icons.keyboard_arrow_down, color: Colors.grey),
+            icon: const Icon(Icons.keyboard_arrow_down, color: AppColors.grey),
           ),
         ),
         if (_errorText != null)
@@ -92,7 +92,7 @@ class _CustomDropdownFieldState<T> extends State<CustomDropdownField<T>> {
             child: Text(
               _errorText!,
               style: const TextStyle(
-                color: Colors.red,
+                color: AppColors.error,
                 fontSize: 12,
                 fontWeight: FontWeight.w400,
               ),

@@ -7,8 +7,8 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../bloc/profile/profile_bloc.dart';
 import '../../../data/model/user_profile.dart';
 import '../../../core/utils/debug_utils.dart';
-import '../../constants/app_colors.dart';
-import '../../constants/app_styles.dart';
+import '../../theme/app_colors.dart';
+import '../../theme/app_text_styles.dart';
 import '../../widgets/common/primary_button.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -50,8 +50,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-
     return Scaffold(
       backgroundColor: AppColors.white,
       body: SafeArea(
@@ -59,10 +57,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           builder: (context, state) {
             return SingleChildScrollView(
               child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 16, // 6% of screen width
-                  vertical: 14,
-                ),
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -107,8 +102,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ],
                     ),
-
-                    // Pricing section
                     _buildSection(
                       title: 'Pricing',
                       items: [
@@ -120,7 +113,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ],
                     ),
 
-                    // Preferences section
                     _buildSection(
                       title: 'Preferences',
                       items: [
@@ -132,7 +124,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ],
                     ),
 
-                    // Resources section
                     _buildSection(
                       title: 'Resources',
                       items: [
@@ -154,7 +145,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ],
                     ),
 
-                    // Logout button
                     _buildLogoutButton(context),
                   ],
                 ),
@@ -208,7 +198,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: TextField(
               decoration: InputDecoration(
                 hintText: 'Search what you need...',
-                hintStyle: AppStyles.hintTextStyle(context),
+                hintStyle: Theme.of(context).textTheme.bodySmall,
                 border: InputBorder.none,
               ),
             ),
@@ -245,9 +235,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               SizedBox(height: 8),
               Text(
                 'Failed to load profile',
-                style: AppTextStyles.bodySmall().copyWith(
-                  color: AppColors.error,
-                ),
+                style: AppTextStyles.bodySmall.copyWith(color: AppColors.error),
               ),
               TextButton(
                 onPressed: () =>
@@ -292,12 +280,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: [
               Text(
                 profile?.fullName ?? 'Loading...',
-                style: AppTextStyles.bodyMedium(bold: true),
+                style: AppTextStyles.h4.copyWith(fontWeight: FontWeight.w600),
               ),
               SizedBox(height: 4),
               Text(
                 profile?.email ?? 'Loading...',
-                style: AppTextStyles.bodySmall(),
+                style: AppTextStyles.bodySmall,
               ),
             ],
           ),
@@ -315,12 +303,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       children: [
         Text(title, style: AppTextStyles.h4),
         SizedBox(height: 16),
-        ...items
-            .map(
-              (item) =>
-                  Padding(padding: EdgeInsets.only(bottom: 15), child: item),
-            )
-            .toList(),
+        ...items.map(
+          (item) => Padding(padding: EdgeInsets.only(bottom: 15), child: item),
+        ),
       ],
     );
   }
@@ -345,15 +330,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _openUrl(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url));
     } else {
       // Handle error - show snackbar or dialog
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
             'Could not open $url',
-            style: AppTextStyles.bodyNormal().copyWith(color: AppColors.white),
+            style: AppTextStyles.body.copyWith(color: AppColors.white),
           ),
           backgroundColor: AppColors.error,
         ),
@@ -369,12 +354,12 @@ class ProfileListItem extends StatelessWidget {
   final Widget? trailing;
 
   const ProfileListItem({
-    Key? key,
+    super.key,
     required this.icon,
     required this.title,
     this.onTap,
     this.trailing,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -403,7 +388,9 @@ class ProfileListItem extends StatelessWidget {
               child: Icon(icon, size: 16, color: AppColors.black2),
             ),
             SizedBox(width: 12),
-            Expanded(child: Text(title, style: AppStyles.bodyText(context))),
+            Expanded(
+              child: Text(title, style: Theme.of(context).textTheme.bodyMedium),
+            ),
             trailing ??
                 Icon(Icons.arrow_forward_ios, size: 16, color: AppColors.grey3),
           ],

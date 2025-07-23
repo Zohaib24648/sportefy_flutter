@@ -25,7 +25,6 @@ import 'package:sportefy/core/app_module.dart' as _i893;
 import 'package:sportefy/core/interceptors/auth_interceptor.dart' as _i872;
 import 'package:sportefy/core/network_module.dart' as _i186;
 import 'package:sportefy/core/services/connectivity_service.dart' as _i306;
-import 'package:sportefy/data/db/database.dart' as _i201;
 import 'package:sportefy/data/repository/auth_repository.dart' as _i109;
 import 'package:sportefy/data/repository/facility_repository.dart' as _i133;
 import 'package:sportefy/data/repository/history_repository.dart' as _i948;
@@ -52,16 +51,13 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i454.SupabaseClient>(() => appModule.supabaseClient);
     gh.singleton<_i454.GoTrueClient>(() => appModule.supabaseAuth);
     gh.singleton<_i306.ConnectivityService>(() => _i306.ConnectivityService());
-    gh.singleton<_i201.AppDatabase>(() => _i201.AppDatabase());
     gh.singleton<_i691.SecureStorageService>(
       () => _i691.SecureStorageService(),
     );
     gh.factory<_i203.ConnectivityBloc>(
       () => _i203.ConnectivityBloc(gh<_i306.ConnectivityService>()),
     );
-    gh.factory<_i527.IHistoryRepository>(
-      () => _i948.HistoryRepository(gh<_i201.AppDatabase>()),
-    );
+    gh.factory<_i527.IHistoryRepository>(() => _i948.HistoryRepository());
     gh.factory<_i577.IAuthRepository>(
       () => _i109.AuthRepository(gh<_i691.SecureStorageService>()),
     );

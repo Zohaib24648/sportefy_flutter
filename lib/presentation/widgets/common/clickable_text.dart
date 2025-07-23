@@ -1,7 +1,7 @@
 //lib/presentation/widgets/clickable_text.dart
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../constants/app_colors.dart';
+import '../../theme/app_colors.dart';
 import '../../utils/responsive_helper.dart';
 
 /// A reusable clickable text component that can either navigate to another page

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../constants/app_colors.dart';
+import '../../theme/app_colors.dart';
+import '../../theme/app_text_styles.dart';
 import '../../constants/app_strings.dart';
-import '../../constants/app_styles.dart';
 import '../../utils/responsive_helper.dart';
 
 class OrDivider extends StatelessWidget {
@@ -19,9 +19,7 @@ class OrDivider extends StatelessWidget {
           ),
           child: Text(
             AppStrings.or,
-            style: AppStyles.smallText(
-              context,
-            ).copyWith(color: AppColors.grey2),
+            style: AppTextStyles.bodySmall.copyWith(color: AppColors.grey2),
           ),
         ),
         const Expanded(child: Divider(color: AppColors.grey1, thickness: 2)),

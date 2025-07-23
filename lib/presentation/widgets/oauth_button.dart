@@ -1,8 +1,8 @@
 //lib/presentation/widgets/oauth_button.dart
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import '../constants/app_colors.dart';
-import '../constants/app_styles.dart';
+import '../theme/app_colors.dart';
+import '../theme/app_text_styles.dart';
 import '../utils/responsive_helper.dart';
 
 class OAuthButton extends StatelessWidget {
@@ -37,9 +37,7 @@ class OAuthButton extends StatelessWidget {
               const Gap(4),
               Text(
                 label,
-                style: AppStyles.caption(
-                  context,
-                ).copyWith(color: AppColors.grey2),
+                style: AppTextStyles.caption.copyWith(color: AppColors.grey2),
                 overflow: TextOverflow.ellipsis,
               ),
             ],

@@ -10,6 +10,7 @@ import 'dependency_injection.dart';
 import 'presentation/screens/auth/signin_screen.dart';
 import 'presentation/screens/auth/signup_screen.dart';
 import 'presentation/navigation/main_navigation_wrapper.dart';
+import 'presentation/theme/app_theme.dart';
 
 // SSL bypass for development
 class MyHttpOverrides extends HttpOverrides {
@@ -71,6 +72,9 @@ class Sportefy extends StatelessWidget {
     return MaterialApp(
       title: 'Sportefy',
       debugShowCheckedModeBanner: false,
+      theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
+      themeMode: ThemeMode.system,
       routes: {
         '/signin': (context) => const SignInScreen(),
         '/signup': (context) => const SignUpScreen(),
