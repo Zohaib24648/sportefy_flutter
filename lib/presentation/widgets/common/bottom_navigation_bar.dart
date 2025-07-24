@@ -52,7 +52,7 @@ class CustomBottomNavBar extends StatelessWidget {
 
   Widget _buildNavItem(int index, IconData icon, String label) {
     final isSelected = currentIndex == index;
-    final color = isSelected ? AppColors.primary : AppColors.grey3;
+    final color = isSelected ? AppColors.primary : AppColors.grey;
 
     return Expanded(
       child: InkWell(

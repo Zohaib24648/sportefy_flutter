@@ -1,17 +1,16 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:sportefy/data/model/facility_base.dart';
-import 'package:sportefy/data/repository/i_facility_repository.dart';
-
+import 'package:sportefy/data/model/venue_base.dart';
+import 'package:sportefy/data/repository/i_venue_repository.dart';
 
 part 'facility_event.dart';
 part 'facility_state.dart';
 
 @injectable
 class FacilityBloc extends Bloc<FacilityEvent, FacilityState> {
-  final IFacilityRepository _facilityRepository;
+  final IVenueRepository _venueRepository;
 
-  FacilityBloc(this._facilityRepository) : super(FacilityInitial()) {
+  FacilityBloc(this._venueRepository) : super(FacilityInitial()) {
     on<GetFacility>(_onGetFacility);
   }
 
@@ -22,10 +21,10 @@ class FacilityBloc extends Bloc<FacilityEvent, FacilityState> {
     emit(FacilityLoading());
 
     try {
-      final facilityItems = await _facilityRepository.getFacilities();
-      emit(FacilityLoaded(facilityItems));
+      final venueItems = await _venueRepository.getVenues();
+      emit(FacilityLoaded(venueItems));
     } catch (e) {
-      emit(FacilityError('Failed to load Facility: ${e.toString()}'));
+      emit(FacilityError('Failed to load venues: ${e.toString()}'));
     }
   }
 }

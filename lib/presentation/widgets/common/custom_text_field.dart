@@ -56,7 +56,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             borderRadius: BorderRadius.circular(14),
             boxShadow: const [
               BoxShadow(
-                color: AppColors.shadowColor,
+                color: AppColors.shadow,
                 blurRadius: 8,
                 offset: Offset(0, 2),
                 spreadRadius: 0,

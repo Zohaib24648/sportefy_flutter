@@ -3,12 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:sportefy/data/model/venue_base.dart';
 import 'package:sportefy/presentation/widgets/common/custom_top_bar/custom_profile_picture.dart';
 import 'package:sportefy/presentation/widgets/common/custom_top_bar/user_info.dart';
 import 'package:sportefy/presentation/widgets/common/shimmer_exports.dart';
 import 'package:sportefy/presentation/widgets/common/custom_top_bar/sports_dropdown.dart';
-import 'package:sportefy/presentation/widgets/home_page_grid_tile.dart';
-import 'package:sportefy/presentation/screens/facility/facility_details_page.dart';
+import 'package:sportefy/presentation/widgets/venue_card.dart';
 import '../../../bloc/facility/facility_bloc.dart';
 import '../../theme/app_colors.dart';
 import '../../widgets/homepage_tile.dart';
@@ -310,22 +310,27 @@ class _HomePageState extends State<HomePage> {
                         ),
                     itemCount: state.items.length,
                     itemBuilder: (context, index) {
-                      final facility = Facility.fromFacilityBase(
-                        state.items[index],
+                      final venue = VenueBase.fromJson(
+                        state.items[index].toJson(),
                       );
-                      return FacilityGridTile(
-                        facility: facility,
+                      return VenueCard(
+                        imageUrl:
+                            '', // TODO: Add venue image when available in API
+                        name: venue.name,
+                        activities:
+                            'Space Type: ${venue.spaceType}', // Using spaceType instead
+                        rating: 4.5,
                         onTap: () {
                           HapticFeedback.lightImpact();
-                          // Navigate to facility page with facility ID
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => FacilityDetailsPage(
-                                facilityId: state.items[index].id,
-                              ),
-                            ),
-                          );
+                          // TODO: Navigate to venue details when API is ready
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (_) => VenueDetailsPage(
+                          //       venueId: state.items[index].id,
+                          //     ),
+                          //   ),
+                          // );
                         },
                       );
                     },

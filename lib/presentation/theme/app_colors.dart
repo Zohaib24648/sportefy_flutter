@@ -27,14 +27,4 @@ class AppColors {
   static const divider = Color(0xFFE0E0E0);
   static const background = Color(0xFFF5F5F5);
 
-  // Additional colors for compatibility (mapping to your main colors)
-  static const black1 = black;
-  static const black2 = dark;
-  static const grey1 = dark;
-  static const grey2 = Color(0xFF4F4F4F);
-  static const grey3 = grey;
-  static const grey4 = Color(0xFFBDBDBD);
-  static const grey5 = lightGrey;
-  static const shadowColor = shadow;
-  static const oauthButtonColor = Color(0xFFF5F5F5);
 }

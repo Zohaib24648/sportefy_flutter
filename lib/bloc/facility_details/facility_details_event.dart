@@ -1,9 +1,9 @@
-part of 'facility_details_bloc.dart';
+// part of 'facility_details_bloc.dart';
 
-abstract class FacilityDetailsEvent {}
+// abstract class FacilityDetailsEvent {}
 
-class LoadFacilityDetails extends FacilityDetailsEvent {
-  final String facilityId;
+// class LoadFacilityDetails extends FacilityDetailsEvent {
+//   final String venueId; // Changed from facilityId to venueId
 
-  LoadFacilityDetails(this.facilityId);
-}
+//   LoadFacilityDetails(this.venueId);
+// }

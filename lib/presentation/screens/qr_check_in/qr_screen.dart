@@ -125,7 +125,7 @@ class QRScreenContent extends StatelessWidget {
                   'Scanned Data:',
                   style: AppTextStyles.body.copyWith(
                     fontWeight: FontWeight.w500,
-                    color: AppColors.black2,
+                    color: AppColors.dark,
                   ),
                 ),
                 const Gap(8),
@@ -135,7 +135,7 @@ class QRScreenContent extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: AppColors.white,
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: AppColors.black2),
+                    border: Border.all(color: AppColors.dark),
                   ),
                   child: Text(
                     data,

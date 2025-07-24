@@ -218,7 +218,7 @@ class _SignInScreenState extends State<SignInScreen> {
           suffixIcon: IconButton(
             icon: Icon(
               _obscurePassword ? Icons.visibility_off : Icons.visibility,
-              color: AppColors.black2,
+              color: AppColors.dark,
             ),
             onPressed: () {
               setState(() {
@@ -253,14 +253,14 @@ class _SignInScreenState extends State<SignInScreen> {
             style: TextStyle(
               fontSize: ResponsiveHelper.getResponsiveFontSize(context, 14),
               fontFamily: 'Lexend',
-              color: AppColors.grey1,
+              color: AppColors.dark,
               fontWeight: FontWeight.w400,
             ),
           ),
           ClickableText(
             text: AppStrings.signUp,
             routeName: '/signup',
-            color: AppColors.grey1,
+            color: AppColors.dark,
             fontSize: 14,
             isBold: false,
           ),

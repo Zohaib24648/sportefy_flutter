@@ -12,17 +12,17 @@ class OrDivider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const Expanded(child: Divider(color: AppColors.grey1, thickness: 2)),
+        const Expanded(child: Divider(color: AppColors.dark, thickness: 2)),
         Padding(
           padding: EdgeInsets.symmetric(
             horizontal: ResponsiveHelper.getResponsiveSpacing(context, 16),
           ),
           child: Text(
             AppStrings.or,
-            style: AppTextStyles.bodySmall.copyWith(color: AppColors.grey2),
+            style: AppTextStyles.bodySmall.copyWith(color: AppColors.grey),
           ),
         ),
-        const Expanded(child: Divider(color: AppColors.grey1, thickness: 2)),
+        const Expanded(child: Divider(color: AppColors.dark, thickness: 2)),
       ],
     );
   }

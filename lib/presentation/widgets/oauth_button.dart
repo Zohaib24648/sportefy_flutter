@@ -20,7 +20,7 @@ class OAuthButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: AppColors.oauthButtonColor,
+      color: AppColors.white,
       borderRadius: BorderRadius.circular(14),
       child: InkWell(
         onTap: onPressed,
@@ -37,7 +37,7 @@ class OAuthButton extends StatelessWidget {
               const Gap(4),
               Text(
                 label,
-                style: AppTextStyles.caption.copyWith(color: AppColors.grey2),
+                style: AppTextStyles.caption.copyWith(color: AppColors.grey),
                 overflow: TextOverflow.ellipsis,
               ),
             ],

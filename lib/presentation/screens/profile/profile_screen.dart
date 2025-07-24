@@ -164,11 +164,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
           height: 48,
           decoration: BoxDecoration(
             color: AppColors.white,
-            border: Border.all(color: AppColors.grey5, width: 1),
+            border: Border.all(color: AppColors.lightGrey, width: 1),
             borderRadius: BorderRadius.circular(100),
           ),
           child: IconButton(
-            icon: Icon(Icons.arrow_back, color: AppColors.black1),
+            icon: Icon(Icons.arrow_back, color: AppColors.black),
             onPressed: () => Navigator.pop(context),
           ),
         ),
@@ -189,7 +189,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 2),
       decoration: BoxDecoration(
         color: AppColors.white,
-        border: Border.all(color: AppColors.grey5),
+        border: Border.all(color: AppColors.lightGrey),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
@@ -270,7 +270,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           child: profile?.avatarUrl == null
-              ? Icon(Icons.person, size: 40, color: AppColors.grey3)
+              ? Icon(Icons.person, size: 40, color: AppColors.grey)
               : null,
         ),
         SizedBox(width: 16),
@@ -375,24 +375,24 @@ class ProfileListItem extends StatelessWidget {
               height: 32,
               decoration: BoxDecoration(
                 color: AppColors.white,
-                border: Border.all(color: AppColors.grey5, width: 1),
+                border: Border.all(color: AppColors.lightGrey, width: 1),
                 borderRadius: BorderRadius.circular(8),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.shadowColor,
+                    color: AppColors.shadow,
                     blurRadius: 3,
                     offset: Offset(0, 0),
                   ),
                 ],
               ),
-              child: Icon(icon, size: 16, color: AppColors.black2),
+              child: Icon(icon, size: 16, color: AppColors.dark),
             ),
             SizedBox(width: 12),
             Expanded(
               child: Text(title, style: Theme.of(context).textTheme.bodyMedium),
             ),
             trailing ??
-                Icon(Icons.arrow_forward_ios, size: 16, color: AppColors.grey3),
+                Icon(Icons.arrow_forward_ios, size: 16, color: AppColors.grey),
           ],
         ),
       ),

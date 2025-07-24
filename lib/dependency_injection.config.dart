@@ -16,8 +16,6 @@ import 'package:sportefy/bloc/auth/auth_bloc.dart' as _i633;
 import 'package:sportefy/bloc/check_in/check_in_bloc.dart' as _i686;
 import 'package:sportefy/bloc/connectivity/connectivity_bloc.dart' as _i203;
 import 'package:sportefy/bloc/facility/facility_bloc.dart' as _i743;
-import 'package:sportefy/bloc/facility_details/facility_details_bloc.dart'
-    as _i205;
 import 'package:sportefy/bloc/history/history_bloc.dart' as _i63;
 import 'package:sportefy/bloc/profile/profile_bloc.dart' as _i812;
 import 'package:sportefy/bloc/qr/qr_bloc.dart' as _i328;
@@ -26,13 +24,13 @@ import 'package:sportefy/core/interceptors/auth_interceptor.dart' as _i872;
 import 'package:sportefy/core/network_module.dart' as _i186;
 import 'package:sportefy/core/services/connectivity_service.dart' as _i306;
 import 'package:sportefy/data/repository/auth_repository.dart' as _i109;
-import 'package:sportefy/data/repository/facility_repository.dart' as _i133;
 import 'package:sportefy/data/repository/history_repository.dart' as _i948;
 import 'package:sportefy/data/repository/i_auth_repository.dart' as _i577;
-import 'package:sportefy/data/repository/i_facility_repository.dart' as _i826;
 import 'package:sportefy/data/repository/i_history_repository.dart' as _i527;
 import 'package:sportefy/data/repository/i_profile_repository.dart' as _i411;
+import 'package:sportefy/data/repository/i_venue_repository.dart' as _i828;
 import 'package:sportefy/data/repository/profile_repository.dart' as _i432;
+import 'package:sportefy/data/repository/venue_repository.dart' as _i482;
 import 'package:sportefy/data/services/auth_state_manager.dart' as _i81;
 import 'package:sportefy/data/services/profile_api_service.dart' as _i272;
 import 'package:sportefy/data/services/secure_storage_service.dart' as _i691;
@@ -76,11 +74,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i361.Dio>(
       () => networkModule.dio(gh<_i872.AuthInterceptor>()),
     );
-    gh.lazySingleton<_i826.IFacilityRepository>(
-      () => _i133.FacilityRepository(gh<_i361.Dio>()),
-    );
     gh.factory<_i272.ProfileApiService>(
       () => _i272.ProfileApiService(gh<_i361.Dio>()),
+    );
+    gh.lazySingleton<_i828.IVenueRepository>(
+      () => _i482.VenueRepository(gh<_i361.Dio>()),
     );
     gh.singleton<_i81.AuthStateManager>(
       () => _i81.AuthStateManager(
@@ -88,14 +86,11 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i691.SecureStorageService>(),
       ),
     );
-    gh.factory<_i743.FacilityBloc>(
-      () => _i743.FacilityBloc(gh<_i826.IFacilityRepository>()),
-    );
-    gh.factory<_i205.FacilityDetailsBloc>(
-      () => _i205.FacilityDetailsBloc(gh<_i826.IFacilityRepository>()),
-    );
     gh.factory<_i411.IProfileRepository>(
       () => _i432.ProfileRepository(gh<_i272.ProfileApiService>()),
+    );
+    gh.factory<_i743.FacilityBloc>(
+      () => _i743.FacilityBloc(gh<_i828.IVenueRepository>()),
     );
     gh.factory<_i812.ProfileBloc>(
       () => _i812.ProfileBloc(gh<_i411.IProfileRepository>()),

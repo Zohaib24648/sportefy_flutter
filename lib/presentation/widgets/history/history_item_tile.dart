@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../data/model/history_item.dart';
+import '../../../data/model/history/history_item.dart';
 import '../../theme/app_colors.dart';
 import 'history_indicators.dart';
 

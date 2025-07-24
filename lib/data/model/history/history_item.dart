@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 
-/// Enum for different types of history items
 enum HistoryType {
   checkIn('check_in', 'Check-in'),
   booking('booking', 'Booking'),
@@ -18,7 +17,6 @@ enum HistoryType {
   }
 }
 
-/// Enum for history item status
 enum HistoryStatus {
   pending('pending', 'Pending'),
   success('success', 'Success'),
@@ -38,7 +36,6 @@ enum HistoryStatus {
   }
 }
 
-/// Base model for history items
 class HistoryItem extends Equatable {
   final String id;
   final String userId;

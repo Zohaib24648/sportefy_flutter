@@ -246,7 +246,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           suffixIcon: IconButton(
             icon: Icon(
               _obscurePassword ? Icons.visibility_off : Icons.visibility,
-              color: AppColors.grey1,
+              color: AppColors.dark,
             ),
             onPressed: () {
               setState(() {
@@ -271,7 +271,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           suffixIcon: IconButton(
             icon: Icon(
               _obscureConfirmPassword ? Icons.visibility_off : Icons.visibility,
-              color: AppColors.grey1,
+              color: AppColors.dark,
             ),
             onPressed: () {
               setState(() {
@@ -363,7 +363,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             style: TextStyle(
               fontSize: ResponsiveHelper.getResponsiveFontSize(context, 14),
               fontFamily: 'Lexend',
-              color: AppColors.grey1,
+              color: AppColors.dark,
               fontWeight: FontWeight.w400,
             ),
           ),

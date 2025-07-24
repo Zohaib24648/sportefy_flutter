@@ -7,7 +7,7 @@ class FacilityInitial extends FacilityState {}
 class FacilityLoading extends FacilityState {}
 
 class FacilityLoaded extends FacilityState {
-  final List<FacilityBase> items;
+  final List<VenueBase> items;
 
   FacilityLoaded(this.items);
 }
@@ -15,7 +15,7 @@ class FacilityLoaded extends FacilityState {
 class FacilitySyncing extends FacilityState {}
 
 class FacilitySyncSuccess extends FacilityState {
-  final List<FacilityBase> items;
+  final List<VenueBase> items;
 
   FacilitySyncSuccess(this.items);
 }
