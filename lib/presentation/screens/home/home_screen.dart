@@ -3,11 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:sportefy/presentation/widgets/common/custom_top_bar/custom_profile_picture.dart';
+import 'package:sportefy/presentation/widgets/common/custom_top_bar/user_info.dart';
 import 'package:sportefy/presentation/widgets/common/shimmer_exports.dart';
-import 'package:sportefy/presentation/widgets/common/sports_dropdown.dart';
+import 'package:sportefy/presentation/widgets/common/custom_top_bar/sports_dropdown.dart';
 import 'package:sportefy/presentation/widgets/home_page_grid_tile.dart';
 import 'package:sportefy/presentation/screens/facility/facility_details_page.dart';
-import 'package:sportefy/presentation/widgets/common/custom_top_bar.dart';
 import '../../../bloc/facility/facility_bloc.dart';
 import '../../theme/app_colors.dart';
 import '../../widgets/homepage_tile.dart';
@@ -108,20 +109,18 @@ class _HomePageState extends State<HomePage> {
         actionsPadding: const EdgeInsets.only(right: 16.0),
         leadingWidth: 80,
         leading: ProfilePicture(
-        imageUrl:
-        'https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg',
-        size: 50,
-        membershipType: MembershipType.gold,
-        badge: Icon(Icons.star, color: Colors.white, size: 12),
-      ),
+          imageUrl:
+              'https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg',
+          size: 50,
+          membershipType: MembershipType.gold,
+          badge: Icon(Icons.star, color: Colors.white, size: 12),
+        ),
         title: UserInfo(
-        name: 'John',
-        creditAmount: '500',
-        membershipType: MembershipType.gold,
-      ),
-        actions: [
-          SportsDropdown()
-        ],
+          name: 'John',
+          creditAmount: '500',
+          membershipType: MembershipType.gold,
+        ),
+        actions: [SportsDropdown()],
         backgroundColor: AppColors.white,
         toolbarHeight: 60,
       ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sportefy/presentation/theme/theme_extensions.dart';
 
 class SportsDropdown extends StatefulWidget {
   const SportsDropdown({super.key});
@@ -13,7 +12,7 @@ class _SportsDropdownState extends State<SportsDropdown> {
     _SportOption(name: 'Football', iconPath: 'assets/icons/football.png'),
     _SportOption(name: 'Cricket', iconPath: 'assets/icons/cricket_ball.png'),
     _SportOption(name: 'Basketball', iconPath: 'assets/icons/basketball.png'),
-];
+  ];
   void _showSportsSheet() {
     showModalBottomSheet<void>(
       context: context,
@@ -57,11 +56,7 @@ class _SportsDropdownState extends State<SportsDropdown> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Image.asset(
-              'assets/icons/football.png',
-              width: 24,
-              height: 24,
-            ),
+            Image.asset('assets/icons/football.png', width: 24, height: 24),
             const Icon(Icons.keyboard_arrow_down_rounded),
           ],
         ),

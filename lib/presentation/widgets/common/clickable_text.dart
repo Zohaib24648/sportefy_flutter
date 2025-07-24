@@ -4,40 +4,27 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../theme/app_colors.dart';
 import '../../utils/responsive_helper.dart';
 
-/// A reusable clickable text component that can either navigate to another page
-/// or open a URL. Supports customizable styling and hover effects.
 class ClickableText extends StatefulWidget {
-  /// The text to display
   final String text;
 
-  /// Optional route name for navigation (use either this or [url])
   final String? routeName;
 
-  /// Optional arguments to pass when navigating
   final Object? routeArguments;
 
-  /// Optional URL to open (use either this or [routeName])
   final String? url;
 
-  /// Custom text style (optional)
   final TextStyle? textStyle;
 
-  /// Whether to show underline decoration
   final bool showUnderline;
 
-  /// Custom onTap callback (overrides route/url behavior if provided)
   final VoidCallback? onTap;
 
-  /// Color for the text (defaults to primary color)
   final Color? color;
 
-  /// Whether the text should be bold
   final bool isBold;
 
-  /// Font size multiplier for responsive sizing
   final double? fontSize;
 
-  /// Whether to show loading indicator on tap
   final bool showLoadingOnTap;
 
   const ClickableText({
