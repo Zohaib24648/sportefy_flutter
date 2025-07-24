@@ -3,14 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:sportefy/data/model/venue_base.dart';
 import 'package:sportefy/presentation/widgets/common/custom_top_bar/custom_profile_picture.dart';
 import 'package:sportefy/presentation/widgets/common/custom_top_bar/user_info.dart';
 import 'package:sportefy/presentation/widgets/common/shimmer_exports.dart';
 import 'package:sportefy/presentation/widgets/common/custom_top_bar/sports_dropdown.dart';
 import 'package:sportefy/presentation/widgets/facility/booking_widget_calendar.dart';
 import 'package:sportefy/presentation/widgets/venue_card.dart';
-import '../../../bloc/facility/facility_bloc.dart';
+import 'package:sportefy/presentation/screens/venue/venue_details_page.dart';
+import '../../../bloc/facility/venue_bloc.dart';
 import '../../theme/app_colors.dart';
 import '../../widgets/homepage_tile.dart';
 import '../../widgets/search_bar.dart';
@@ -28,8 +28,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    // Trigger fetching facilities when the page loads
-    context.read<FacilityBloc>().add(GetFacility(''));
+    // Trigger fetching venues when the page loads
+    context.read<VenueBloc>().add(GetVenue(''));
   }
 
   List<Map<String, dynamic>> _getTileData() {
@@ -96,9 +96,9 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: AppColors.white,
         toolbarHeight: 60,
       ),
-      body: BlocBuilder<FacilityBloc, FacilityState>(
+      body: BlocBuilder<VenueBloc, VenueState>(
         builder: (context, state) {
-          if (state is FacilityLoading) {
+          if (state is VenueLoading) {
             return SingleChildScrollView(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -155,7 +155,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             );
-          } else if (state is FacilityLoaded) {
+          } else if (state is VenueLoaded) {
             return SingleChildScrollView(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -273,9 +273,7 @@ class _HomePageState extends State<HomePage> {
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       itemCount: state.items.length,
                       itemBuilder: (context, index) {
-                        final venue = VenueBase.fromJson(
-                          state.items[index].toJson(),
-                        );
+                        final venue = state.items[index];
                         return Container(
                           width: 180, // Fixed width for each card
                           margin: const EdgeInsets.only(right: 12),
@@ -288,15 +286,13 @@ class _HomePageState extends State<HomePage> {
                             rating: 4.5,
                             onTap: () {
                               HapticFeedback.lightImpact();
-                              // TODO: Navigate to venue details when API is ready
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: (_) => VenueDetailsPage(
-                              //       venueId: state.items[index].id,
-                              //     ),
-                              //   ),
-                              // );
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) =>
+                                      VenueDetailsPage(venueId: venue.id),
+                                ),
+                              );
                             },
                           ),
                         );
@@ -307,7 +303,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             );
-          } else if (state is FacilityError) {
+          } else if (state is VenueError) {
             return Center(child: Text(state.message));
           }
           return const Center(child: CircularProgressIndicator());

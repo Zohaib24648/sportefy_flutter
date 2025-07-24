@@ -14,7 +14,7 @@ class VenueCard extends StatelessWidget {
     this.onTap,
   });
 
-  factory VenueCard.fromFacility({
+  factory VenueCard.fromVenue({
     Key? key,
     required VenueBase venue,
     double? rating,
@@ -87,8 +87,8 @@ class VenueCard extends StatelessWidget {
                     begin: const Alignment(0.50, 0.62),
                     end: const Alignment(0.49, 0.97),
                     colors: [
-                      Colors.black.withOpacity(0),
-                      Colors.black.withOpacity(0.85),
+                      Colors.black.withValues(alpha: 0),
+                      Colors.black.withValues(alpha: 0.85),
                     ],
                   ),
                 ),

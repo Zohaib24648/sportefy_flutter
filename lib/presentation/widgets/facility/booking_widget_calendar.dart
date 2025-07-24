@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:gap/gap.dart';
-import 'package:sportefy/presentation/theme/app_colors.dart';
 
 class BookingWidget extends StatelessWidget {
   final String label;

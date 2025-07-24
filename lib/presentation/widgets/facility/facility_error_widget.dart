@@ -17,7 +17,7 @@ class FacilityErrorWidget extends StatelessWidget {
             const Icon(Icons.error_outline, size: 64, color: Color(0xFFE57373)),
             const SizedBox(height: 16),
             const Text(
-              'Error loading facility details',
+              'Error loading venue details',
               style: TextStyle(
                 fontSize: 18,
                 fontFamily: 'Lexend',

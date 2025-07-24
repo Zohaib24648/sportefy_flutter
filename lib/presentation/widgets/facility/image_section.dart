@@ -1,19 +1,19 @@
-// widgets/facility_image_section.dart
+// widgets/venue_image_section.dart
 import 'package:flutter/material.dart';
 import '../../theme/app_text_styles.dart';
 
-class FacilityImageSection extends StatelessWidget {
+class VenueImageSection extends StatelessWidget {
   final String imageUrl;
-  final String facilityName;
+  final String venueName;
   final double rating;
   final int reviewCount;
   final int pricePerHour;
   final bool isOpen24Hours;
 
-  const FacilityImageSection({
+  const VenueImageSection({
     super.key,
     required this.imageUrl,
-    required this.facilityName,
+    required this.venueName,
     required this.rating,
     required this.reviewCount,
     required this.pricePerHour,
@@ -71,7 +71,7 @@ class FacilityImageSection extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(facilityName, style: AppTextStyles.h3),
+                Text(venueName, style: AppTextStyles.h3),
                 const SizedBox(height: 2),
                 Row(
                   children: [

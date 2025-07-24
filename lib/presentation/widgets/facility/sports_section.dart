@@ -1,27 +1,16 @@
 // widgets/sports_section.dart
 import 'package:flutter/material.dart';
-
-class Sport {
-  final String name;
-  final String iconPath;
-
-  const Sport({required this.name, required this.iconPath});
-}
+import 'package:sportefy/data/model/venue_details.dart';
 
 class SportsSection extends StatelessWidget {
-  final List<Sport> sports;
+  final List<VenueSport> sports;
 
-  const SportsSection({
-    super.key,
-    this.sports = const [
-      Sport(name: 'Football', iconPath: 'assets/icons/football.png'),
-      Sport(name: 'Cricket', iconPath: 'assets/icons/cricket_ball.png'),
-      Sport(name: 'Basketball', iconPath: 'assets/icons/basketball.png'),
-    ],
-  });
+  const SportsSection({super.key, required this.sports});
 
   @override
   Widget build(BuildContext context) {
+    if (sports.isEmpty) return const SizedBox.shrink();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -38,13 +27,16 @@ class SportsSection extends StatelessWidget {
         Wrap(
           spacing: 8,
           runSpacing: 8,
-          children: sports.map((sport) => _buildSportCard(sport)).toList(),
+          children: sports
+              .map((venueSport) => _buildSportCard(venueSport))
+              .toList(),
         ),
       ],
     );
   }
 
-  Widget _buildSportCard(Sport sport) {
+  Widget _buildSportCard(VenueSport venueSport) {
+    final sport = venueSport.sport;
     return Container(
       width: 82,
       height: 73,
@@ -55,14 +47,8 @@ class SportsSection extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(
-            sport.iconPath,
-            width: 32,
-            height: 32,
-            fit: BoxFit.contain,
-            errorBuilder: (context, error, stackTrace) =>
-                Icon(Icons.sports, size: 32, color: Color(0xFF9C86F2)),
-          ),
+          // Use sport icon based on sport name
+          _getSportIcon(sport.name),
           const SizedBox(height: 8),
           Text(
             sport.name,
@@ -76,5 +62,28 @@ class SportsSection extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget _getSportIcon(String sportName) {
+    final Map<String, String> sportIcons = {
+      'football': 'assets/icons/football.png',
+      'cricket': 'assets/icons/cricket_ball.png',
+      'basketball': 'assets/icons/basketball.png',
+    };
+
+    final iconPath = sportIcons[sportName.toLowerCase()];
+
+    if (iconPath != null) {
+      return Image.asset(
+        iconPath,
+        width: 32,
+        height: 32,
+        fit: BoxFit.contain,
+        errorBuilder: (context, error, stackTrace) =>
+            const Icon(Icons.sports, size: 32, color: Color(0xFF9C86F2)),
+      );
+    } else {
+      return const Icon(Icons.sports, size: 32, color: Color(0xFF9C86F2));
+    }
   }
 }
