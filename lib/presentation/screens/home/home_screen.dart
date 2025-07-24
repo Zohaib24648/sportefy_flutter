@@ -8,12 +8,12 @@ import 'package:sportefy/presentation/widgets/common/custom_top_bar/custom_profi
 import 'package:sportefy/presentation/widgets/common/custom_top_bar/user_info.dart';
 import 'package:sportefy/presentation/widgets/common/shimmer_exports.dart';
 import 'package:sportefy/presentation/widgets/common/custom_top_bar/sports_dropdown.dart';
+import 'package:sportefy/presentation/widgets/facility/booking_widget_calendar.dart';
 import 'package:sportefy/presentation/widgets/venue_card.dart';
 import '../../../bloc/facility/facility_bloc.dart';
 import '../../theme/app_colors.dart';
 import '../../widgets/homepage_tile.dart';
 import '../../widgets/search_bar.dart';
-import '../../widgets/home_page_chip.dart';
 
 class HomePage extends StatefulWidget {
   final Function(int)? onNavigateToTab;
@@ -30,34 +30,6 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     // Trigger fetching facilities when the page loads
     context.read<FacilityBloc>().add(GetFacility(''));
-  }
-
-  List<Map<String, dynamic>> _getChipData() {
-    return [
-      {
-        'title': 'Football',
-        'icon': 'assets/icons/football.png',
-        'onTap': () {
-          widget.onNavigateToTab?.call(
-            1,
-          ); // Navigate to search with football filter
-        },
-      },
-      {
-        'title': 'Basketball',
-        'icon': 'assets/icons/basketball.png',
-        'onTap': () {
-          widget.onNavigateToTab?.call(1);
-        },
-      },
-      {
-        'title': 'Cricket',
-        'icon': 'assets/icons/cricket_ball.png',
-        'onTap': () {
-          widget.onNavigateToTab?.call(1);
-        },
-      },
-    ];
   }
 
   List<Map<String, dynamic>> _getTileData() {
@@ -255,32 +227,20 @@ class _HomePageState extends State<HomePage> {
                     }).toList(),
                   ),
                   const Gap(20),
-
-                  // Sports Category Chips - Fixed Height
-                  SizedBox(
-                    height: 40,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: _getChipData().length,
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      itemBuilder: (context, index) {
-                        final chipData = _getChipData()[index];
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 12),
-                          child: HomepageChip(
-                            title: chipData['title']!,
-                            iconAsset: chipData['icon'] as String,
-                            onTap: () {
-                              HapticFeedback.lightImpact();
-                              chipData['onTap']?.call();
-                            },
-                          ),
-                        );
-                      },
+                  BookingWidget(
+                    label: 'Book now',
+                    leadingIcon: Image.asset(
+                      'assets/icons/basketball.png',
+                      width: 26,
                     ),
+                    sideIcon: Image.asset(
+                      'assets/icons/calendar.png',
+                      width: 34,
+                    ),
+                    onTap: () {
+                      // Handle tap
+                    },
                   ),
-                  const SizedBox(height: 24),
-
                   // Section Title
                   const Row(
                     children: [
@@ -293,47 +253,56 @@ class _HomePageState extends State<HomePage> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                      Spacer(),
+                      //TODO: Add navigation to view all venues when API is ready
+                      Text(
+                        'View All',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 16),
 
-                  // Venues Grid - Shrink Wrap to avoid scrolling conflicts
-                  GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 12.0,
-                          mainAxisSpacing: 12.0,
-                          childAspectRatio: 0.8,
-                        ),
-                    itemCount: state.items.length,
-                    itemBuilder: (context, index) {
-                      final venue = VenueBase.fromJson(
-                        state.items[index].toJson(),
-                      );
-                      return VenueCard(
-                        imageUrl:
-                            '', // TODO: Add venue image when available in API
-                        name: venue.name,
-                        activities:
-                            'Space Type: ${venue.spaceType}', // Using spaceType instead
-                        rating: 4.5,
-                        onTap: () {
-                          HapticFeedback.lightImpact();
-                          // TODO: Navigate to venue details when API is ready
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (_) => VenueDetailsPage(
-                          //       venueId: state.items[index].id,
-                          //     ),
-                          //   ),
-                          // );
-                        },
-                      );
-                    },
+                  // Venues Horizontal List
+                  SizedBox(
+                    height: 240, // Fixed height for the horizontal list
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      itemCount: state.items.length,
+                      itemBuilder: (context, index) {
+                        final venue = VenueBase.fromJson(
+                          state.items[index].toJson(),
+                        );
+                        return Container(
+                          width: 180, // Fixed width for each card
+                          margin: const EdgeInsets.only(right: 12),
+                          child: VenueCard(
+                            imageUrl:
+                                'https://cdn.bhdw.net/im/one-day-you-can-have-such-muscles-by-working-in-the-gym-wallpaper-92002_w635.webp', // TODO: Add venue image when available in API
+                            name: venue.name,
+                            activities:
+                                'Space Type: ${venue.spaceType}', // Using spaceType instead
+                            rating: 4.5,
+                            onTap: () {
+                              HapticFeedback.lightImpact();
+                              // TODO: Navigate to venue details when API is ready
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //     builder: (_) => VenueDetailsPage(
+                              //       venueId: state.items[index].id,
+                              //     ),
+                              //   ),
+                              // );
+                            },
+                          ),
+                        );
+                      },
+                    ),
                   ),
                   const SizedBox(height: 20), // Bottom padding
                 ],
