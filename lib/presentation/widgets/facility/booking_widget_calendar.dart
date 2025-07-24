@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:gap/gap.dart';
 import 'package:sportefy/presentation/theme/app_colors.dart';
 
-/// A lightweight, reusable component mirroring the Figma design:
-/// ┌─── Book now ───>>>  📅 ┐
-/// It bundles a primary call‑to‑action with a secondary square icon.
 class BookingWidget extends StatelessWidget {
   final String label;
-  final Widget leadingIcon; // e.g. Image.asset('assets/ball.png', width: 26)
-  final Widget sideIcon; // e.g. Image.asset('assets/calendar.png', width: 34)
+  final Widget leadingIcon;
+  final Widget sideIcon;
   final VoidCallback onTap;
 
   const BookingWidget({
@@ -57,46 +55,29 @@ class BookingWidget extends StatelessWidget {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          SizedBox(
-                            width: 50, // Fixed width to prevent layout shifts
-                            child: DefaultTextStyle(
-                              style: const TextStyle(
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.primary,
-                              ),
-                              child: AnimatedTextKit(
-                                animatedTexts: [
-                                  RotateAnimatedText(
-                                    'Book',
-                                    duration: const Duration(
-                                      milliseconds: 2200,
-                                    ), // 2s display + 0.2s transition
-                                  ),
-                                  RotateAnimatedText(
-                                    'Play',
-                                    duration: const Duration(
-                                      milliseconds: 2200,
-                                    ), // 2s display + 0.2s transition
-                                  ),
-                                ],
-                                onTap: () {
-                                  print("Tap Event");
-                                },
-                                isRepeatingAnimation: true,
-                                repeatForever: true,
-                                pause: Duration
-                                    .zero, // No pause between animations
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            'Now',
-                            style: const TextStyle(
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black54,
+                          DefaultTextStyle(
+                            style: Theme.of(context).textTheme.headlineSmall!,
+                            child: AnimatedTextKit(
+                              animatedTexts: [
+                                RotateAnimatedText(
+                                  'Book Now',
+                                  duration: const Duration(milliseconds: 4400),
+                                  transitionHeight: 30,
+                                ),
+                                RotateAnimatedText(
+                                  'Play Now',
+                                  duration: const Duration(milliseconds: 4400),
+                                  transitionHeight:
+                                      30.0, // Adjust height for smooth transition
+                                ),
+                              ],
+                              onTap: () {
+                                print("Tap Event");
+                              },
+                              isRepeatingAnimation: true,
+                              repeatForever: true,
+                              pause:
+                                  Duration.zero, // No pause between animations
                             ),
                           ),
                         ],

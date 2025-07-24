@@ -244,7 +244,6 @@ class _HomePageState extends State<HomePage> {
                   // Section Title
                   const Row(
                     children: [
-                      Icon(Icons.location_on, color: Colors.grey, size: 20),
                       SizedBox(width: 8),
                       Text(
                         'Nearby Venues',
