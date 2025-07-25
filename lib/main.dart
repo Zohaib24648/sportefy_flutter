@@ -1,11 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 import 'dart:io';
 import 'bloc/auth/auth_bloc.dart';
 import 'bloc/profile/profile_bloc.dart';
+import 'core/utils/performance_config.dart';
 import 'dependency_injection.dart';
 import 'presentation/screens/auth/signin_screen.dart';
 import 'presentation/screens/auth/signup_screen.dart';
@@ -24,6 +26,9 @@ class MyHttpOverrides extends HttpOverrides {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize performance optimizations
+  PerformanceConfig.initialize();
 
   // In debug mode, allow all SSL certificates (for development only)
   if (kDebugMode) {
@@ -69,39 +74,49 @@ class Sportefy extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Sportefy',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.light,
-      darkTheme: AppTheme.dark,
-      themeMode: ThemeMode.system,
-      routes: {
-        '/signin': (context) => const SignInScreen(),
-        '/signup': (context) => const SignUpScreen(),
-        '/home': (context) => const MainNavigationWrapper(),
-      },
-      home: BlocBuilder<AuthBloc, AuthState>(
-        builder: (context, state) {
-          // Debug: Auth state changed to $state
-          if (state is Authenticated) {
-            return const MainNavigationWrapper();
-          } else if (state is AuthLoading) {
-            return const Scaffold(
-              body: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircularProgressIndicator(),
-                    SizedBox(height: 16),
-                    Text('Loading...'),
-                  ],
-                ),
-              ),
-            );
-          } else {
-            return const SignInScreen();
-          }
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent, // Transparent status bar
+        statusBarIconBrightness:
+            Brightness.dark, // Dark icons for light background
+        statusBarBrightness: Brightness.light, // Light status bar for iOS
+        systemNavigationBarColor: Colors.white, // Bottom navigation bar color
+        systemNavigationBarIconBrightness: Brightness.dark, // Dark nav icons
+      ),
+      child: MaterialApp(
+        title: 'Sportefy',
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.light,
+        darkTheme: AppTheme.dark,
+        themeMode: ThemeMode.system,
+        routes: {
+          '/signin': (context) => const SignInScreen(),
+          '/signup': (context) => const SignUpScreen(),
+          '/home': (context) => const MainNavigationWrapper(),
         },
+        home: BlocBuilder<AuthBloc, AuthState>(
+          builder: (context, state) {
+            // Debug: Auth state changed to $state
+            if (state is Authenticated) {
+              return const MainNavigationWrapper();
+            } else if (state is AuthLoading) {
+              return const Scaffold(
+                body: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(),
+                      SizedBox(height: 16),
+                      Text('Loading...'),
+                    ],
+                  ),
+                ),
+              );
+            } else {
+              return const SignInScreen();
+            }
+          },
+        ),
       ),
     );
   }

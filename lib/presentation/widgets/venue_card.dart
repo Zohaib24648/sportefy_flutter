@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sportefy/data/model/venue_base.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class VenueCard extends StatelessWidget {
   const VenueCard({
@@ -53,6 +54,16 @@ class VenueCard extends StatelessWidget {
   static const double _kBaseWidth = 233;
   static const double _kBaseHeight = 303;
 
+  // Pre-calculate styles to avoid creating them in build method
+  static const LinearGradient _overlayGradient = LinearGradient(
+    begin: Alignment(0.50, 0.62),
+    end: Alignment(0.49, 0.97),
+    colors: [
+      Color(0x00000000), // Transparent
+      Color(0xD9000000), // 85% opacity black
+    ],
+  );
+
   @override
   Widget build(BuildContext context) {
     // Derive proportional multipliers.
@@ -73,25 +84,32 @@ class VenueCard extends StatelessWidget {
             fit: StackFit.expand,
             children: [
               // Background image.
-              Image.network(
-                imageUrl,
+              CachedNetworkImage(
+                imageUrl: imageUrl,
                 fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) =>
-                    const ColoredBox(color: Colors.grey),
+                placeholder: (context, url) => Container(
+                  color: Colors.grey[300],
+                  child: const Center(
+                    child: CircularProgressIndicator(strokeWidth: 2.0),
+                  ),
+                ),
+                errorWidget: (context, url, error) => Container(
+                  color: Colors.grey[400],
+                  child: const Center(
+                    child: Icon(
+                      Icons.image_not_supported,
+                      color: Colors.white54,
+                    ),
+                  ),
+                ),
+                memCacheWidth: (width * 2)
+                    .round(), // Cache at 2x for better quality
+                memCacheHeight: (height * 2).round(),
               ),
 
               // Bottom fade so text remains legible.
               Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: const Alignment(0.50, 0.62),
-                    end: const Alignment(0.49, 0.97),
-                    colors: [
-                      Colors.black.withValues(alpha: 0),
-                      Colors.black.withValues(alpha: 0.85),
-                    ],
-                  ),
-                ),
+                decoration: const BoxDecoration(gradient: _overlayGradient),
               ),
 
               // Foreground content.

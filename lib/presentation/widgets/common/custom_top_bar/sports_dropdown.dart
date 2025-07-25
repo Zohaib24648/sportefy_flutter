@@ -48,13 +48,15 @@ class _SportsDropdownState extends State<SportsDropdown> {
     return GestureDetector(
       onTap: _showSportsSheet,
       child: Container(
+        height: 50,
+        width: 60,
         decoration: BoxDecoration(
-          color: Colors.amber,
+          color: Colors.grey[100],
           borderRadius: BorderRadius.circular(15),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 14),
+        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Image.asset('assets/icons/football.png', width: 24, height: 24),
             const Icon(Icons.keyboard_arrow_down_rounded),

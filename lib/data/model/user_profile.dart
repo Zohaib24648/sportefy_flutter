@@ -13,6 +13,7 @@ class UserProfile {
   final String? phoneNumber;
   final String email;
   final int? credits;
+  final int? checkIns;
 
   const UserProfile({
     required this.id,
@@ -29,6 +30,7 @@ class UserProfile {
     this.phoneNumber,
     required this.email,
     this.credits,
+    this.checkIns,
   });
 
   factory UserProfile.fromJson(Map<String, dynamic> json) {
@@ -51,6 +53,7 @@ class UserProfile {
       phoneNumber: json['phoneNumber'] as String?,
       email: json['email'] as String,
       credits: json['credits'] as int?,
+      checkIns: json['checkIns'] as int?,
     );
   }
 
@@ -70,6 +73,7 @@ class UserProfile {
       'phoneNumber': phoneNumber,
       'email': email,
       'credits': credits,
+      'checkIns': checkIns,
     };
   }
 
@@ -88,6 +92,7 @@ class UserProfile {
     String? phoneNumber,
     String? email,
     int? credits,
+    int? checkIns,
   }) {
     return UserProfile(
       id: id ?? this.id,
@@ -104,6 +109,7 @@ class UserProfile {
       phoneNumber: phoneNumber ?? this.phoneNumber,
       email: email ?? this.email,
       credits: credits ?? this.credits,
+      checkIns: checkIns ?? this.checkIns,
     );
   }
 

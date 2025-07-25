@@ -55,13 +55,20 @@ class AppTheme {
       // AppBar
       appBarTheme: AppBarTheme(
         elevation: 0,
+        scrolledUnderElevation: 0, // Remove elevation when scrolled
         centerTitle: false,
         backgroundColor: surface,
+        surfaceTintColor: Colors.transparent, // Remove surface tint
         foregroundColor: onSurface,
         titleTextStyle: AppTextStyles.h3.copyWith(color: onSurface),
         systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarBrightness: brightness,
+          statusBarColor: Colors.transparent, // Transparent status bar
+          statusBarBrightness: isDark ? Brightness.dark : Brightness.light,
           statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
+          systemNavigationBarColor: surface,
+          systemNavigationBarIconBrightness: isDark
+              ? Brightness.light
+              : Brightness.dark,
         ),
       ),
 
