@@ -8,10 +8,9 @@ import 'package:sportefy/presentation/widgets/common/custom_top_bar/custom_profi
 import 'package:sportefy/presentation/widgets/common/custom_top_bar/user_info.dart';
 import 'package:sportefy/presentation/widgets/common/shimmer_exports.dart';
 import 'package:sportefy/presentation/widgets/common/custom_top_bar/sports_dropdown.dart';
-import 'package:sportefy/presentation/widgets/facility/booking_widget_calendar.dart';
 import 'package:sportefy/presentation/widgets/venue/venue_widgets.dart';
 import 'package:sportefy/presentation/screens/venue/venue_details_page.dart';
-import '../../../bloc/facility/venue_bloc.dart';
+import '../../../bloc/venue/venue_bloc.dart';
 import '../../../bloc/profile/profile_bloc.dart';
 import '../../theme/app_colors.dart';
 import '../../widgets/home/home_widgets.dart';
@@ -227,7 +226,7 @@ class _HomePageState extends State<HomePage> {
                 childAspectRatio: 0.8,
               ),
               itemCount: 6,
-              itemBuilder: (context, index) => const FacilityGridTileShimmer(),
+              itemBuilder: (context, index) => const VenueGridTileShimmer(),
             ),
           ],
         ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sportefy/bloc/venue_details/venue_details_bloc.dart';
 import 'package:sportefy/dependency_injection.dart';
-import 'package:sportefy/presentation/widgets/facility/facility_widgets.dart';
+import 'package:sportefy/presentation/widgets/venue/venue_widgets.dart';
 
 class VenueDetailsPage extends StatelessWidget {
   final String venueId;
@@ -32,9 +32,9 @@ class VenueDetailsPageContent extends StatelessWidget {
           child: BlocBuilder<VenueDetailsBloc, VenueDetailsState>(
             builder: (context, state) {
               if (state is VenueDetailsLoading) {
-                return const FacilityLoadingWidget();
+                return const VenueLoadingWidget();
               } else if (state is VenueDetailsError) {
-                return FacilityErrorWidget(
+                return VenueErrorWidget(
                   message: state.message,
                   onRetry: () {
                     // Get the venueId from the parent widget

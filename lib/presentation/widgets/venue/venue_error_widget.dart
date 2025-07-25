@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class FacilityErrorWidget extends StatelessWidget {
+class VenueErrorWidget extends StatelessWidget {
   final String message;
   final VoidCallback? onRetry;
 
-  const FacilityErrorWidget({super.key, required this.message, this.onRetry});
+  const VenueErrorWidget({super.key, required this.message, this.onRetry});
 
   @override
   Widget build(BuildContext context) {

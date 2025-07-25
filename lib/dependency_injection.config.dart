@@ -15,11 +15,11 @@ import 'package:injectable/injectable.dart' as _i526;
 import 'package:sportefy/bloc/auth/auth_bloc.dart' as _i633;
 import 'package:sportefy/bloc/check_in/check_in_bloc.dart' as _i686;
 import 'package:sportefy/bloc/connectivity/connectivity_bloc.dart' as _i203;
-import 'package:sportefy/bloc/facility/venue_bloc.dart' as _i615;
 import 'package:sportefy/bloc/history/history_bloc.dart' as _i63;
 import 'package:sportefy/bloc/profile/profile_bloc.dart' as _i812;
 import 'package:sportefy/bloc/qr/qr_bloc.dart' as _i328;
 import 'package:sportefy/bloc/search/search_bloc.dart' as _i308;
+import 'package:sportefy/bloc/venue/venue_bloc.dart' as _i937;
 import 'package:sportefy/bloc/venue_details/venue_details_bloc.dart' as _i110;
 import 'package:sportefy/core/app_module.dart' as _i893;
 import 'package:sportefy/core/auth/token_manager.dart' as _i730;
@@ -83,11 +83,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i411.IProfileRepository>(
       () => _i432.ProfileRepository(gh<_i272.ProfileApiService>()),
     );
-    gh.factory<_i615.VenueBloc>(
-      () => _i615.VenueBloc(gh<_i828.IVenueRepository>()),
-    );
     gh.factory<_i110.VenueDetailsBloc>(
       () => _i110.VenueDetailsBloc(gh<_i828.IVenueRepository>()),
+    );
+    gh.factory<_i937.VenueBloc>(
+      () => _i937.VenueBloc(gh<_i828.IVenueRepository>()),
     );
     gh.factory<_i812.ProfileBloc>(
       () => _i812.ProfileBloc(gh<_i411.IProfileRepository>()),

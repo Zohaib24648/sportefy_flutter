@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'shimmer_loading.dart';
 
-/// Shimmer loading for facility grid tiles
-class FacilityGridTileShimmer extends StatelessWidget {
-  const FacilityGridTileShimmer({super.key});
+/// Shimmer loading for venue grid tiles
+class VenueGridTileShimmer extends StatelessWidget {
+  const VenueGridTileShimmer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -74,9 +74,9 @@ class FacilityGridTileShimmer extends StatelessWidget {
   }
 }
 
-/// Shimmer for facility details page
-class FacilityDetailsShimmer extends StatelessWidget {
-  const FacilityDetailsShimmer({super.key});
+/// Shimmer for venue details page
+class VenueDetailsShimmer extends StatelessWidget {
+  const VenueDetailsShimmer({super.key});
 
   @override
   Widget build(BuildContext context) {

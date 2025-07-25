@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bloc/auth/auth_bloc.dart';
 import '../../bloc/connectivity/connectivity_bloc.dart';
 import '../../bloc/connectivity/connectivity_event.dart';
-import '../../bloc/facility/venue_bloc.dart';
+import '../../bloc/venue/venue_bloc.dart';
 import '../../dependency_injection.dart';
 import '../widgets/common/bottom_navigation_bar.dart';
 import '../widgets/common/connectivity_widgets.dart';
