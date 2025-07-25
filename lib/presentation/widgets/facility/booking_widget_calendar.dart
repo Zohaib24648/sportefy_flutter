@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import '../../../core/utils/app_logger.dart';
 
 class BookingWidget extends StatelessWidget {
   final String label;
@@ -70,7 +71,10 @@ class BookingWidget extends StatelessWidget {
                                 ),
                               ],
                               onTap: () {
-                                print("Tap Event");
+                                AppLogger.debug(
+                                  "Calendar tap event",
+                                  tag: 'BookingWidget',
+                                );
                               },
                               isRepeatingAnimation: true,
                               repeatForever: true,

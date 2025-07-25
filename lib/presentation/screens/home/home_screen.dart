@@ -9,13 +9,13 @@ import 'package:sportefy/presentation/widgets/common/custom_top_bar/user_info.da
 import 'package:sportefy/presentation/widgets/common/shimmer_exports.dart';
 import 'package:sportefy/presentation/widgets/common/custom_top_bar/sports_dropdown.dart';
 import 'package:sportefy/presentation/widgets/facility/booking_widget_calendar.dart';
-import 'package:sportefy/presentation/widgets/venue_card.dart';
+import 'package:sportefy/presentation/widgets/venue/venue_widgets.dart';
 import 'package:sportefy/presentation/screens/venue/venue_details_page.dart';
 import '../../../bloc/facility/venue_bloc.dart';
 import '../../../bloc/profile/profile_bloc.dart';
 import '../../theme/app_colors.dart';
-import '../../widgets/homepage_tile.dart';
-import '../../widgets/search_bar.dart';
+import '../../widgets/home/home_widgets.dart';
+import '../../widgets/search/search_widgets.dart';
 
 class HomePage extends StatefulWidget {
   final Function(int)? onNavigateToTab;

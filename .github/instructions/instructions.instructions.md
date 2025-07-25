@@ -4,28 +4,30 @@ applyTo: "**"
 
 projectContext:
 description: |
-This project uses Flutter as the frontend framework, with BLoC for state management, Dio for network requests, and GetIt for dependency injection. Supabase is used exclusively for authentication. The backend is a NestJS service exposed via RESTful APIs. Shimmer effects are used for loading indicators only. All generated code should follow the principles of clarity, minimalism, and functional necessity.
+Sportefy is a Flutter application for sports facility management that follows Clean Architecture. All mutable state flows through BLoC; manual widget‑level state manipulation is forbidden so behaviour remains deterministic and data flow stays uniform. Dio manages HTTP communication; Supabase provides authentication only; GetIt with Injectable resolves dependencies. The NestJS backend exposes REST endpoints; shimmer effects serve as the sole loading indicator. A strict widget hierarchy is enforced: reusable view logic lives in the `widgets/` tree, never inside `screens/`; screens assemble those widgets like Lego blocks. Common, cross‑feature widgets reside in `widgets/common/`; feature‑specific widgets live in their own `widgets/<feature>/` folders. No custom themes or styles are defined inside `screens/`, and layout code belongs exclusively in widgets. Every contribution must value clarity, brevity, and functional necessity; redundant abstractions and speculative code are not accepted.
 
 codingGuidelines:
 
-- Do not write unnecessary conditions, classes, or functions.
-- All code must be concise, direct, and complete without over-engineering.
-- Use BLoC for state management, and structure bloc files with minimal boilerplate.
-- Use Dio directly for API calls with simple try-catch or `.catchError` handling if needed.
-- Supabase should be used only for authentication—no other functionality is allowed via Supabase.
-- Use GetIt (`locator`) for injecting blocs, repositories, and services.
-- Display loading states using shimmer effects; no spinners or alternative loaders.
-- Avoid helper functions unless reuse has already occurred.
-- Avoid multi-level nesting and excessive abstraction in both UI and logic layers.
-- Use BlocBuilder/BlocListener only where UI needs to change based on bloc state.
-- No future-proofing, placeholder code, or overly generic abstractions.
-- UI code must be clean and minimal, with no wrapping widgets unless necessary.
-- No code should be written "just in case"—everything must be essential to the feature being implemented.
+- Prefer single‑purpose files and functions; avoid needless branching or deep nesting.
+- Route every dynamic behaviour through BLoC events and states; reuse bloc instances whenever practical to prevent duplicate network calls.
+- Cache network responses and images aggressively with tools such as cached_network_image and bloc‑retained memory; invalidate caches only when business rules demand it.
+- Configure Dio with one base client; global interceptors handle authentication, error mapping, and logging; never create ad hoc clients.
+- Supabase is limited to sign‑in, sign‑up, and token refresh; all data operations pass through backend APIs.
+- Inject dependencies only through GetIt; never create services inside widgets.
+- Use shimmer loaders for all pending states; spinners, progress bars, or placeholder text are disallowed.
+- Build UI layouts by composition: create small, reusable widgets and place them under `widgets/common/` if shared across features, or under `widgets/<feature>/` if local to a feature.
+- Never declare themes, colours, or text styles inside `screens/`; styles belong in dedicated theme files or inside reusable widgets.
+- Screens serve purely as orchestrators: they arrange pre‑built widgets and dispatch bloc events, without business logic or styling.
+- Publish code that compiles and runs; include imports, annotations, and build_runner outputs when required.
+- Respect Dart analysis rules; format with `dart format`; document public APIs with concise comments.
 
 reviewGuidelines:
 
-- Flag any bloated logic, unused abstractions, or over-complicated widget trees.
-- Reject any helper/service/repository unless it’s used immediately and improves clarity.
-- Highlight nested UI or conditional logic that can be flattened or simplified.
-- Enforce use of shimmer where loading indicators are needed; no CircularProgressIndicator.
-- Ensure dependency injection is done only via GetIt and not passed manually unless required for testability.
+- Reject code that uses setState, ValueNotifier, ChangeNotifier, or similar patterns.
+- Flag duplicate paths, unused abstractions, or overly nested structures; suggest consolidation.
+- Verify bloc state reuse instead of repeated fetches; confirm effective caching.
+- Disallow CircularProgressIndicator or LinearProgressIndicator; require shimmering loaders.
+- Ensure every service and bloc is registered in `dependency_injection.dart` and retrieved through GetIt.
+- Check that no widget contains ad hoc themes or styles; styles must be centralised and reusable.
+- Confirm screens contain only widget composition and event dispatch; no business logic, no inline styling.
+- Keep each file under two hundred lines unless splitting harms cohesion, and ensure common widgets live in `widgets/common/`.

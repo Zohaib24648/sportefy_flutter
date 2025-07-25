@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
 
 /// Performance configuration and optimization utilities

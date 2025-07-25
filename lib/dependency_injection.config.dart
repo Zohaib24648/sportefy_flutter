@@ -19,6 +19,7 @@ import 'package:sportefy/bloc/facility/venue_bloc.dart' as _i615;
 import 'package:sportefy/bloc/history/history_bloc.dart' as _i63;
 import 'package:sportefy/bloc/profile/profile_bloc.dart' as _i812;
 import 'package:sportefy/bloc/qr/qr_bloc.dart' as _i328;
+import 'package:sportefy/bloc/search/search_bloc.dart' as _i308;
 import 'package:sportefy/bloc/venue_details/venue_details_bloc.dart' as _i110;
 import 'package:sportefy/core/app_module.dart' as _i893;
 import 'package:sportefy/core/auth/token_manager.dart' as _i730;
@@ -46,6 +47,7 @@ extension GetItInjectableX on _i174.GetIt {
     final appModule = _$AppModule();
     final networkModule = _$NetworkModule();
     gh.factory<_i328.QrBloc>(() => _i328.QrBloc());
+    gh.factory<_i308.SearchBloc>(() => _i308.SearchBloc());
     gh.singleton<_i454.SupabaseClient>(() => appModule.supabaseClient);
     gh.singleton<_i454.GoTrueClient>(() => appModule.supabaseAuth);
     gh.singleton<_i306.ConnectivityService>(() => _i306.ConnectivityService());

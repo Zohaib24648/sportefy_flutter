@@ -37,13 +37,9 @@ class PrimaryButton extends StatelessWidget {
             ? Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    width: ResponsiveHelper.getResponsiveFontSize(context, 16),
-                    height: ResponsiveHelper.getResponsiveFontSize(context, 16),
-                    child: const CircularProgressIndicator(
-                      color: AppColors.white,
-                      strokeWidth: 2,
-                    ),
+                  ButtonLoading(
+                    color: AppColors.white,
+                    size: ResponsiveHelper.getResponsiveFontSize(context, 16),
                   ),
                   const SizedBox(width: 12),
                   AppShimmer(

@@ -6,15 +6,15 @@ Sportefy is a Flutter sports facility management app with features for venue dis
 
 ## Architecture & Dependencies
 
-**State Management**: BLoC pattern with `flutter_bloc` - each feature has its own bloc in `lib/bloc/`
-**Dependency Injection**: GetIt + Injectable - register services in `lib/core/`, configure in `dependency_injection.dart`
-**Navigation**: Bottom tab navigation with screen caching in `MainNavigationWrapper`
-**API Communication**: Dio HTTP client with auth interceptor for token management
-**Authentication**: Supabase Auth only - no other Supabase features used
+**State Management**: BLoC pattern with `flutter_bloc` - each feature has its own bloc in `lib/bloc/` (auth, venue_details, facility, etc.)
+**Dependency Injection**: GetIt + Injectable - all services auto-registered via `@injectable`, configure in `dependency_injection.dart`
+**Navigation**: Bottom tab navigation with intelligent screen caching in `MainNavigationWrapper` - screens maintain state except QR scanner
+**API Communication**: Single Dio instance with base URL from `.env`, global `AuthInterceptor` handles tokens automatically
+**Authentication**: Supabase Auth only - reactive auth state via `AuthBloc` listening to Supabase auth stream changes
 
 ## Key Development Patterns
 
-### BLoC Structure
+### BLoC Structure & Injection
 
 ```dart
 // Always inject via GetIt in screens/widgets
@@ -22,64 +22,76 @@ BlocProvider(
   create: (context) => getIt<VenueBloc>()..add(LoadVenues()),
   child: VenueScreen(),
 )
+
+// MultiBlocProvider at app level for global state (AuthBloc, ProfileBloc)
+// Feature-specific blocs injected at screen level
 ```
 
-### API Services Pattern
+### Repository Pattern
 
-- Repository pattern: Interface in `data/repository/i_*.dart`, implementation in `data/repository/*.dart`
-- API services in `data/services/` use Dio directly with standardized error handling
-- All services are `@injectable` and registered automatically
+- Interfaces: `data/repository/i_*.dart` define contracts
+- Implementations: `data/repository/*.dart` with `@LazySingleton(as: Interface)`
+- API services inject single Dio instance, handle standardized error responses
+- All network calls return parsed model objects, never raw JSON
 
-### Loading States
+### Loading States - Shimmer Only
 
-**Always use shimmer effects** - never CircularProgressIndicator:
+**Critical: Never use CircularProgressIndicator** - always shimmer effects:
 
 ```dart
 // Import barrel file for consistency
 import '../common/shimmer_exports.dart';
 
-// Use in loading states
-AppShimmer(child: YourWidget())
+// Use in BLoC loading states
+if (state is VenueLoading) AppShimmer(child: VenueCard())
 ```
+
+### Screen Caching Pattern
+
+`MainNavigationWrapper` pre-builds and caches screens (Home, Search, Profile, History) except QR scanner which rebuilds on each access for performance and camera resource management.
 
 ### Authentication Flow
 
-- `AuthBloc` handles all auth state, listens to Supabase auth changes
-- `TokenManager` centrally manages access tokens and session validation
-- `AuthInterceptor` automatically adds tokens to API requests (skips public endpoints)
-
-## Performance Optimizations
-
-**Image Handling**: Use `cached_network_image` with configured cache limits (100 images, 50MB)
-**Scroll Performance**: Pre-configured physics and cache extent in `PerformanceConfig`
-**Memory**: Screen caching in navigation wrapper, `RepaintBoundary` for complex widgets
+- `AuthBloc` subscribes to Supabase auth stream changes, manages reactive auth state
+- `TokenManager` handles access tokens and session validation
+- `AuthInterceptor` auto-injects tokens (skips public endpoints like `/auth/*`)
+- SSL bypassed in debug mode via `MyHttpOverrides` for development
 
 ## Essential Files & Commands
 
 ### Key Configuration Files
 
-- `lib/dependency_injection.dart` - DI setup, run `flutter packages pub run build_runner build` after changes
-- `lib/core/network_module.dart` - Dio configuration with base URL from `.env`
-- `flutter_native_splash.yaml` - Splash screen config, run `dart run flutter_native_splash:create`
+- `lib/dependency_injection.dart` - GetIt setup, run `flutter packages pub run build_runner build` after adding `@injectable`
+- `lib/core/network_module.dart` - Single Dio instance with 15s timeouts, auth interceptor, debug logging
+- `.env` - Contains `API_BASE_URL`, `SUPABASE_URL`, `SUPABASE_ANON_KEY` (loaded via dotenv)
+- `lib/main.dart` - App initialization: Supabase setup, DI config, global BLoCs (Auth, Profile)
 
 ### Development Workflow
 
 ```bash
-# Code generation (after adding @injectable services)
+# Code generation after adding @injectable services or changing interfaces
 flutter packages pub run build_runner build --delete-conflicting-outputs
 
-# Environment setup
-# Ensure .env file exists with API_BASE_URL
+# Splash screen generation after updating flutter_native_splash.yaml
+dart run flutter_native_splash:create
 
-# Run app with performance monitoring
-flutter run --enable-software-rendering  # for performance debugging
+# Run with performance monitoring
+flutter run --enable-software-rendering
 ```
 
-### Common Issues
+## Performance Optimizations
 
-- **SSL in development**: `MyHttpOverrides` class bypasses certificate validation
-- **Auth token refresh**: Handled automatically by `AuthInterceptor` and `TokenManager`
-- **State persistence**: Use screen caching pattern in navigation wrapper for performance
+**Image Cache**: `PerformanceConfig.initialize()` sets 100 image cache, 50MB limit via `PaintingBinding`
+**Scroll Performance**: Pre-configured `BouncingScrollPhysics` and 500px cache extent in `PerformanceConfig`
+**Memory Management**: Navigation wrapper caches 4/5 screens, disposes QR scanner for camera resources
+**Network**: 15s timeouts on Dio, request/response logging only in debug mode
+
+### Common Issues & Patterns
+
+- **QR Screen Strategy**: Never cache - rebuilds each access to properly initialize/dispose camera
+- **Auth Token Refresh**: Automatic via `AuthInterceptor` and Supabase auth stream
+- **SSL Development**: `MyHttpOverrides` bypasses certificates in debug mode only
+- **State Persistence**: Use navigation caching pattern - screens survive tab switches
 
 ## Project-Specific Conventions
 

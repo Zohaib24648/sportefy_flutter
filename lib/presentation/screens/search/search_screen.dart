@@ -1,110 +1,96 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../theme/app_colors.dart';
 import '../../widgets/common/shimmer_exports.dart';
-import '../../widgets/search_bar.dart';
+import '../../widgets/search/search_widgets.dart';
+import '../../../bloc/search/search_bloc_exports.dart';
 
-class SearchScreen extends StatefulWidget {
+class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
 
   @override
-  State<SearchScreen> createState() => _SearchScreenState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => SearchBloc(),
+      child: const SearchScreenView(),
+    );
+  }
 }
 
-class _SearchScreenState extends State<SearchScreen> {
-  bool _isSearching = false;
-  bool _hasSearched = false;
-
-  void _onSearchChanged(String query) {
-    setState(() {
-      _isSearching = query.isNotEmpty;
-    });
-  }
-
-  void _onSearchSubmitted(String query) {
-    setState(() {
-      _hasSearched = true;
-      _isSearching = false;
-    });
-    // TODO: Implement actual search functionality
-  }
+class SearchScreenView extends StatelessWidget {
+  const SearchScreenView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.white,
-      appBar: AppBar(
-        title: const Text('Search'),
-        backgroundColor: AppColors.primary,
-      ),
-      body: Column(
-        children: [
-          // Search Bar
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: EnhancedSearchBar(
-              hintText: 'Search for venues, sports, events...',
-              onChanged: _onSearchChanged,
-              onSubmitted: _onSearchSubmitted,
-              white: Colors.white,
-              showShadow: true,
+    return BlocBuilder<SearchBloc, SearchState>(
+      builder: (context, state) {
+        return Scaffold(
+          backgroundColor: AppColors.primary,
+          body: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  EnhancedSearchBar(
+                    onChanged: (query) {
+                      context.read<SearchBloc>().add(SearchQueryChanged(query));
+                    },
+                    onSubmitted: (query) {
+                      context.read<SearchBloc>().add(SearchSubmitted(query));
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  Expanded(child: _buildSearchContent(state)),
+                ],
+              ),
             ),
           ),
-
-          // Content
-          Expanded(child: _buildContent()),
-        ],
-      ),
+        );
+      },
     );
   }
 
-  Widget _buildContent() {
-    if (_isSearching) {
-      // Show loading shimmer while typing/searching
-      return const Padding(
-        padding: EdgeInsets.all(16),
-        child: SearchResultShimmer(),
-      );
-    } else if (_hasSearched) {
-      // Show search results (placeholder for now)
-      return const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.search_off, size: 64, color: Colors.grey),
-            SizedBox(height: 16),
-            Text(
-              'No results found',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'Try searching for something else',
-              style: TextStyle(fontSize: 16, color: Colors.grey),
-            ),
-          ],
+  Widget _buildSearchContent(SearchState state) {
+    return switch (state) {
+      SearchInitial() => const Center(
+        child: Text(
+          'Enter a search term to begin',
+          style: TextStyle(color: Colors.white),
         ),
-      );
-    } else {
-      // Show initial state
-      return const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.search, size: 64, color: AppColors.primary),
-            SizedBox(height: 16),
-            Text(
-              'Search for Sports',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'Find venues, sports, events, and more!',
-              style: TextStyle(fontSize: 16, color: Colors.grey),
-              textAlign: TextAlign.center,
-            ),
-          ],
+      ),
+      SearchTyping() => const Center(
+        child: Text('Type to search...', style: TextStyle(color: Colors.white)),
+      ),
+      SearchLoading() => AppShimmer(
+        child: Container(
+          height: 200,
+          width: double.infinity,
+          color: Colors.white,
         ),
-      );
-    }
+      ),
+      SearchSuccess() =>
+        state.results.isEmpty
+            ? Center(
+                child: Text(
+                  'No results found for "${state.query}"',
+                  style: const TextStyle(color: Colors.white),
+                ),
+              )
+            : const Center(
+                child: Text(
+                  'Search results would go here',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+      SearchFailure() => Center(
+        child: Text(
+          'Error: ${state.error}',
+          style: const TextStyle(color: Colors.red),
+        ),
+      ),
+      _ => const Center(
+        child: Text('Unknown state', style: TextStyle(color: Colors.white)),
+      ),
+    };
   }
 }

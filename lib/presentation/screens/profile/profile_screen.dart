@@ -18,7 +18,7 @@ class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
   @override
-  _ProfileScreenState createState() => _ProfileScreenState();
+  State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
@@ -365,15 +365,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
       await launchUrl(Uri.parse(url));
     } else {
       // Handle error - show snackbar or dialog
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Could not open $url',
-            style: AppTextStyles.body.copyWith(color: AppColors.white),
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Could not open $url',
+              style: AppTextStyles.body.copyWith(color: AppColors.white),
+            ),
+            backgroundColor: AppColors.error,
           ),
-          backgroundColor: AppColors.error,
-        ),
-      );
+        );
+      }
     }
   }
 }

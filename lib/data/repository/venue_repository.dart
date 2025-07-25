@@ -3,6 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'package:sportefy/data/model/venue_base.dart';
 import 'package:sportefy/data/model/venue_details.dart';
 import 'package:sportefy/data/repository/i_venue_repository.dart';
+import '../../core/utils/app_logger.dart';
 
 /// Repository implementation for venue operations
 @LazySingleton(as: IVenueRepository)
@@ -38,9 +39,15 @@ class VenueRepository implements IVenueRepository {
   @override
   Future<VenueDetails> getVenueDetails(String id) async {
     try {
-      print('Fetching venue details for ID: $id');
+      AppLogger.network(
+        'Fetching venue details for ID: $id',
+        tag: 'VenueRepository',
+      );
       final response = await _dio.get('/venues/$id');
-      print('Raw API response: ${response.data}');
+      AppLogger.network(
+        'Raw API response: ${response.data}',
+        tag: 'VenueRepository',
+      );
 
       if (response.data == null) {
         throw Exception('API returned null response');
@@ -56,13 +63,23 @@ class VenueRepository implements IVenueRepository {
         throw Exception('API returned empty data');
       }
 
-      print('Processing venue data: ${data.keys.toList()}');
+      AppLogger.network(
+        'Processing venue data: ${data.keys.toList()}',
+        tag: 'VenueRepository',
+      );
       final venueDetails = VenueDetails.fromJson(data);
-      print('Successfully parsed venue details: ${venueDetails.name}');
+      AppLogger.network(
+        'Successfully parsed venue details: ${venueDetails.name}',
+        tag: 'VenueRepository',
+      );
 
       return venueDetails;
     } catch (e) {
-      print('Error fetching venue details: $e');
+      AppLogger.error(
+        'Error fetching venue details',
+        error: e,
+        tag: 'VenueRepository',
+      );
       if (e.toString().contains(
         'type \'Null\' is not a subtype of type \'String\'',
       )) {

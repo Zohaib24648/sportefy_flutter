@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import '../auth/token_manager.dart';
 import '../../dependency_injection.dart';
+import 'app_logger.dart';
 
 class DebugUtils {
   /// Reports concise authentication state in debug mode
@@ -11,12 +12,16 @@ class DebugUtils {
     final valid = await tm.ensureValidSession();
     final token = await tm.getAccessToken();
     final userId = tm.userId;
-    print(
+    AppLogger.debug(
       'AuthState -> authenticated: $auth, validSession: $valid, '
       'userId: ${userId ?? 'none'}, tokenExists: ${token != null}',
+      tag: 'Auth',
     );
     if (token != null && token.length > 20) {
-      print('Token preview: ${token.substring(0, 20)}...');
+      AppLogger.debug(
+        'Token preview: ${token.substring(0, 20)}...',
+        tag: 'Auth',
+      );
     }
   }
 
@@ -24,6 +29,6 @@ class DebugUtils {
   static Future<void> clearSession() async {
     if (!kDebugMode) return;
     await getIt<TokenManager>().clearSession();
-    print('Debug: Session cleared');
+    AppLogger.debug('Session cleared', tag: 'Auth');
   }
 }

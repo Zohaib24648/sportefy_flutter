@@ -13,14 +13,14 @@ class ConnectivityBloc extends Bloc<ConnectivityEvent, ConnectivityState> {
   late StreamSubscription<List<ConnectivityResult>> _connectivitySubscription;
 
   ConnectivityBloc(this._connectivityService)
-    : super(ConnectivityState.initial()) {
-    on<ConnectivityInitialized>(_onConnectivityInitialized);
+    : super(const ConnectivityInitial()) {
+    on<ConnectivityInitialize>(_onConnectivityInitialize);
     on<ConnectivityChanged>(_onConnectivityChanged);
-    on<ConnectivityCheckRequested>(_onConnectivityCheckRequested);
+    on<ConnectivityReset>(_onConnectivityReset);
   }
 
-  Future<void> _onConnectivityInitialized(
-    ConnectivityInitialized event,
+  Future<void> _onConnectivityInitialize(
+    ConnectivityInitialize event,
     Emitter<ConnectivityState> emit,
   ) async {
     try {
@@ -35,6 +35,7 @@ class ConnectivityBloc extends Bloc<ConnectivityEvent, ConnectivityState> {
             onError: (error) {
               // Handle stream errors gracefully
               if (!isClosed) {
+                // Optionally emit an error state or log the error
                 AppLogger.error(
                   'Connectivity stream error',
                   error: error,
@@ -67,45 +68,32 @@ class ConnectivityBloc extends Bloc<ConnectivityEvent, ConnectivityState> {
     final isWiFi = _connectivityService.isConnectedToWiFi(event.results);
     final isMobile = _connectivityService.isConnectedToMobile(event.results);
 
+    if (isConnected) {
+      emit(
+        ConnectivityConnected(
+          connectivityResult: event.results,
+          isWiFi: isWiFi,
+          isMobile: isMobile,
+        ),
+      );
+    } else {
+      emit(const ConnectivityDisconnected());
+    }
+
+    // Log connectivity changes
     final connectionType = isWiFi
         ? 'WiFi'
         : isMobile
         ? 'Mobile'
         : 'None';
-
-    final status = isConnected
-        ? ConnectivityStatus.connected
-        : ConnectivityStatus.disconnected;
-
-    emit(
-      ConnectivityState(
-        status: status,
-        results: event.results,
-        connectionType: connectionType,
-        isConnected: isConnected,
-        isWiFi: isWiFi,
-        isMobile: isMobile,
-      ),
-    );
-
-    // Log connectivity changes
     AppLogger.connectivity('Connection changed to: $connectionType');
   }
 
-  void _onConnectivityCheckRequested(
-    ConnectivityCheckRequested event,
+  void _onConnectivityReset(
+    ConnectivityReset event,
     Emitter<ConnectivityState> emit,
-  ) async {
-    try {
-      final results = await _connectivityService.checkConnectivity();
-      add(ConnectivityChanged(results));
-    } catch (e) {
-      AppLogger.error(
-        'Connectivity check error',
-        error: e,
-        tag: 'Connectivity',
-      );
-    }
+  ) {
+    emit(const ConnectivityInitial());
   }
 
   @override
