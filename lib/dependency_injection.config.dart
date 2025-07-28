@@ -19,6 +19,7 @@ import 'package:sportefy/bloc/history/history_bloc.dart' as _i63;
 import 'package:sportefy/bloc/profile/profile_bloc.dart' as _i812;
 import 'package:sportefy/bloc/qr/qr_bloc.dart' as _i328;
 import 'package:sportefy/bloc/search/search_bloc.dart' as _i308;
+import 'package:sportefy/bloc/slot/slot_bloc.dart' as _i430;
 import 'package:sportefy/bloc/venue/venue_bloc.dart' as _i937;
 import 'package:sportefy/bloc/venue_details/venue_details_bloc.dart' as _i110;
 import 'package:sportefy/core/app_module.dart' as _i893;
@@ -31,8 +32,10 @@ import 'package:sportefy/data/repository/history_repository.dart' as _i948;
 import 'package:sportefy/data/repository/i_auth_repository.dart' as _i577;
 import 'package:sportefy/data/repository/i_history_repository.dart' as _i527;
 import 'package:sportefy/data/repository/i_profile_repository.dart' as _i411;
+import 'package:sportefy/data/repository/i_slot_repository.dart' as _i506;
 import 'package:sportefy/data/repository/i_venue_repository.dart' as _i828;
 import 'package:sportefy/data/repository/profile_repository.dart' as _i432;
+import 'package:sportefy/data/repository/slot_repository.dart' as _i155;
 import 'package:sportefy/data/repository/venue_repository.dart' as _i482;
 import 'package:sportefy/data/services/profile_api_service.dart' as _i272;
 import 'package:supabase_flutter/supabase_flutter.dart' as _i454;
@@ -74,8 +77,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i361.Dio>(
       () => networkModule.dio(gh<_i872.AuthInterceptor>()),
     );
+    gh.lazySingleton<_i506.ISlotRepository>(
+      () => _i155.SlotRepository(gh<_i361.Dio>()),
+    );
     gh.factory<_i272.ProfileApiService>(
       () => _i272.ProfileApiService(gh<_i361.Dio>()),
+    );
+    gh.factory<_i430.SlotBloc>(
+      () => _i430.SlotBloc(gh<_i506.ISlotRepository>()),
     );
     gh.lazySingleton<_i828.IVenueRepository>(
       () => _i482.VenueRepository(gh<_i361.Dio>()),
@@ -83,11 +92,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i411.IProfileRepository>(
       () => _i432.ProfileRepository(gh<_i272.ProfileApiService>()),
     );
-    gh.factory<_i110.VenueDetailsBloc>(
-      () => _i110.VenueDetailsBloc(gh<_i828.IVenueRepository>()),
-    );
     gh.factory<_i937.VenueBloc>(
       () => _i937.VenueBloc(gh<_i828.IVenueRepository>()),
+    );
+    gh.factory<_i110.VenueDetailsBloc>(
+      () => _i110.VenueDetailsBloc(gh<_i828.IVenueRepository>()),
     );
     gh.factory<_i812.ProfileBloc>(
       () => _i812.ProfileBloc(gh<_i411.IProfileRepository>()),

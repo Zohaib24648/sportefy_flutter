@@ -1,28 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:sportefy/presentation/screens/booking/booking_screen.dart';
 import '../../theme/app_colors.dart';
 
 // widgets/proceed_button.dart
 class ProceedButton extends StatelessWidget {
-  const ProceedButton({super.key});
+  final String? venueId;
+  final String? venueName;
+
+  const ProceedButton({super.key, this.venueId, this.venueName});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Handle proceed action - navigate to booking screen
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Proceeding to booking...'),
-            duration: Duration(seconds: 2),
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) =>
+                BookingScreen(venueId: venueId, venueName: venueName),
           ),
         );
-        // TODO: Implement navigation to booking screen
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => const BookingScreen(),
-        //   ),
-        // );
       },
       child: Container(
         width: double.infinity,

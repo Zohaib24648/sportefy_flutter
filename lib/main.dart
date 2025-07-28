@@ -88,7 +88,7 @@ class Sportefy extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: AppTheme.light,
         darkTheme: AppTheme.dark,
-        themeMode: ThemeMode.system,
+        themeMode: ThemeMode.light,
         routes: {
           '/signin': (context) => const SignInScreen(),
           '/signup': (context) => const SignUpScreen(),

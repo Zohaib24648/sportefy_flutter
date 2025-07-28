@@ -121,7 +121,7 @@ class VenueDetailsPageContent extends StatelessWidget {
                         const SizedBox(height: 30),
 
                         // Proceed Button
-                        const ProceedButton(),
+                        ProceedButton(venueId: venue.id, venueName: venue.name),
                       ],
                     ),
                   ),
