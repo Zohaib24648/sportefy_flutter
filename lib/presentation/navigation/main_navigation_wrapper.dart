@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bloc/auth/auth_bloc.dart';
 import '../../bloc/connectivity/connectivity_bloc.dart';
 import '../../bloc/connectivity/connectivity_event.dart';
-import '../../bloc/venue/venue_bloc.dart';
 import '../../dependency_injection.dart';
 import '../widgets/common/bottom_navigation_bar.dart';
 import '../widgets/common/connectivity_widgets.dart';
@@ -35,10 +34,7 @@ class _MainNavigationWrapperState extends State<MainNavigationWrapper> {
 
   void _initializeScreens() {
     // Pre-build screens that should maintain state
-    _screenCache[0] = BlocProvider(
-      create: (context) => getIt<VenueBloc>(),
-      child: HomePage(onNavigateToTab: _onNavItemTapped),
-    );
+    _screenCache[0] = HomePage(onNavigateToTab: _onNavItemTapped);
     _screenCache[1] = const SearchScreen();
     _screenCache[3] = const ProfileScreen();
     _screenCache[4] = const HistoryScreen();

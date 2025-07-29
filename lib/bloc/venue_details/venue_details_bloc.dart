@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:sportefy/data/model/venue_details.dart';
+import 'package:sportefy/data/model/venue_details_dto.dart';
 import 'package:sportefy/data/repository/i_venue_repository.dart';
 
 part 'venue_details_event.dart';
@@ -21,7 +21,7 @@ class VenueDetailsBloc extends Bloc<VenueDetailsEvent, VenueDetailsState> {
     emit(VenueDetailsLoading());
 
     try {
-      final venue = await _venueRepository.getVenueDetails(event.venueId);
+      final venue = await _venueRepository.getVenueById(event.venueId);
       emit(VenueDetailsLoaded(venue));
     } catch (e) {
       emit(VenueDetailsError('Failed to load venue details: ${e.toString()}'));

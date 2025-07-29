@@ -7,7 +7,7 @@ class SlotInitial extends SlotState {}
 class SlotLoading extends SlotState {}
 
 class SlotLoaded extends SlotState {
-  final List<TimeSlot> timeSlots;
+  final List<TimeSlotDTO> timeSlots;
   final DateTime date;
 
   SlotLoaded({required this.timeSlots, required this.date});

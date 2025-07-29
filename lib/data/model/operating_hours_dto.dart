@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class OperatingHour extends Equatable {
+class OperatingHourDTO extends Equatable {
   final int id;
   final String facilityId;
   final String? venueId;
@@ -8,7 +8,7 @@ class OperatingHour extends Equatable {
   final String closeTime;
   final String dayOfWeek;
 
-  const OperatingHour({
+  const OperatingHourDTO({
     required this.id,
     required this.facilityId,
     this.venueId,
@@ -17,14 +17,14 @@ class OperatingHour extends Equatable {
     required this.dayOfWeek,
   });
 
-  factory OperatingHour.fromJson(Map<String, dynamic> json) {
-    return OperatingHour(
-      id: json['id'] as int,
-      facilityId: json['facilityId'] as String,
+  factory OperatingHourDTO.fromJson(Map<String, dynamic> json) {
+    return OperatingHourDTO(
+      id: json['id'] as int? ?? 0,
+      facilityId: json['facilityId'] as String? ?? '',
       venueId: json['venueId'] as String?,
-      openTime: json['openTime'] as String,
-      closeTime: json['closeTime'] as String,
-      dayOfWeek: json['dayOfWeek'] as String,
+      openTime: json['openTime'] as String? ?? '00:00:00',
+      closeTime: json['closeTime'] as String? ?? '23:59:59',
+      dayOfWeek: json['dayOfWeek'] as String? ?? 'Monday',
     );
   }
 

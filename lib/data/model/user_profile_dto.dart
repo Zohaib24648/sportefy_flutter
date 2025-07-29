@@ -1,4 +1,6 @@
-class UserProfile {
+import 'package:equatable/equatable.dart';
+
+class UserProfile extends Equatable {
   final String id;
   final String fullName;
   final String role;
@@ -35,9 +37,9 @@ class UserProfile {
 
   factory UserProfile.fromJson(Map<String, dynamic> json) {
     return UserProfile(
-      id: json['id'] as String,
-      fullName: json['fullName'] as String,
-      role: json['role'] as String,
+      id: json['id'] as String? ?? '',
+      fullName: json['fullName'] as String? ?? '',
+      role: json['role'] as String? ?? '',
       avatarUrl: json['avatarUrl'] as String?,
       userName: json['userName'] as String?,
       gender: json['gender'] as String?,
@@ -45,13 +47,13 @@ class UserProfile {
       address: json['address'] as String?,
       organization: json['organization'] as String?,
       createdAt: json['createdAt'] != null
-          ? DateTime.parse(json['createdAt'] as String)
+          ? DateTime.tryParse(json['createdAt'] as String)
           : null,
       updatedAt: json['updatedAt'] != null
-          ? DateTime.parse(json['updatedAt'] as String)
+          ? DateTime.tryParse(json['updatedAt'] as String)
           : null,
       phoneNumber: json['phoneNumber'] as String?,
-      email: json['email'] as String,
+      email: json['email'] as String? ?? '',
       credits: json['credits'] as int?,
       checkIns: json['checkIns'] as int?,
     );
@@ -118,18 +120,32 @@ class UserProfile {
     return 'UserProfile(id: $id, fullName: $fullName, email: $email, avatarUrl: $avatarUrl)';
   }
 
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    return other is UserProfile &&
-        other.id == id &&
-        other.fullName == fullName &&
-        other.email == email &&
-        other.avatarUrl == avatarUrl;
-  }
+  /// Database constraint validations
+  bool get isValidAge => age == null || (age! > 0 && age! < 100);
+  bool get isValidUserName => userName == null || userName!.length < 16;
+  bool get isValidCredits => credits == null || credits! >= 0;
+  bool get isValidCheckIns => checkIns == null || checkIns! >= 0;
+
+  /// Check if profile meets all database constraints
+  bool get isValid =>
+      isValidAge && isValidUserName && isValidCredits && isValidCheckIns;
 
   @override
-  int get hashCode {
-    return Object.hash(id, fullName, email, avatarUrl);
-  }
+  List<Object?> get props => [
+    id,
+    fullName,
+    role,
+    avatarUrl,
+    userName,
+    gender,
+    age,
+    address,
+    organization,
+    createdAt,
+    updatedAt,
+    phoneNumber,
+    email,
+    credits,
+    checkIns,
+  ];
 }

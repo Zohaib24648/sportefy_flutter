@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sportefy/presentation/widgets/common/or_divider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 import '../../../bloc/auth/auth_bloc.dart';
-import '../../../data/model/signup_request.dart';
+import '../../../data/model/signup_request_dto.dart';
 import '../../constants/app_strings.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_text_styles.dart';

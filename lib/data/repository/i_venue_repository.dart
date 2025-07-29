@@ -1,14 +1,11 @@
-import 'package:sportefy/data/model/venue_base.dart';
-import 'package:sportefy/data/model/venue_details.dart';
+import 'package:sportefy/data/model/venue_details_dto.dart';
+import 'package:sportefy/data/model/venue_list_response_dto.dart';
 
 /// Interface for venue repository operations
 abstract class IVenueRepository {
-  /// Get list of venues
-  Future<List<VenueBase>> getVenues();
+  /// Get paginated venues response
+  Future<VenueListResponseDTO> getVenuesPaginated({int? page, int? limit});
 
   /// Get venue by ID
-  Future<VenueBase> getVenueById(String id);
-
-  /// Get detailed venue information by ID
-  Future<VenueDetails> getVenueDetails(String id);
+  Future<VenueDetailsDTO> getVenueById(String id);
 }

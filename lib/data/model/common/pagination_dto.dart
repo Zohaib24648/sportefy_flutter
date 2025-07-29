@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 /// Pagination model that matches the API response schema
-class Pagination extends Equatable {
+class PaginationDTO extends Equatable {
   final int page;
   final int limit;
   final int total;
@@ -9,7 +9,7 @@ class Pagination extends Equatable {
   final bool hasNext;
   final bool hasPrev;
 
-  const Pagination({
+  const PaginationDTO({
     required this.page,
     required this.limit,
     required this.total,
@@ -18,7 +18,7 @@ class Pagination extends Equatable {
     required this.hasPrev,
   });
 
-  Pagination copyWith({
+  PaginationDTO copyWith({
     int? page,
     int? limit,
     int? total,
@@ -26,7 +26,7 @@ class Pagination extends Equatable {
     bool? hasNext,
     bool? hasPrev,
   }) {
-    return Pagination(
+    return PaginationDTO(
       page: page ?? this.page,
       limit: limit ?? this.limit,
       total: total ?? this.total,
@@ -47,8 +47,8 @@ class Pagination extends Equatable {
     };
   }
 
-  factory Pagination.fromJson(Map<String, dynamic> json) {
-    return Pagination(
+  factory PaginationDTO.fromJson(Map<String, dynamic> json) {
+    return PaginationDTO(
       page: json['page'] as int,
       limit: json['limit'] as int,
       total: json['total'] as int,

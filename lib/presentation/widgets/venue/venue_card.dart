@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sportefy/data/model/venue_base.dart';
+import 'package:sportefy/data/model/venue_dto.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class VenueCard extends StatelessWidget {
@@ -17,7 +17,7 @@ class VenueCard extends StatelessWidget {
 
   factory VenueCard.fromVenue({
     Key? key,
-    required VenueBase venue,
+    required VenueDTO venue,
     double? rating,
     int? reviewCount,
     double? distanceKm,
@@ -90,7 +90,13 @@ class VenueCard extends StatelessWidget {
                 placeholder: (context, url) => Container(
                   color: Colors.grey[300],
                   child: const Center(
-                    child: CircularProgressIndicator(strokeWidth: 2.0),
+                    child: SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.0,
+                      ), // Keep for image loading
+                    ),
                   ),
                 ),
                 errorWidget: (context, url, error) => Container(

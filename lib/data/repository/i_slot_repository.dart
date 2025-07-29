@@ -1,17 +1,15 @@
-import '../model/slot.dart';
+import '../model/slot_dto.dart';
 
-/// Interface for slot repository operations
 abstract class ISlotRepository {
-  /// Get venue slots for a specific date
-  Future<SlotsApiResponse> getVenueSlots({
+  Future<List<SlotDTO>> getVenueSlots({
     required String venueId,
     required DateTime date,
   });
 
   /// Get venue slots for a date range
-  Future<SlotsApiResponse> getVenueSlotsRange({
-    required String venueId,
-    required DateTime startDate,
-    required DateTime endDate,
-  });
+  // Future<List<SlotDTO>> getVenueSlotsRange({
+  //   required String venueId,
+  //   required DateTime startDate,
+  //   required DateTime endDate,
+  // });
 }

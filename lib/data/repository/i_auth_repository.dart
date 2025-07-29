@@ -1,5 +1,5 @@
-import 'package:sportefy/data/model/signin_request.dart';
-import 'package:sportefy/data/model/signup_request.dart';
+import 'package:sportefy/data/model/signin_request_dto.dart';
+import 'package:sportefy/data/model/signup_request_dto.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract class IAuthRepository {

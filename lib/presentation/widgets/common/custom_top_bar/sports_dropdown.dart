@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../bloc/sports/sports_bloc.dart';
+import '../../../../bloc/sports/sports_state.dart';
+import '../../../../bloc/sports/sports_event.dart';
+import '../../../../core/utils/sports_icon_utils.dart';
+import '../../../../data/model/sport_dto.dart';
+import '../shimmer_exports.dart';
 
 class SportsDropdown extends StatefulWidget {
-  final Function(Sport)? onSportSelected;
+  final Function(SportDTO)? onSportSelected;
 
   const SportsDropdown({super.key, this.onSportSelected});
 
@@ -10,23 +17,24 @@ class SportsDropdown extends StatefulWidget {
 }
 
 class _SportsDropdownState extends State<SportsDropdown> {
-  final List<Sport> _sports = const [
-    Sport('Football', 'assets/icons/football.png'),
-    Sport('Cricket', 'assets/icons/cricket_ball.png'),
-    Sport('Basketball', 'assets/icons/basketball.png'),
-  ];
+  SportDTO? _selectedSport;
 
-  Sport _selectedSport = const Sport('Football', 'assets/icons/football.png');
+  @override
+  void initState() {
+    super.initState();
+    // Sports data is already loaded globally through main.dart
+    // No need to load again here
+  }
 
-  void _showSportsSheet() {
-    showModalBottomSheet<Sport>(
+  void _showSportsSheet(List<SportDTO> sports) {
+    showModalBottomSheet<SportDTO>(
       context: context,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       isScrollControlled: true,
       builder: (context) => _SportSelectionBottomSheet(
-        sports: _sports,
+        sports: sports,
         selectedSport: _selectedSport,
       ),
     ).then((selectedSport) {
@@ -41,45 +49,76 @@ class _SportsDropdownState extends State<SportsDropdown> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: _showSportsSheet,
-      child: Container(
-        height: 50,
-        width: 60,
-        decoration: BoxDecoration(
-          color: Colors.grey[100],
-          borderRadius: BorderRadius.circular(15),
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Image.asset(_selectedSport.iconPath, width: 24, height: 24),
-            const Icon(Icons.keyboard_arrow_down_rounded),
-          ],
-        ),
-      ),
+    return BlocBuilder<SportsBloc, SportsState>(
+      builder: (context, state) {
+        if (state is SportsLoading) {
+          return AppShimmer(
+            child: Container(
+              height: 50,
+              width: 60,
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                borderRadius: BorderRadius.circular(15),
+              ),
+            ),
+          );
+        } else if (state is SportsLoaded) {
+          // Set default sport if none selected
+          _selectedSport ??= state.sports.isNotEmpty
+              ? state.sports.first
+              : null;
+
+          return GestureDetector(
+            onTap: () => _showSportsSheet(state.sports),
+            child: Container(
+              height: 50,
+              width: 60,
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                borderRadius: BorderRadius.circular(15),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Image.asset(
+                    _selectedSport != null
+                        ? SportsIconUtils.getSportIconPath(_selectedSport!.name)
+                        : SportsIconUtils.getSportIconPath('basketball'),
+                    width: 24,
+                    height: 24,
+                  ),
+                  const Icon(Icons.keyboard_arrow_down_rounded),
+                ],
+              ),
+            ),
+          );
+        } else if (state is SportsError) {
+          return GestureDetector(
+            onTap: () {
+              context.read<SportsBloc>().add(const RefreshSports());
+            },
+            child: Container(
+              height: 50,
+              width: 60,
+              decoration: BoxDecoration(
+                color: Colors.red[50],
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(color: Colors.red.shade200),
+              ),
+              child: const Icon(Icons.refresh, color: Colors.red, size: 20),
+            ),
+          );
+        }
+        return const SizedBox.shrink();
+      },
     );
   }
 }
 
-class Sport {
-  final String name;
-  final String iconPath;
-  const Sport(this.name, this.iconPath);
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Sport && runtimeType == other.runtimeType && name == other.name;
-
-  @override
-  int get hashCode => name.hashCode;
-}
-
 class _SportSelectionBottomSheet extends StatefulWidget {
-  final List<Sport> sports;
-  final Sport selectedSport;
+  final List<SportDTO> sports;
+  final SportDTO? selectedSport;
 
   const _SportSelectionBottomSheet({
     required this.sports,
@@ -93,7 +132,7 @@ class _SportSelectionBottomSheet extends StatefulWidget {
 
 class _SportSelectionBottomSheetState
     extends State<_SportSelectionBottomSheet> {
-  late Sport _currentSelection;
+  late SportDTO? _currentSelection;
 
   @override
   void initState() {
@@ -144,7 +183,7 @@ class _SportSelectionBottomSheetState
                   final sport = widget.sports[index];
                   return _SportTile(
                     sport: sport,
-                    selected: _currentSelection == sport,
+                    selected: _currentSelection?.id == sport.id,
                     onTap: () => setState(() => _currentSelection = sport),
                   );
                 },
@@ -180,7 +219,7 @@ class _SportSelectionBottomSheetState
 }
 
 class _SportTile extends StatelessWidget {
-  final Sport sport;
+  final SportDTO sport;
   final bool selected;
   final VoidCallback onTap;
 
@@ -233,7 +272,7 @@ class _SportTile extends StatelessWidget {
                   ),
                   child: Center(
                     child: Image.asset(
-                      sport.iconPath,
+                      SportsIconUtils.getSportIconPath(sport.name),
                       width: 24,
                       height: 24,
                       fit: BoxFit.cover,
@@ -242,7 +281,7 @@ class _SportTile extends StatelessWidget {
                 ),
                 const SizedBox(width: 12),
                 Text(
-                  sport.name,
+                  sport.name.toUpperCase(),
                   style: const TextStyle(
                     color: Color(0xFF212121),
                     fontSize: 14,

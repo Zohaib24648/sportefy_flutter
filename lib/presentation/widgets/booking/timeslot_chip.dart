@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sportefy/data/model/time_slot.dart';
 import 'package:sportefy/presentation/widgets/booking/reusable_widgets.dart';
-import '../../../data/model/slot.dart';
 
 class TimeSlotChip extends StatelessWidget {
   const TimeSlotChip({
@@ -10,7 +10,7 @@ class TimeSlotChip extends StatelessWidget {
     this.onTap,
   });
 
-  final TimeSlot timeSlot;
+  final TimeSlotDTO timeSlot;
   final bool isSelected;
   final VoidCallback? onTap;
 

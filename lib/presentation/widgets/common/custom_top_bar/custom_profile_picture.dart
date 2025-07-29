@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:sportefy/presentation/widgets/common/custom_top_bar/user_info.dart';
 
 class ProfilePicture extends StatelessWidget {
@@ -48,15 +49,32 @@ class ProfilePicture extends StatelessWidget {
             border: Border.all(color: _getFrameColor(), width: borderWidth),
           ),
           child: Center(
-            child: Container(
-              width: size,
-              height: size,
-              decoration: ShapeDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(imageUrl),
-                  fit: BoxFit.cover,
+            child: ClipOval(
+              child: CachedNetworkImage(
+                imageUrl: imageUrl,
+                width: size,
+                height: size,
+                fit: BoxFit.cover,
+                placeholder: (context, url) => Container(
+                  width: size,
+                  height: size,
+                  color: Colors.grey[300],
+                  child: Icon(
+                    Icons.person,
+                    size: size * 0.5,
+                    color: Colors.grey,
+                  ),
                 ),
-                shape: const CircleBorder(),
+                errorWidget: (context, url, error) => Container(
+                  width: size,
+                  height: size,
+                  color: Colors.grey[400],
+                  child: Icon(
+                    Icons.person,
+                    size: size * 0.5,
+                    color: Colors.grey,
+                  ),
+                ),
               ),
             ),
           ),

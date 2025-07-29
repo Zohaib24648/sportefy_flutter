@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import '../../data/model/slot.dart';
+import 'package:sportefy/bloc/slot/utils.dart';
+import 'package:sportefy/data/model/time_slot.dart';
 import '../../data/repository/i_slot_repository.dart';
 
 part 'slot_event.dart';
@@ -44,13 +45,8 @@ class SlotBloc extends Bloc<SlotEvent, SlotState> {
         venueId: venueId,
         date: date,
       );
-
-      if (response.success) {
-        final timeSlots = SlotGenerator.generateTimeSlots(date, response.data);
-        emit(SlotLoaded(timeSlots: timeSlots, date: date));
-      } else {
-        emit(SlotError('Failed to load slots: ${response.message}'));
-      }
+      final timeSlots = SlotGenerator.generateTimeSlots(date, response);
+      emit(SlotLoaded(timeSlots: timeSlots, date: date));
     } catch (e) {
       emit(SlotError('Failed to load slots: ${e.toString()}'));
     }

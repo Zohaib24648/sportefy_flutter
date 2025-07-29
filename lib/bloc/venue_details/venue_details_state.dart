@@ -7,7 +7,7 @@ class VenueDetailsInitial extends VenueDetailsState {}
 class VenueDetailsLoading extends VenueDetailsState {}
 
 class VenueDetailsLoaded extends VenueDetailsState {
-  final VenueDetails venue;
+  final VenueDetailsDTO venue;
 
   VenueDetailsLoaded(this.venue);
 }

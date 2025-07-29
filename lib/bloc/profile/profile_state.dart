@@ -17,11 +17,3 @@ class ProfileError extends ProfileState {
 
   ProfileError(this.error);
 }
-
-class ProfileUpdating extends ProfileState {}
-
-class ProfileUpdated extends ProfileState {
-  final UserProfile profile;
-
-  ProfileUpdated(this.profile);
-}
