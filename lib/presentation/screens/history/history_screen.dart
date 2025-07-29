@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../bloc/auth/auth_bloc.dart';
 import '../../../bloc/history/history_bloc.dart';
 import '../../../core/utils/history_examples.dart';
-import '../../../data/model/history/history_item.dart';
+import '../../../data/model/history/history_item_dto.dart';
 import '../../../dependency_injection.dart';
 import '../../theme/app_colors.dart';
 import '../../widgets/history/history_tab_bar.dart';

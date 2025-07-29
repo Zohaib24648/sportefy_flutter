@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import '../../data/model/user_profile.dart';
-import '../../data/model/profile_update_request.dart';
+import '../../data/model/user_profile_dto.dart';
+import '../../data/model/profile_update_request_dto.dart';
 import '../../data/repository/i_profile_repository.dart';
 
 part 'profile_event.dart';

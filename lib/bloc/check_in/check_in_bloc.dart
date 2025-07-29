@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:uuid/uuid.dart';
-import '../../data/model/history/history_item.dart';
+import '../../data/model/history/history_item_dto.dart';
 import '../../data/repository/i_history_repository.dart';
 
 part 'check_in_event.dart';

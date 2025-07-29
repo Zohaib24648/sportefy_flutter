@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
-import '../../data/model/signin_request.dart';
-import '../../data/model/signup_request.dart';
+import '../../data/model/signin_request_dto.dart';
+import '../../data/model/signup_request_dto.dart';
 import '../../data/repository/i_auth_repository.dart';
 
 part 'auth_event.dart';

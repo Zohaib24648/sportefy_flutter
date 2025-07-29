@@ -1,5 +1,5 @@
-import '../model/user_profile.dart';
-import '../model/profile_update_request.dart';
+import '../model/user_profile_dto.dart';
+import '../model/profile_update_request_dto.dart';
 
 abstract class IProfileRepository {
   Future<UserProfile> getUserProfile(String userId);

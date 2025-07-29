@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
-import '../model/slot.dart';
+import '../model/slot_dto.dart';
 import 'i_slot_repository.dart';
 
 /// Repository implementation for slot operations
@@ -11,7 +11,7 @@ class SlotRepository implements ISlotRepository {
   SlotRepository(this._dio);
 
   @override
-  Future<SlotsApiResponse> getVenueSlots({
+  Future<List<SlotDTO>> getVenueSlots({
     required String venueId,
     required DateTime date,
   }) async {

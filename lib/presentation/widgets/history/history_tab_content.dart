@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../theme/app_colors.dart';
 import '../../../bloc/history/history_bloc.dart';
-import '../../../data/model/history/history_item.dart';
+import '../../../data/model/history/history_item_dto.dart';
 import '../common/shimmer_exports.dart';
 import 'history_list_view.dart';
 import 'history_config.dart';

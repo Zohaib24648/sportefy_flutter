@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sportefy/data/model/venue_base.dart';
+import 'package:sportefy/data/model/venue_base_dto.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class VenueCard extends StatelessWidget {

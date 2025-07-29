@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
-import '../model/user_profile.dart';
-import '../model/profile_update_request.dart';
+import '../model/user_profile_dto.dart';
+import '../model/profile_update_request_dto.dart';
 import '../services/profile_api_service.dart';
 import 'i_profile_repository.dart';
 

@@ -1,6 +1,6 @@
 import 'dart:developer';
 import 'package:injectable/injectable.dart';
-import '../model/history/history_item.dart';
+import '../model/history/history_item_dto.dart';
 import 'i_history_repository.dart';
 
 @Injectable(as: IHistoryRepository)

@@ -1,5 +1,5 @@
 import 'package:uuid/uuid.dart';
-import '../../data/model/history/history_item.dart';
+import '../../data/model/history/history_item_dto.dart';
 
 class HistoryExamples {
   static const uuid = Uuid();

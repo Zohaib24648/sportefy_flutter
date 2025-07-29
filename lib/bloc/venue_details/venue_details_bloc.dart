@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:sportefy/data/model/venue_details.dart';
+import 'package:sportefy/data/model/venue_details_dto.dart';
 import 'package:sportefy/data/repository/i_venue_repository.dart';
 
 part 'venue_details_event.dart';

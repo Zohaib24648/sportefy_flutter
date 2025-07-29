@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
-import '../model/user_profile.dart';
+import '../model/user_profile_dto.dart';
 
 @injectable
 class ProfileApiService {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sportefy/presentation/widgets/booking/reusable_widgets.dart';
-import '../../../data/model/slot.dart';
+import '../../../data/model/slot_dto.dart';
 
 class TimeSlotChip extends StatelessWidget {
   const TimeSlotChip({

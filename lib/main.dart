@@ -7,6 +7,8 @@ import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 import 'dart:io';
 import 'bloc/auth/auth_bloc.dart';
 import 'bloc/profile/profile_bloc.dart';
+import 'bloc/sports/sports_bloc.dart';
+import 'bloc/sports/sports_event.dart';
 import 'core/utils/performance_config.dart';
 import 'dependency_injection.dart';
 import 'presentation/screens/auth/signin_screen.dart';
@@ -63,6 +65,10 @@ Future<void> main() async {
           create: (_) => getIt<AuthBloc>()..add(AuthCheckRequested()),
         ),
         BlocProvider(create: (_) => getIt<ProfileBloc>()),
+        // Add SportsBloc globally for caching
+        BlocProvider(
+          create: (_) => getIt<SportsBloc>()..add(const LoadSports()),
+        ),
       ],
       child: const Sportefy(),
     ),

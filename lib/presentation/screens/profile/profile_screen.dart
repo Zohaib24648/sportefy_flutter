@@ -6,7 +6,7 @@ import 'package:sportefy/bloc/auth/auth_bloc.dart';
 import 'package:sportefy/presentation/widgets/confirmation_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../bloc/profile/profile_bloc.dart';
-import '../../../data/model/user_profile.dart';
+import '../../../data/model/user_profile_dto.dart';
 import '../../../core/utils/debug_utils.dart';
 import '../../../core/auth/token_manager.dart';
 import '../../../dependency_injection.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../data/model/history/history_item.dart';
+import '../../../data/model/history/history_item_dto.dart';
 
 class HistoryStatusIndicator extends StatelessWidget {
   final HistoryStatus status;

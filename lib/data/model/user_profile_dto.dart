@@ -36,44 +36,44 @@ class UserProfile {
   factory UserProfile.fromJson(Map<String, dynamic> json) {
     return UserProfile(
       id: json['id'] as String,
-      fullName: json['fullName'] as String,
+      fullName: json['full_name'] as String,
       role: json['role'] as String,
-      avatarUrl: json['avatarUrl'] as String?,
-      userName: json['userName'] as String?,
+      avatarUrl: json['avatar_url'] as String?,
+      userName: json['user_name'] as String?,
       gender: json['gender'] as String?,
       age: json['age'] as int?,
       address: json['address'] as String?,
       organization: json['organization'] as String?,
-      createdAt: json['createdAt'] != null
-          ? DateTime.parse(json['createdAt'] as String)
+      createdAt: json['created_at'] != null
+          ? DateTime.tryParse(json['created_at'])
           : null,
-      updatedAt: json['updatedAt'] != null
-          ? DateTime.parse(json['updatedAt'] as String)
+      updatedAt: json['updated_at'] != null
+          ? DateTime.tryParse(json['updated_at'])
           : null,
-      phoneNumber: json['phoneNumber'] as String?,
+      phoneNumber: json['phone_number'] as String?,
       email: json['email'] as String,
       credits: json['credits'] as int?,
-      checkIns: json['checkIns'] as int?,
+      checkIns: json['check_ins'] as int?,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'fullName': fullName,
+      'full_name': fullName,
       'role': role,
-      'avatarUrl': avatarUrl,
-      'userName': userName,
+      'avatar_url': avatarUrl,
+      'user_name': userName,
       'gender': gender,
       'age': age,
       'address': address,
       'organization': organization,
-      'createdAt': createdAt?.toIso8601String(),
-      'updatedAt': updatedAt?.toIso8601String(),
-      'phoneNumber': phoneNumber,
+      'created_at': createdAt?.toIso8601String(),
+      'updated_at': updatedAt?.toIso8601String(),
+      'phone_number': phoneNumber,
       'email': email,
       'credits': credits,
-      'checkIns': checkIns,
+      'check_ins': checkIns,
     };
   }
 
@@ -124,12 +124,39 @@ class UserProfile {
     return other is UserProfile &&
         other.id == id &&
         other.fullName == fullName &&
+        other.role == role &&
+        other.avatarUrl == avatarUrl &&
+        other.userName == userName &&
+        other.gender == gender &&
+        other.age == age &&
+        other.address == address &&
+        other.organization == organization &&
+        other.createdAt == createdAt &&
+        other.updatedAt == updatedAt &&
+        other.phoneNumber == phoneNumber &&
         other.email == email &&
-        other.avatarUrl == avatarUrl;
+        other.credits == credits &&
+        other.checkIns == checkIns;
   }
 
   @override
   int get hashCode {
-    return Object.hash(id, fullName, email, avatarUrl);
+    return Object.hash(
+      id,
+      fullName,
+      role,
+      avatarUrl,
+      userName,
+      gender,
+      age,
+      address,
+      organization,
+      createdAt,
+      updatedAt,
+      phoneNumber,
+      email,
+      credits,
+      checkIns,
+    );
   }
 }

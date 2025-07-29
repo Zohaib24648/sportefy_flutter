@@ -7,7 +7,7 @@ class VenueInitial extends VenueState {}
 class VenueLoading extends VenueState {}
 
 class VenueLoaded extends VenueState {
-  final List<VenueBase> items;
+  final List<VenueDTO> items;
 
   VenueLoaded(this.items);
 }
@@ -15,7 +15,7 @@ class VenueLoaded extends VenueState {
 class VenueSyncing extends VenueState {}
 
 class VenueSyncSuccess extends VenueState {
-  final List<VenueBase> items;
+  final List<VenueDTO> items;
 
   VenueSyncSuccess(this.items);
 }

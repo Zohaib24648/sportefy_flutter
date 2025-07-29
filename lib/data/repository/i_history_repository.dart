@@ -1,4 +1,4 @@
-import '../model/history/history_item.dart';
+import '../model/history/history_item_dto.dart';
 
 abstract class IHistoryRepository {
   /// Get all history items for a user
