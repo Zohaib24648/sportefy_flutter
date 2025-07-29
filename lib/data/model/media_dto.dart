@@ -15,11 +15,11 @@ class MediaDTO {
 
   factory MediaDTO.fromJson(Map<String, dynamic> json) {
     return MediaDTO(
-      id: json['id'] as String,
-      mediaLink: json['media_link'] as String,
-      mediaType: json['media_type'] as String,
-      entityId: json['entity_id'] as String,
-      entityType: json['entity_type'] as String,
+      id: json['id'] as String? ?? '',
+      mediaLink: json['media_link'] as String? ?? '',
+      mediaType: json['media_type'] as String? ?? '',
+      entityId: json['entity_id'] as String? ?? '',
+      entityType: json['entity_type'] as String? ?? '',
     );
   }
 

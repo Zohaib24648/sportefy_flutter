@@ -51,9 +51,6 @@ Future<void> main() async {
       debug: kDebugMode,
     );
   } catch (e) {
-    if (kDebugMode) {
-      print('Supabase initialization error: $e');
-    }
     // Continue app initialization even if Supabase fails
     // The app should handle offline/connection issues gracefully
   }

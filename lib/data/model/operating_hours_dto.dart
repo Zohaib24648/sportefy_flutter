@@ -19,12 +19,12 @@ class OperatingHourDTO extends Equatable {
 
   factory OperatingHourDTO.fromJson(Map<String, dynamic> json) {
     return OperatingHourDTO(
-      id: json['id'] as int,
-      facilityId: json['facilityId'] as String,
+      id: json['id'] as int? ?? 0,
+      facilityId: json['facilityId'] as String? ?? '',
       venueId: json['venueId'] as String?,
-      openTime: json['openTime'] as String,
-      closeTime: json['closeTime'] as String,
-      dayOfWeek: json['dayOfWeek'] as String,
+      openTime: json['openTime'] as String? ?? '00:00:00',
+      closeTime: json['closeTime'] as String? ?? '23:59:59',
+      dayOfWeek: json['dayOfWeek'] as String? ?? 'Monday',
     );
   }
 

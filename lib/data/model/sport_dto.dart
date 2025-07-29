@@ -15,10 +15,10 @@ class SportDTO extends Equatable {
 
   factory SportDTO.fromJson(Map<String, dynamic> json) {
     return SportDTO(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      timeBound: json['timeBound'] as bool,
-      sportType: json['sportType'] as String,
+      id: json['id'] as String? ?? '',
+      name: json['name'] as String? ?? '',
+      timeBound: json['timeBound'] as bool? ?? false,
+      sportType: json['sportType'] as String? ?? '',
     );
   }
 
@@ -34,4 +34,3 @@ class SportDTO extends Equatable {
   @override
   List<Object?> get props => [id, name, timeBound, sportType];
 }
-

@@ -64,7 +64,7 @@ class VenueDetailsPageContent extends StatelessWidget {
                         VenueImageSection(
                           imageUrl: venue.primaryImageUrl,
                           venueName: venue.name,
-                          rating: venue.rating,
+                          rating: venue.resolvedRating,
                           reviewCount: venue.reviewCount,
                           pricePerHour: venue.pricePerHour,
                           isOpen24Hours: venue.isOpen24Hours,

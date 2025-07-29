@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -261,10 +260,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     errorWidget: (context, url, error) {
-                      if (kDebugMode) {
-                        print('Profile image load error: $error');
-                        print('Failed URL: $url');
-                      }
                       return Container(
                         color: AppColors.lightGrey,
                         child: Icon(

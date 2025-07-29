@@ -95,15 +95,12 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
-      extendBodyBehindAppBar: false, // Ensure body doesn't extend behind AppBar
+      extendBodyBehindAppBar: false,
       appBar: _buildAppBar(),
       body: BlocBuilder<VenueBloc, VenueState>(
         builder: (context, venueState) {
           return BlocListener<ProfileBloc, ProfileState>(
-            listener: (context, profileState) {
-              // Profile errors are handled globally - no need for local retry
-              // since ProfileBloc is managed at app level
-            },
+            listener: (context, profileState) {},
             child: _buildBody(venueState),
           );
         },
@@ -288,7 +285,7 @@ class _HomePageState extends State<HomePage> {
                       child: VenueCard(
                         imageUrl:
                             'https://cdn.bhdw.net/im/one-day-you-can-have-such-muscles-by-working-in-the-gym-wallpaper-92002_w635.webp', // TODO: Add venue image when available in API
-                        name: venue.name ?? 'Unknown Venue',
+                        name: venue.name,
                         activities:
                             'Space Type: ${venue.spaceType}', // Using spaceType instead
                         rating: 4.5,

@@ -5,9 +5,12 @@ import 'package:flutter/foundation.dart';
 class AppLogger {
   static const String _appTag = 'Sportefy';
 
+  // Disable all logging in production
+  static const bool _loggingEnabled = false;
+
   /// Log debug information
   static void debug(String message, {String? tag, Object? error}) {
-    if (kDebugMode) {
+    if (kDebugMode && _loggingEnabled) {
       developer.log(
         message,
         name: tag ?? _appTag,
@@ -19,7 +22,7 @@ class AppLogger {
 
   /// Log informational messages
   static void info(String message, {String? tag}) {
-    if (kDebugMode) {
+    if (kDebugMode && _loggingEnabled) {
       developer.log(
         message,
         name: tag ?? _appTag,
@@ -30,7 +33,7 @@ class AppLogger {
 
   /// Log warning messages
   static void warning(String message, {String? tag, Object? error}) {
-    if (kDebugMode) {
+    if (kDebugMode && _loggingEnabled) {
       developer.log(
         message,
         name: tag ?? _appTag,
@@ -47,7 +50,7 @@ class AppLogger {
     Object? error,
     StackTrace? stackTrace,
   }) {
-    if (kDebugMode) {
+    if (kDebugMode && _loggingEnabled) {
       developer.log(
         message,
         name: tag ?? _appTag,
@@ -60,14 +63,14 @@ class AppLogger {
 
   /// Log network requests and responses
   static void network(String message, {String? tag}) {
-    if (kDebugMode) {
+    if (kDebugMode && _loggingEnabled) {
       developer.log(message, name: tag ?? '$_appTag-Network', level: 500);
     }
   }
 
   /// Log connectivity changes
   static void connectivity(String message, {String? tag}) {
-    if (kDebugMode) {
+    if (kDebugMode && _loggingEnabled) {
       developer.log(message, name: tag ?? '$_appTag-Connectivity', level: 800);
     }
   }

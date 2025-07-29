@@ -1,9 +1,9 @@
 // widgets/sports_section.dart
 import 'package:flutter/material.dart';
-import 'package:sportefy/data/model/sport_dto.dart';
+import 'package:sportefy/data/model/venue_sport_dto.dart';
 
 class SportsSection extends StatelessWidget {
-  final List<SportDTO> sports;
+  final List<VenueSportDTO> sports;
 
   const SportsSection({super.key, required this.sports});
 
@@ -35,8 +35,8 @@ class SportsSection extends StatelessWidget {
     );
   }
 
-  Widget _buildSportCard(SportDTO venueSport) {
-    final sport = venueSport;
+  Widget _buildSportCard(VenueSportDTO venueSport) {
+    final sport = venueSport.sport;
     return Container(
       width: 82,
       height: 73,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sportefy/data/model/venue_base_dto.dart';
+import 'package:sportefy/data/model/venue_dto.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class VenueCard extends StatelessWidget {
@@ -28,7 +28,7 @@ class VenueCard extends StatelessWidget {
     return VenueCard(
       key: key,
       imageUrl: '', // TODO: Add venue image when available in API
-      name: venue.name ?? 'Unknown Venue',
+      name: venue.name,
       activities: 'Space Type: ${venue.spaceType}, Capacity: ${venue.capacity}',
       rating: rating,
       reviewCount: reviewCount,

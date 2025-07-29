@@ -3,7 +3,7 @@ import 'facility_dto.dart';
 import 'media_dto.dart';
 import 'operating_hours_dto.dart';
 import 'slot_dto.dart';
-import 'sport_dto.dart';
+import 'venue_sport_dto.dart';
 
 class VenueDetailsDTO extends Equatable {
   final String id;
@@ -20,10 +20,10 @@ class VenueDetailsDTO extends Equatable {
   final double? latitude;
   final double? longitude;
   final int totalReviews;
-  final double rating;
+  final int rating;
   final List<OperatingHourDTO> operatingHours;
   final FacilityDTO facility;
-  final List<SportDTO> sports;
+  final List<VenueSportDTO> sports;
   final List<MediaDTO> media;
   final List<SlotDTO> slots;
 
@@ -72,7 +72,7 @@ class VenueDetailsDTO extends Equatable {
           .toList(),
       facility: FacilityDTO.fromJson(json['facility']),
       sports: (json['sports'] as List<dynamic>? ?? [])
-          .map((e) => SportDTO.fromJson(e as Map<String, dynamic>))
+          .map((e) => VenueSportDTO.fromJson(e as Map<String, dynamic>))
           .toList(),
       media: (json['media'] as List<dynamic>? ?? [])
           .map((e) => MediaDTO.fromJson(e as Map<String, dynamic>))

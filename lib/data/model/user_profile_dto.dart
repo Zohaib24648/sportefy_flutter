@@ -37,9 +37,9 @@ class UserProfile extends Equatable {
 
   factory UserProfile.fromJson(Map<String, dynamic> json) {
     return UserProfile(
-      id: json['id'] as String,
-      fullName: json['fullName'] as String,
-      role: json['role'] as String,
+      id: json['id'] as String? ?? '',
+      fullName: json['fullName'] as String? ?? '',
+      role: json['role'] as String? ?? '',
       avatarUrl: json['avatarUrl'] as String?,
       userName: json['userName'] as String?,
       gender: json['gender'] as String?,
@@ -47,13 +47,13 @@ class UserProfile extends Equatable {
       address: json['address'] as String?,
       organization: json['organization'] as String?,
       createdAt: json['createdAt'] != null
-          ? DateTime.tryParse(json['createdAt'])
+          ? DateTime.tryParse(json['createdAt'] as String)
           : null,
       updatedAt: json['updatedAt'] != null
-          ? DateTime.tryParse(json['updatedAt'])
+          ? DateTime.tryParse(json['updatedAt'] as String)
           : null,
       phoneNumber: json['phoneNumber'] as String?,
-      email: json['email'] as String,
+      email: json['email'] as String? ?? '',
       credits: json['credits'] as int?,
       checkIns: json['checkIns'] as int?,
     );
