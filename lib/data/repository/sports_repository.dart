@@ -14,7 +14,7 @@ class SportsRepository implements ISportsRepository {
   Future<List<SportDTO>> getSports() async {
     try {
       final response = await _dio.get('/sports');
-      final sports = ApiResponse<List<SportDTO>>.fromJson(
+      final sports = ApiResponseDTO<List<SportDTO>>.fromJson(
         response.data,
         (dynamic data) =>
             (data as List).map((item) => SportDTO.fromJson(item)).toList(),

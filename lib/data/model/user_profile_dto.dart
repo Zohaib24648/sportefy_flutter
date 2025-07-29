@@ -1,4 +1,6 @@
-class UserProfile {
+import 'package:equatable/equatable.dart';
+
+class UserProfile extends Equatable {
   final String id;
   final String fullName;
   final String role;
@@ -36,44 +38,44 @@ class UserProfile {
   factory UserProfile.fromJson(Map<String, dynamic> json) {
     return UserProfile(
       id: json['id'] as String,
-      fullName: json['full_name'] as String,
+      fullName: json['fullName'] as String,
       role: json['role'] as String,
-      avatarUrl: json['avatar_url'] as String?,
-      userName: json['user_name'] as String?,
+      avatarUrl: json['avatarUrl'] as String?,
+      userName: json['userName'] as String?,
       gender: json['gender'] as String?,
       age: json['age'] as int?,
       address: json['address'] as String?,
       organization: json['organization'] as String?,
-      createdAt: json['created_at'] != null
-          ? DateTime.tryParse(json['created_at'])
+      createdAt: json['createdAt'] != null
+          ? DateTime.tryParse(json['createdAt'])
           : null,
-      updatedAt: json['updated_at'] != null
-          ? DateTime.tryParse(json['updated_at'])
+      updatedAt: json['updatedAt'] != null
+          ? DateTime.tryParse(json['updatedAt'])
           : null,
-      phoneNumber: json['phone_number'] as String?,
+      phoneNumber: json['phoneNumber'] as String?,
       email: json['email'] as String,
       credits: json['credits'] as int?,
-      checkIns: json['check_ins'] as int?,
+      checkIns: json['checkIns'] as int?,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'full_name': fullName,
+      'fullName': fullName,
       'role': role,
-      'avatar_url': avatarUrl,
-      'user_name': userName,
+      'avatarUrl': avatarUrl,
+      'userName': userName,
       'gender': gender,
       'age': age,
       'address': address,
       'organization': organization,
-      'created_at': createdAt?.toIso8601String(),
-      'updated_at': updatedAt?.toIso8601String(),
-      'phone_number': phoneNumber,
+      'createdAt': createdAt?.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
+      'phoneNumber': phoneNumber,
       'email': email,
       'credits': credits,
-      'check_ins': checkIns,
+      'checkIns': checkIns,
     };
   }
 
@@ -118,45 +120,32 @@ class UserProfile {
     return 'UserProfile(id: $id, fullName: $fullName, email: $email, avatarUrl: $avatarUrl)';
   }
 
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    return other is UserProfile &&
-        other.id == id &&
-        other.fullName == fullName &&
-        other.role == role &&
-        other.avatarUrl == avatarUrl &&
-        other.userName == userName &&
-        other.gender == gender &&
-        other.age == age &&
-        other.address == address &&
-        other.organization == organization &&
-        other.createdAt == createdAt &&
-        other.updatedAt == updatedAt &&
-        other.phoneNumber == phoneNumber &&
-        other.email == email &&
-        other.credits == credits &&
-        other.checkIns == checkIns;
-  }
+  /// Database constraint validations
+  bool get isValidAge => age == null || (age! > 0 && age! < 100);
+  bool get isValidUserName => userName == null || userName!.length < 16;
+  bool get isValidCredits => credits == null || credits! >= 0;
+  bool get isValidCheckIns => checkIns == null || checkIns! >= 0;
+
+  /// Check if profile meets all database constraints
+  bool get isValid =>
+      isValidAge && isValidUserName && isValidCredits && isValidCheckIns;
 
   @override
-  int get hashCode {
-    return Object.hash(
-      id,
-      fullName,
-      role,
-      avatarUrl,
-      userName,
-      gender,
-      age,
-      address,
-      organization,
-      createdAt,
-      updatedAt,
-      phoneNumber,
-      email,
-      credits,
-      checkIns,
-    );
-  }
+  List<Object?> get props => [
+    id,
+    fullName,
+    role,
+    avatarUrl,
+    userName,
+    gender,
+    age,
+    address,
+    organization,
+    createdAt,
+    updatedAt,
+    phoneNumber,
+    email,
+    credits,
+    checkIns,
+  ];
 }

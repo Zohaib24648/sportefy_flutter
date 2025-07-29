@@ -16,7 +16,7 @@ class VenueRepository implements IVenueRepository {
   Future<List<VenueDTO>> getVenues() async {
     try {
       final response = await _dio.get('/venues');
-      final apiResponse = ApiResponse<List<VenueDTO>>.fromJson(
+      final apiResponse = ApiResponseDTO<List<VenueDTO>>.fromJson(
         response.data,
         (dynamic data) => (data as List)
             .map((item) => VenueDTO.fromJson(item as Map<String, dynamic>))
@@ -33,7 +33,7 @@ class VenueRepository implements IVenueRepository {
     try {
       final response = await _dio.get('/venues/$id');
 
-      final apiResponse = ApiResponse<VenueDetailsDTO>.fromJson(
+      final apiResponse = ApiResponseDTO<VenueDetailsDTO>.fromJson(
         response.data,
         (dynamic data) =>
             VenueDetailsDTO.fromJson(data as Map<String, dynamic>),

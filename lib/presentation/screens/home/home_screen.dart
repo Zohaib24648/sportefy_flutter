@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:sportefy/core/utils/performance_config.dart';
+import 'package:sportefy/core/utils/home_tile_utils.dart';
 import 'package:sportefy/presentation/widgets/common/custom_top_bar/custom_profile_picture.dart';
 import 'package:sportefy/presentation/widgets/common/custom_top_bar/user_info.dart';
 import 'package:sportefy/presentation/widgets/common/shimmer_exports.dart';
@@ -35,49 +36,8 @@ class _HomePageState extends State<HomePage> {
     // Only trigger fetching user profile if not already loaded
     final profileState = context.read<ProfileBloc>().state;
     if (profileState is! ProfileLoaded) {
-      context.read<ProfileBloc>().add(LoadCurrentUserProfile());
+      context.read<ProfileBloc>().add(LoadUserProfile());
     }
-  }
-
-  List<Map<String, dynamic>> _getTileData() {
-    return [
-      {
-        'subtitle': 'Book Play. Win!',
-        'title': 'Customize Your Own Event',
-        'buttonText': 'Book Now',
-        'white': const Color(0xFFFFD0BA),
-        'onTap': () {
-          widget.onNavigateToTab?.call(2); // Navigate to QR/create tab
-        },
-      },
-      {
-        'subtitle': 'Find & Join',
-        'title': 'Discover Sports Events',
-        'buttonText': 'Explore',
-        'white': const Color(0xFFB8E6B8),
-        'onTap': () {
-          widget.onNavigateToTab?.call(1); // Navigate to search tab
-        },
-      },
-      {
-        'subtitle': 'Connect & Play',
-        'title': 'Meet Fellow Athletes',
-        'buttonText': 'Connect',
-        'white': const Color(0xFFB8D4FF),
-        'onTap': () {
-          widget.onNavigateToTab?.call(3); // Navigate to profile tab
-        },
-      },
-      {
-        'subtitle': 'Track & Improve',
-        'title': 'Your Activity History',
-        'buttonText': 'View History',
-        'white': const Color(0xFFFFB8E6),
-        'onTap': () {
-          widget.onNavigateToTab?.call(4); // Navigate to history tab
-        },
-      },
-    ];
   }
 
   PreferredSizeWidget _buildAppBar() {
@@ -159,9 +119,7 @@ class _HomePageState extends State<HomePage> {
                       label: 'Retry',
                       textColor: Colors.white,
                       onPressed: () {
-                        context.read<ProfileBloc>().add(
-                          LoadCurrentUserProfile(),
-                        );
+                        context.read<ProfileBloc>().add(LoadUserProfile());
                       },
                     ),
                   ),
@@ -276,29 +234,32 @@ class _HomePageState extends State<HomePage> {
                 aspectRatio: 16 / 9,
                 initialPage: 0,
               ),
-              items: _getTileData().map((tileData) {
-                return Builder(
-                  builder: (BuildContext context) {
-                    return Container(
-                      width: MediaQuery.of(context).size.width,
-                      margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                      child: HomepageTile(
-                        subtitle: tileData['subtitle']!,
-                        title: tileData['title']!,
-                        buttonText: tileData['buttonText']!,
-                        height: 130,
-                        imageLink:
-                            'https://img.freepik.com/free-photo/front-view-handsome-athletic-male-rugby-player-holding-ball_23-2148793297.jpg?semt=ais_hybrid&w=740',
-                        onTap: () {
-                          // Add haptic feedback for better UX
-                          HapticFeedback.lightImpact();
-                          tileData['onTap']?.call();
-                        },
-                      ),
+              items:
+                  HomeTileUtils.getTileData(
+                    onNavigateToTab: widget.onNavigateToTab,
+                  ).map((tileData) {
+                    return Builder(
+                      builder: (BuildContext context) {
+                        return Container(
+                          width: MediaQuery.of(context).size.width,
+                          margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                          child: HomepageTile(
+                            subtitle: tileData['subtitle']!,
+                            title: tileData['title']!,
+                            buttonText: tileData['buttonText']!,
+                            height: 130,
+                            imageLink:
+                                'https://img.freepik.com/free-photo/front-view-handsome-athletic-male-rugby-player-holding-ball_23-2148793297.jpg?semt=ais_hybrid&w=740',
+                            onTap: () {
+                              // Add haptic feedback for better UX
+                              HapticFeedback.lightImpact();
+                              tileData['onTap']?.call();
+                            },
+                          ),
+                        );
+                      },
                     );
-                  },
-                );
-              }).toList(),
+                  }).toList(),
             ),
             const Gap(20),
             BookingWidget(

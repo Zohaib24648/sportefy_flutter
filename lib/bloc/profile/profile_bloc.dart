@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import '../../data/model/user_profile_dto.dart';
-import '../../data/model/profile_update_request_dto.dart';
 import '../../data/repository/i_profile_repository.dart';
 
 part 'profile_event.dart';
@@ -13,9 +12,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   ProfileBloc(this._profileRepository) : super(ProfileInitial()) {
     on<LoadUserProfile>(_onLoadUserProfile);
-    on<LoadCurrentUserProfile>(_onLoadCurrentUserProfile);
-    on<UpdateUserProfile>(_onUpdateUserProfile);
-    on<UpdateProfileData>(_onUpdateProfileData);
   }
 
   Future<void> _onLoadUserProfile(
@@ -24,62 +20,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ) async {
     emit(ProfileLoading());
     try {
-      final profile = await _profileRepository.getUserProfile(event.userId);
+      final profile = await _profileRepository.getUserProfile();
       emit(ProfileLoaded(profile));
     } catch (e) {
       emit(ProfileError('Failed to load profile: ${e.toString()}'));
-    }
-  }
-
-  Future<void> _onLoadCurrentUserProfile(
-    LoadCurrentUserProfile event,
-    Emitter<ProfileState> emit,
-  ) async {
-    emit(ProfileLoading());
-    try {
-      // Pass empty string as userId since the API uses the token to identify the user
-      final profile = await _profileRepository.getUserProfile('');
-      emit(ProfileLoaded(profile));
-    } catch (e) {
-      emit(ProfileError('Failed to load profile: ${e.toString()}'));
-    }
-  }
-
-  Future<void> _onUpdateUserProfile(
-    UpdateUserProfile event,
-    Emitter<ProfileState> emit,
-  ) async {
-    emit(ProfileUpdating());
-    try {
-      await _profileRepository.updateUserProfile(event.profile);
-      emit(ProfileUpdated(event.profile));
-    } catch (e) {
-      emit(ProfileError('Failed to update profile: ${e.toString()}'));
-    }
-  }
-
-  Future<void> _onUpdateProfileData(
-    UpdateProfileData event,
-    Emitter<ProfileState> emit,
-  ) async {
-    emit(ProfileUpdating());
-    try {
-      // Update only the changed fields
-      await _profileRepository.updateProfileData(
-        event.userId,
-        event.updateRequest,
-      );
-
-      // Get the updated profile to emit the new state
-      final updatedProfile = await _profileRepository.getUserProfile(
-        event.userId,
-      );
-
-      // Emit the updated profile
-      emit(ProfileUpdated(updatedProfile));
-      emit(ProfileLoaded(updatedProfile));
-    } catch (e) {
-      emit(ProfileError('Failed to update profile: ${e.toString()}'));
     }
   }
 }

@@ -40,7 +40,6 @@ import 'package:sportefy/data/repository/profile_repository.dart' as _i432;
 import 'package:sportefy/data/repository/slot_repository.dart' as _i155;
 import 'package:sportefy/data/repository/sports_repository.dart' as _i671;
 import 'package:sportefy/data/repository/venue_repository.dart' as _i482;
-import 'package:sportefy/data/services/profile_api_service.dart' as _i272;
 import 'package:supabase_flutter/supabase_flutter.dart' as _i454;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -86,9 +85,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i227.ISportsRepository>(
       () => _i671.SportsRepository(gh<_i361.Dio>()),
     );
-    gh.factory<_i272.ProfileApiService>(
-      () => _i272.ProfileApiService(gh<_i361.Dio>()),
-    );
     gh.factory<_i430.SlotBloc>(
       () => _i430.SlotBloc(gh<_i506.ISlotRepository>()),
     );
@@ -96,7 +92,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i482.VenueRepository(gh<_i361.Dio>()),
     );
     gh.factory<_i411.IProfileRepository>(
-      () => _i432.ProfileRepository(gh<_i272.ProfileApiService>()),
+      () => _i432.ProfileRepository(gh<_i361.Dio>()),
     );
     gh.factory<_i937.VenueBloc>(
       () => _i937.VenueBloc(gh<_i828.IVenueRepository>()),

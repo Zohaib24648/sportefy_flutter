@@ -1,19 +1,19 @@
-class ApiResponse<T> {
+class ApiResponseDTO<T> {
   final T data;
   final bool success;
   final String message;
 
-  const ApiResponse({
+  const ApiResponseDTO({
     required this.data,
     required this.success,
     required this.message,
   });
 
-  factory ApiResponse.fromJson(
+  factory ApiResponseDTO.fromJson(
     Map<String, dynamic> json,
     T Function(dynamic) fromData,
   ) {
-    return ApiResponse<T>(
+    return ApiResponseDTO<T>(
       data: fromData(json['data']),
       success: json['success'] ?? false,
       message: json['message'] ?? '',

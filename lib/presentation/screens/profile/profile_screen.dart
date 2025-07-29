@@ -63,7 +63,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       }
 
       if (mounted) {
-        context.read<ProfileBloc>().add(LoadCurrentUserProfile());
+        context.read<ProfileBloc>().add(LoadUserProfile());
       }
     } catch (e) {
       if (kDebugMode) {
@@ -245,7 +245,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               TextButton(
                 onPressed: () =>
-                    context.read<ProfileBloc>().add(LoadCurrentUserProfile()),
+                    context.read<ProfileBloc>().add(LoadUserProfile()),
                 child: Text('Retry', style: AppTextStyles.link),
               ),
             ],

@@ -24,7 +24,7 @@ class SlotRepository implements ISlotRepository {
         queryParameters: {'date': formattedDate},
       );
 
-      final slots = ApiResponse<List<SlotDTO>>.fromJson(
+      final slots = ApiResponseDTO<List<SlotDTO>>.fromJson(
         response.data,
         (dynamic data) =>
             (data as List).map((item) => SlotDTO.fromJson(item)).toList(),

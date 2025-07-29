@@ -56,7 +56,7 @@ Future<void> main() async {
     // The app should handle offline/connection issues gracefully
   }
 
-  configureDependencies();
+  await configureDependencies();
 
   runApp(
     MultiBlocProvider(
