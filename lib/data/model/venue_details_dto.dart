@@ -20,7 +20,7 @@ class VenueDetailsDTO extends Equatable {
   final double? latitude;
   final double? longitude;
   final int totalReviews;
-  final int rating;
+  final double rating;
   final List<OperatingHourDTO> operatingHours;
   final FacilityDTO facility;
   final List<SportDTO> sports;

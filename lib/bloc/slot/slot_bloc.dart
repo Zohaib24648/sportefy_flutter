@@ -45,13 +45,8 @@ class SlotBloc extends Bloc<SlotEvent, SlotState> {
         venueId: venueId,
         date: date,
       );
-
-      if (response.success) {
-        final timeSlots = SlotGenerator.generateTimeSlots(date, response.data);
-        emit(SlotLoaded(timeSlots: timeSlots, date: date));
-      } else {
-        emit(SlotError('Failed to load slots: ${response.message}'));
-      }
+      final timeSlots = SlotGenerator.generateTimeSlots(date, response);
+      emit(SlotLoaded(timeSlots: timeSlots, date: date));
     } catch (e) {
       emit(SlotError('Failed to load slots: ${e.toString()}'));
     }

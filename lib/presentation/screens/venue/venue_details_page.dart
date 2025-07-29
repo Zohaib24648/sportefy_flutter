@@ -72,7 +72,9 @@ class VenueDetailsPageContent extends StatelessWidget {
                         const SizedBox(height: 30),
 
                         // Location Section
-                        LocationSection(address: venue.address),
+                        LocationSection(
+                          address: venue.address ?? 'No address provided',
+                        ),
                         const SizedBox(height: 24),
 
                         // Description Section

@@ -17,7 +17,7 @@ class VenueCard extends StatelessWidget {
 
   factory VenueCard.fromVenue({
     Key? key,
-    required VenueBase venue,
+    required VenueDTO venue,
     double? rating,
     int? reviewCount,
     double? distanceKm,
@@ -28,7 +28,7 @@ class VenueCard extends StatelessWidget {
     return VenueCard(
       key: key,
       imageUrl: '', // TODO: Add venue image when available in API
-      name: venue.name,
+      name: venue.name ?? 'Unknown Venue',
       activities: 'Space Type: ${venue.spaceType}, Capacity: ${venue.capacity}',
       rating: rating,
       reviewCount: reviewCount,

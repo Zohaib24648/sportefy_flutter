@@ -8,7 +8,7 @@ import '../../../../data/model/sport_dto.dart';
 import '../shimmer_exports.dart';
 
 class SportsDropdown extends StatefulWidget {
-  final Function(Sport)? onSportSelected;
+  final Function(SportDTO)? onSportSelected;
 
   const SportsDropdown({super.key, this.onSportSelected});
 
@@ -17,7 +17,7 @@ class SportsDropdown extends StatefulWidget {
 }
 
 class _SportsDropdownState extends State<SportsDropdown> {
-  Sport? _selectedSport;
+  SportDTO? _selectedSport;
 
   @override
   void initState() {
@@ -29,8 +29,8 @@ class _SportsDropdownState extends State<SportsDropdown> {
     }
   }
 
-  void _showSportsSheet(List<Sport> sports) {
-    showModalBottomSheet<Sport>(
+  void _showSportsSheet(List<SportDTO> sports) {
+    showModalBottomSheet<SportDTO>(
       context: context,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
@@ -120,8 +120,8 @@ class _SportsDropdownState extends State<SportsDropdown> {
 }
 
 class _SportSelectionBottomSheet extends StatefulWidget {
-  final List<Sport> sports;
-  final Sport? selectedSport;
+  final List<SportDTO> sports;
+  final SportDTO? selectedSport;
 
   const _SportSelectionBottomSheet({
     required this.sports,
@@ -135,7 +135,7 @@ class _SportSelectionBottomSheet extends StatefulWidget {
 
 class _SportSelectionBottomSheetState
     extends State<_SportSelectionBottomSheet> {
-  late Sport? _currentSelection;
+  late SportDTO? _currentSelection;
 
   @override
   void initState() {
@@ -222,7 +222,7 @@ class _SportSelectionBottomSheetState
 }
 
 class _SportTile extends StatelessWidget {
-  final Sport sport;
+  final SportDTO sport;
   final bool selected;
   final VoidCallback onTap;
 

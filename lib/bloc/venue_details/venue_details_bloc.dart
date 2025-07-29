@@ -21,7 +21,7 @@ class VenueDetailsBloc extends Bloc<VenueDetailsEvent, VenueDetailsState> {
     emit(VenueDetailsLoading());
 
     try {
-      final venue = await _venueRepository.getVenueDetails(event.venueId);
+      final venue = await _venueRepository.getVenueById(event.venueId);
       emit(VenueDetailsLoaded(venue));
     } catch (e) {
       emit(VenueDetailsError('Failed to load venue details: ${e.toString()}'));

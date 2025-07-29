@@ -8,7 +8,4 @@ abstract class IVenueRepository {
 
   /// Get venue by ID
   Future<VenueDetailsDTO> getVenueById(String id);
-
-  /// Get detailed venue information by ID
-  Future<VenueDetailsDTO> getVenueDetails(String id);
 }

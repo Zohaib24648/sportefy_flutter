@@ -349,7 +349,7 @@ class _HomePageState extends State<HomePage> {
                       child: VenueCard(
                         imageUrl:
                             'https://cdn.bhdw.net/im/one-day-you-can-have-such-muscles-by-working-in-the-gym-wallpaper-92002_w635.webp', // TODO: Add venue image when available in API
-                        name: venue.name,
+                        name: venue.name ?? 'Unknown Venue',
                         activities:
                             'Space Type: ${venue.spaceType}', // Using spaceType instead
                         rating: 4.5,

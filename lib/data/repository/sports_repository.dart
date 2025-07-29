@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import 'package:sportefy/data/model/common/api_response_dto.dart';
 import '../model/sport_dto.dart';
 import 'i_sports_repository.dart';
 
@@ -10,15 +11,22 @@ class SportsRepository implements ISportsRepository {
   SportsRepository(this._dio);
 
   @override
-  Future<List<Sport>> getSports() async {
+  Future<List<SportDTO>> getSports() async {
     try {
       final response = await _dio.get('/sports');
-      final apiResponse = SportsApiResponse.fromJson(response.data);
-      return apiResponse.data;
+      final sports = ApiResponse<List<SportDTO>>.fromJson(
+        response.data,
+        (dynamic data) =>
+            (data as List).map((item) => SportDTO.fromJson(item)).toList(),
+      );
+      if (sports.success == false) {
+        throw Exception('Failed to load sports: ${sports.message}');
+      }
+      return sports.data;
     } on DioException catch (e) {
-      throw Exception('Failed to fetch sports: ${e.message}');
+      throw Exception('Failed to load sports: ${e.message}');
     } catch (e) {
-      throw Exception('Unexpected error occurred while fetching sports');
+      throw Exception('An unexpected error occurred: $e');
     }
   }
 }

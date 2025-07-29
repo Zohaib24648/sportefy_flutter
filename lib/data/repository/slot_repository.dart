@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import 'package:sportefy/data/model/common/api_response_dto.dart';
 import '../model/slot_dto.dart';
 import 'i_slot_repository.dart';
 
@@ -23,35 +24,53 @@ class SlotRepository implements ISlotRepository {
         queryParameters: {'date': formattedDate},
       );
 
-      return SlotsApiResponse.fromJson(response.data);
-    } catch (e) {
-      throw Exception('Failed to fetch venue slots: $e');
-    }
-  }
-
-  @override
-  Future<SlotsApiResponse> getVenueSlotsRange({
-    required String venueId,
-    required DateTime startDate,
-    required DateTime endDate,
-  }) async {
-    try {
-      final formattedStartDate = _formatDate(startDate);
-      final formattedEndDate = _formatDate(endDate);
-
-      final response = await _dio.get(
-        '/slot/venues/$venueId/slots',
-        queryParameters: {
-          'startDate': formattedStartDate,
-          'endDate': formattedEndDate,
-        },
+      final slots = ApiResponse<List<SlotDTO>>.fromJson(
+        response.data,
+        (dynamic data) =>
+            (data as List).map((item) => SlotDTO.fromJson(item)).toList(),
       );
 
-      return SlotsApiResponse.fromJson(response.data);
+      if (slots.success == false) {
+        throw Exception('Failed to load venue slots: ${slots.message}');
+      }
+      return slots.data;
+    } on DioException catch (e) {
+      throw Exception('Failed to fetch venue slots: ${e.message}');
     } catch (e) {
-      throw Exception('Failed to fetch venue slots range: $e');
+      throw Exception('An unexpected error occurred: $e');
     }
   }
+
+  // @override
+  // Future<List<SlotDTO>> getVenueSlotsRange({
+  //   required String venueId,
+  //   required DateTime startDate,
+  //   required DateTime endDate,
+  // }) async {
+  //   try {
+  //     final formattedStartDate = _formatDate(startDate);
+  //     final formattedEndDate = _formatDate(endDate);
+
+  //     final response = await _dio.get(
+  //       '/slot/venues/$venueId/slots',
+  //       queryParameters: {
+  //         'startDate': formattedStartDate,
+  //         'endDate': formattedEndDate,
+  //       },
+  //     );
+
+  //     final slots = ApiResponse<List<SlotDTO>>.fromJson(response.data);
+
+  //     if (slots.success == false) {
+  //       throw Exception('Failed to load venue slots: ${slots.message}');
+  //     }
+  //     return slots.data;
+  //   } on DioException catch (e) {
+  //     throw Exception('Failed to fetch venue slots: ${e.message}');
+  //   } catch (e) {
+  //     throw Exception('Failed to fetch venue slots range: $e');
+  //   }
+  // }
 
   /// Format DateTime to yyyy-MM-dd string
   String _formatDate(DateTime date) {

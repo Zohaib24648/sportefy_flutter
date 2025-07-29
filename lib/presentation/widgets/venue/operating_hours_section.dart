@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sportefy/data/model/operating_hours_dto.dart';
 
 class OperatingHoursSection extends StatelessWidget {
-  final List<OperatingHour> operatingHours;
+  final List<OperatingHourDTO> operatingHours;
 
   const OperatingHoursSection({super.key, required this.operatingHours});
 
