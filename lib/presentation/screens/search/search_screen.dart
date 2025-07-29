@@ -4,6 +4,7 @@ import '../../theme/app_colors.dart';
 import '../../widgets/common/shimmer_exports.dart';
 import '../../widgets/search/search_widgets.dart';
 import '../../../bloc/search/search_bloc_exports.dart';
+import '../../../dependency_injection.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
@@ -11,7 +12,7 @@ class SearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SearchBloc(),
+      create: (context) => getIt<SearchBloc>(),
       child: const SearchScreenView(),
     );
   }

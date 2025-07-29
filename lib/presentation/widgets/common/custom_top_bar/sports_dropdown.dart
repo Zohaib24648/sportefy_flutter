@@ -22,11 +22,8 @@ class _SportsDropdownState extends State<SportsDropdown> {
   @override
   void initState() {
     super.initState();
-    // Load sports only if not already loaded
-    final sportsState = context.read<SportsBloc>().state;
-    if (sportsState is! SportsLoaded) {
-      context.read<SportsBloc>().add(const LoadSports());
-    }
+    // Sports data is already loaded globally through main.dart
+    // No need to load again here
   }
 
   void _showSportsSheet(List<SportDTO> sports) {

@@ -9,12 +9,14 @@ import 'bloc/auth/auth_bloc.dart';
 import 'bloc/profile/profile_bloc.dart';
 import 'bloc/sports/sports_bloc.dart';
 import 'bloc/sports/sports_event.dart';
+import 'bloc/venue/venue_bloc.dart';
 import 'core/utils/performance_config.dart';
 import 'dependency_injection.dart';
 import 'presentation/screens/auth/signin_screen.dart';
 import 'presentation/screens/auth/signup_screen.dart';
 import 'presentation/navigation/main_navigation_wrapper.dart';
 import 'presentation/theme/app_theme.dart';
+import 'presentation/widgets/common/shimmer_exports.dart';
 
 // SSL bypass for development
 class MyHttpOverrides extends HttpOverrides {
@@ -69,6 +71,8 @@ Future<void> main() async {
         BlocProvider(
           create: (_) => getIt<SportsBloc>()..add(const LoadSports()),
         ),
+        // Add VenueBloc globally for caching
+        BlocProvider(create: (_) => getIt<VenueBloc>()),
       ],
       child: const Sportefy(),
     ),
@@ -100,28 +104,44 @@ class Sportefy extends StatelessWidget {
           '/signup': (context) => const SignUpScreen(),
           '/home': (context) => const MainNavigationWrapper(),
         },
-        home: BlocBuilder<AuthBloc, AuthState>(
-          builder: (context, state) {
-            // Debug: Auth state changed to $state
+        home: BlocListener<AuthBloc, AuthState>(
+          listener: (context, state) {
+            // Load profile and venue data when user successfully authenticates
             if (state is Authenticated) {
-              return const MainNavigationWrapper();
-            } else if (state is AuthLoading) {
-              return const Scaffold(
-                body: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CircularProgressIndicator(),
-                      SizedBox(height: 16),
-                      Text('Loading...'),
-                    ],
-                  ),
-                ),
-              );
-            } else {
-              return const SignInScreen();
+              final profileBloc = context.read<ProfileBloc>();
+              if (profileBloc.state is! ProfileLoaded) {
+                profileBloc.add(LoadUserProfile());
+              }
+
+              final venueBloc = context.read<VenueBloc>();
+              if (venueBloc.state is VenueInitial) {
+                venueBloc.add(GetVenue(''));
+              }
             }
           },
+          child: BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+              // Debug: Auth state changed to $state
+              if (state is Authenticated) {
+                return const MainNavigationWrapper();
+              } else if (state is AuthLoading) {
+                return Scaffold(
+                  body: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        AppShimmer(child: ShimmerCircle(size: 24)),
+                        const SizedBox(height: 16),
+                        AppShimmer(child: ShimmerText(width: 80, height: 16)),
+                      ],
+                    ),
+                  ),
+                );
+              } else {
+                return const SignInScreen();
+              }
+            },
+          ),
         ),
       ),
     );

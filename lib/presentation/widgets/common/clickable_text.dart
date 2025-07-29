@@ -95,6 +95,7 @@ class _ClickableTextState extends State<ClickableText> {
                   width: 16,
                   height: 16,
                   child: CircularProgressIndicator(
+                    // Keep for loading state
                     strokeWidth: 2,
                     valueColor: AlwaysStoppedAnimation<Color>(effectiveColor),
                   ),

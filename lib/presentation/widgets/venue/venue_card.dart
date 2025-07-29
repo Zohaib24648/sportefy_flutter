@@ -90,7 +90,13 @@ class VenueCard extends StatelessWidget {
                 placeholder: (context, url) => Container(
                   color: Colors.grey[300],
                   child: const Center(
-                    child: CircularProgressIndicator(strokeWidth: 2.0),
+                    child: SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.0,
+                      ), // Keep for image loading
+                    ),
                   ),
                 ),
                 errorWidget: (context, url, error) => Container(

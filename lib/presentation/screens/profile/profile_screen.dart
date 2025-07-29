@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:sportefy/bloc/auth/auth_bloc.dart';
 import 'package:sportefy/presentation/widgets/confirmation_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../bloc/profile/profile_bloc.dart';
 import '../../../data/model/user_profile_dto.dart';
-import '../../../core/utils/debug_utils.dart';
-import '../../../core/auth/token_manager.dart';
-import '../../../dependency_injection.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_text_styles.dart';
 import '../../widgets/common/primary_button.dart';
+import '../../widgets/common/shimmer_exports.dart';
+import '../../widgets/profile/notification_toggle.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -22,60 +22,10 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  bool notificationsEnabled = true;
-  bool _isInitialized = false;
-
   @override
   void initState() {
     super.initState();
-    _initializeProfile();
-  }
-
-  Future<void> _initializeProfile() async {
-    if (_isInitialized) return;
-    _isInitialized = true;
-
-    try {
-      // Validate session in debug mode
-      if (kDebugMode) {
-        await DebugUtils.reportAuthState();
-        print(
-          '[ProfileScreen] Ensuring valid session before loading profile...',
-        );
-      }
-
-      // Ensure we have a valid session before making API calls
-      final tokenManager = getIt<TokenManager>();
-      final hasValidSession = await tokenManager.ensureValidSession();
-
-      if (kDebugMode) {
-        print('[ProfileScreen] Valid session available: $hasValidSession');
-      }
-
-      if (!hasValidSession) {
-        if (mounted) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(const SnackBar(content: Text('Please log in again')));
-          Navigator.of(context).pushReplacementNamed('/signin');
-        }
-        return;
-      }
-
-      if (mounted) {
-        context.read<ProfileBloc>().add(LoadUserProfile());
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        print('[ProfileScreen] Error initializing profile: $e');
-      }
-      if (mounted) {
-        // Handle error - maybe show a snackbar
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to initialize profile: $e')),
-        );
-      }
-    }
+    // Profile should already be loaded globally - no need to load again
   }
 
   @override
@@ -124,15 +74,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ProfileListItem(
                         icon: Icons.notifications_outlined,
                         title: 'Notification',
-                        trailing: Switch(
-                          value: notificationsEnabled,
-                          onChanged: (value) {
-                            setState(() {
-                              notificationsEnabled = value;
-                            });
-                          },
-                          activeColor: AppColors.primary,
-                        ),
+                        trailing: const NotificationToggle(),
                       ),
                     ],
                   ),
@@ -225,10 +167,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget _buildUserProfileSection(ProfileState state) {
     if (state is ProfileLoading) {
-      return SizedBox(
-        height: 80,
-        child: Center(
-          child: CircularProgressIndicator(color: AppColors.primary),
+      return AppShimmer(
+        child: Row(
+          children: [
+            const ShimmerCircle(size: 80),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ShimmerText(
+                    width: MediaQuery.of(context).size.width * 0.4,
+                    height: 24,
+                  ),
+                  const SizedBox(height: 8),
+                  ShimmerText(
+                    width: MediaQuery.of(context).size.width * 0.6,
+                    height: 16,
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       );
     } else if (state is ProfileError) {
@@ -244,9 +204,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 style: AppTextStyles.bodySmall.copyWith(color: AppColors.error),
               ),
               TextButton(
-                onPressed: () =>
-                    context.read<ProfileBloc>().add(LoadUserProfile()),
-                child: Text('Retry', style: AppTextStyles.link),
+                onPressed: () {
+                  // Profile is managed globally - show app-level retry message
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'Profile is managed globally. Try refreshing the app.',
+                        style: AppTextStyles.body.copyWith(
+                          color: AppColors.white,
+                        ),
+                      ),
+                      backgroundColor: AppColors.primary,
+                    ),
+                  );
+                },
+                child: Text('Info', style: AppTextStyles.link),
               ),
             ],
           ),
@@ -272,28 +244,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(40),
             child: profile?.avatarUrl != null
-                ? Image.network(
-                    profile!.avatarUrl!,
+                ? CachedNetworkImage(
+                    imageUrl: profile!.avatarUrl!,
                     fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
+                    placeholder: (context, url) => Container(
+                      color: AppColors.lightGrey,
+                      child: AppShimmer(
+                        child: Container(
+                          width: 40,
+                          height: 40,
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      ),
+                    ),
+                    errorWidget: (context, url, error) {
+                      if (kDebugMode) {
+                        print('Profile image load error: $error');
+                        print('Failed URL: $url');
+                      }
                       return Container(
                         color: AppColors.lightGrey,
                         child: Icon(
                           Icons.person,
                           size: 40,
                           color: AppColors.grey,
-                        ),
-                      );
-                    },
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return Container(
-                        color: AppColors.lightGrey,
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            color: AppColors.primary,
-                            strokeWidth: 2,
-                          ),
                         ),
                       );
                     },

@@ -12,7 +12,7 @@ class ProfileRepository implements IProfileRepository {
   @override
   Future<UserProfile> getUserProfile() async {
     try {
-      final response = await dio.get('/profile');
+      final response = await dio.get('/profile/me');
       return UserProfile.fromJson(response.data);
     } catch (e) {
       rethrow;

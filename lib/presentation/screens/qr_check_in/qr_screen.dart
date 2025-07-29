@@ -150,11 +150,20 @@ class QRScreenContent extends StatelessWidget {
                 const Gap(16),
                 // Check-in status
                 if (checkInState is CheckInLoading)
-                  const Row(
+                  Row(
                     children: [
-                      CircularProgressIndicator(),
-                      Gap(12),
-                      Text('Processing check-in...'),
+                      AppShimmer(
+                        child: Container(
+                          width: 16,
+                          height: 16,
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      ),
+                      const Gap(12),
+                      const Text('Processing check-in...'),
                     ],
                   )
                 else if (checkInState is CheckInSuccess)
@@ -410,8 +419,17 @@ class QRScreenContent extends StatelessWidget {
             );
           }
 
-          return const Center(
-            child: CircularProgressIndicator(color: Colors.white),
+          return Center(
+            child: AppShimmer(
+              child: Container(
+                width: 24,
+                height: 24,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
           );
         },
       ),

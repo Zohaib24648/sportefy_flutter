@@ -30,14 +30,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    // Trigger fetching venues when the page loads
-    context.read<VenueBloc>().add(GetVenue(''));
-
-    // Only trigger fetching user profile if not already loaded
-    final profileState = context.read<ProfileBloc>().state;
-    if (profileState is! ProfileLoaded) {
-      context.read<ProfileBloc>().add(LoadUserProfile());
-    }
+    // All data loading is now handled globally through BlocListeners
+    // when authentication succeeds
   }
 
   PreferredSizeWidget _buildAppBar() {
@@ -107,24 +101,8 @@ class _HomePageState extends State<HomePage> {
         builder: (context, venueState) {
           return BlocListener<ProfileBloc, ProfileState>(
             listener: (context, profileState) {
-              // Handle profile error by showing a snackbar
-              if (profileState is ProfileError) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      'Failed to load profile: ${profileState.error}',
-                    ),
-                    backgroundColor: Colors.red,
-                    action: SnackBarAction(
-                      label: 'Retry',
-                      textColor: Colors.white,
-                      onPressed: () {
-                        context.read<ProfileBloc>().add(LoadUserProfile());
-                      },
-                    ),
-                  ),
-                );
-              }
+              // Profile errors are handled globally - no need for local retry
+              // since ProfileBloc is managed at app level
             },
             child: _buildBody(venueState),
           );
@@ -337,6 +315,17 @@ class _HomePageState extends State<HomePage> {
     } else if (venueState is VenueError) {
       return Center(child: Text(venueState.message));
     }
-    return const Center(child: CircularProgressIndicator());
+    return Center(
+      child: AppShimmer(
+        child: Container(
+          width: 24,
+          height: 24,
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+          ),
+        ),
+      ),
+    );
   }
 }
